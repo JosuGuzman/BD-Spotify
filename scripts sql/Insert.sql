@@ -7,16 +7,16 @@ CALL altaArtista ();
 CALL altaArtista ();
 
 -- Tabla Albun
- CALL altaAlbun ();
- CALL altaAlbun ();
- CALL altaAlbun ();
- CALL altaAlbun ();
+ CALL altaAlbun (@idAlbum1, 'Luz y Sombra', @idArtista1);
+ CALL altaAlbun (@idAlbum2, 'Caminos Cruzados', @idArtista2);
+ CALL altaAlbun (@idAlbum3, 'Sueños de Verano', @idArtista3);
+ CALL altaAlbun (@idAlbum4, 'Ecos del Pasado', @idArtista4);
 
 -- Tabla Nacionalidad
-CALL altaNacionalidad ();
-CALL altaNacionalidad ();
-CALL altaNacionalidad ();
-CALL altaNacionalidad ();
+CALL altaNacionalidad ('Argentina', @idNacionalidad1);
+CALL altaNacionalidad ('Brasil', @idNacionalidad2 );
+CALL altaNacionalidad ('U.R.S.S.', @idNacionalidad3);
+CALL altaNacionalidad ('Bolivia', @idNacionalidad4);
 
 -- Tabla Usuario
 CALL altaUsuario ("Miguel", "miguelito@gmail.com", "Deadpool3saliomal", 1, @idUsuarioMiguel);
