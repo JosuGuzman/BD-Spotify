@@ -11,13 +11,13 @@
 
 ## Computación 2024
 
-**Asignatura**: <!-- REEMPLAZA este comentario por el nombre de la asignatura -->
+**Asignatura**: Base de Datos
 
-**Nombre TP**: <!-- REEMPLAZA este comentario por el nombre del TP -->
+**Nombre TP**: BD Spotify
 
-**Apellido y nombre Alumno**: <!-- REEMPLAZA este comentario por tu apellido y nombre -->
+**Apellido y nombre Alumno**: Miguel Verdugues, Josu Duran, Rene Terraza
 
-**Curso**: <!-- REEMPLAZA este comentario por tu curso -->
+**Curso**: 5 ° 7
 
 # Título del Proyecto
 
@@ -26,9 +26,9 @@ _Acá va un párrafo que describa lo que es el proyecto._
 ## Comenzando 🚀
 
 Clonar el repositorio github, desde Github Desktop o ejecutar en la terminal o CMD:
-<!-- cambia el link de abajo al de tu repositorio y BORRA ESTE COMENTARIO -->
+
 ```
-git clone https://github.com/ET12DE1Computacion/simpleTemplateCSharp
+https://github.com/JosuGuzman/BD-Spotify
 ```
 
 ### Pre-requisitos 📋
