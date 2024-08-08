@@ -49,6 +49,13 @@ CALL altaPlaylist ();
 CALL altaPlaylist ();
 
 -- Tabla Playlist_Cancion
+INSERT INTO Playlist_Canciones(idPlaylist,idCancion,FechaIngresion)
+ VALUES
+        (1, 1, '2024-07-01 10:00:00'),
+        (1, 2, '2024-07-01 10:10:00'),
+        (2, 3, '2024-07-01 11:00:00'),
+        (2, 4, '2024-07-01 11:10:00');
+
 
 -- Tabla Suscripcion
 CALL altaSuscripcion ();
@@ -57,3 +64,8 @@ CALL altaSuscripcion ();
 CALL altaSuscripcion ();
 
 -- Tabla Suscripcion_Usuario
+INSERT INTO Usuario_Suscripcion (idUsuario,idSuscripcion,tipoSuscripcion,FechaInicio)
+ VALUES
+        (1,1,’Mensual’,’2024-5-3’),
+        (2,2,’Bimestral,’2024-7-23’),
+        (3,3,’Trimestral’,NOW());
