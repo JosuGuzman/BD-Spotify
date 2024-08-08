@@ -1,10 +1,22 @@
 USE Spotify;
 
 -- Tabla Artista
+CALL altaArtista ();
+CALL altaArtista ();
+CALL altaArtista ();
+CALL altaArtista ();
 
 -- Tabla Albun
+ CALL altaAlbun ();
+ CALL altaAlbun ();
+ CALL altaAlbun ();
+ CALL altaAlbun ();
 
 -- Tabla Nacionalidad
+CALL altaNacionalidad ();
+CALL altaNacionalidad ();
+CALL altaNacionalidad ();
+CALL altaNacionalidad ();
 
 -- Tabla Usuario
 CALL altaUsuario ("Miguel", "miguelito@gmail.com", "Deadpool3saliomal", 1, @idUsuarioMiguel);
