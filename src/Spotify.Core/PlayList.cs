@@ -7,8 +7,8 @@ namespace Spotify.Core
 {
     public class PlayList
     {
-        public int idPlaylist {get;set;}
+        public int IdPlaylist {get;set;}
         public required string Nombre {get;set;}
-        public int idUsuario {get;set;}
+        public int IdUsuario {get;set;}
     }
 }

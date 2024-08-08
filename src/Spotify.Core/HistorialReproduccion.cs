@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+namespace Spotify.Core;
 
-namespace Spotify.Core
+public class HistorialReproduccion
 {
-    public class HistorialReproduccion
-    {
-        public int idHistorial {get;set;}
-        public required string NombreUsuario {get;set;}
-        public required string Gmail {get;set;}
-        public required string Contraseña {get;set;}
-        public Registro registro {get;set;}
-        public Nacionalidad nacionalidad {get;set;} 
-    }
+    public int IdHistorial {get;set;}
+    public required string NombreUsuario {get;set;}
+    public required string Gmail {get;set;}
+    public required string Contraseña {get;set;}
+    public required Registro Registros {get;set;}
+    public required Nacionalidad Nacionalidades {get;set;} 
 }
