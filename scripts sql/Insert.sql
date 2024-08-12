@@ -1,10 +1,10 @@
 USE Spotify;
 
 -- Tabla Artista
- CALL altaArtista('TripleT', 'Miguel', 'Verduguez', @idArtista1);
- CALL altaArtista('El Chapo', 'Josu', 'Duran', @idArtista2);
- CALL altaArtista('La Maquinaria', 'Rene', 'Terrazas', @idArtista3);
- CALL altaArtista('El Renacido', 'Leonardo', 'Cheng', @idArtista4);
+ CALL altaArtista('TripleT', 'Miguel', 'Verduguez', @idArtistaTripleT);
+ CALL altaArtista('El Chapo', 'Josu', 'Duran', @idArtistaElChapo);
+ CALL altaArtista('La Maquinaria', 'Rene', 'Terrazas', @idArtistalaMaquinaria);
+ CALL altaArtista('El Renacido', 'Leonardo', 'Cheng', @idArtistaElRenacido);
 -- Tabla Albun
  CALL altaAlbun (@idAlbum1, 'Luz y Sombra', @idArtista1);
  CALL altaAlbun (@idAlbum2, 'Caminos Cruzados', @idArtista2);
@@ -24,10 +24,10 @@ CALL altaUsuario ("Rene","rene@gmail.com","Totoro",3,@idUsuarioRene);
 CALL altaUsuario ("Cheng","chengleonardo@gmail.com","capitalismonofunciona",4,@idUsuarioCheng);
 
 -- Tabla Genero
-CALL altaGenero('Hip-hop/Rap', @idGenero1);
-CALL altaGenero('Jazz', @idGenero2);
-CALL altaGenero('Reggae', @idGenero3);
-CALL altaGenero('Ranchera', @idGenero4);
+CALL altaGenero('Hip-hop/Rap', @idGeneroHipHop);
+CALL altaGenero('Jazz', @idGeneroJazz);
+CALL altaGenero('Reggae', @idGeneroReggae);
+CALL altaGenero('Ranchera', @idGeneroRanchera);
 -- Tabla Cancion
 CALL altaCancion(@idCancion1, 'It\'s Over, Isn\'t It', '00:02:17', @idAlbum3, @idArtista1, @idGenero1);
 CALL altaCancion(@idCancion2, 'René', '00:07:41', @idAlbum2, @idArtista2, @idGenero2);
