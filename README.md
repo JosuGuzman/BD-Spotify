@@ -15,13 +15,13 @@
 
 **Nombre TP**: BD Spotify
 
-**Apellido y nombre Alumno**: Miguel Verdugues, Josu Duran, Rene Terraza
+**Apellido y Nombre Alumno**: Miguel Verdugues, Josu Duran, Rene Terraza
 
 **Curso**: 5 ° 7
 
 # Título del Proyecto
 
-_Acá va un párrafo que describa lo que es el proyecto._
+_Acá va un parrafo que describa lo que es el proyecto._
 
 ## Comenzando 🚀
 
