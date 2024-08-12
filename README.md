@@ -9,7 +9,7 @@
   <img src="https://et12.edu.ar/imgs/et12.svg">
 </p>
 
-## Computación 2024
+## Computación : 2024
 
 **Asignatura**: Base de Datos
 
