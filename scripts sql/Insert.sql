@@ -6,10 +6,10 @@ USE Spotify;
  CALL altaArtista('La Maquinaria', 'Rene', 'Terrazas', @idArtistalaMaquinaria);
  CALL altaArtista('El Renacido', 'Leonardo', 'Cheng', @idArtistaElRenacido);
 -- Tabla Albun
- CALL altaAlbun (@idAlbum1, 'Luz y Sombra', @idArtista1);
- CALL altaAlbun (@idAlbum2, 'Caminos Cruzados', @idArtista2);
- CALL altaAlbun (@idAlbum3, 'Sueños de Verano', @idArtista3);
- CALL altaAlbun (@idAlbum4, 'Ecos del Pasado', @idArtista4);
+ CALL altaAlbun (@idAlbumLuz, 'Luz y Sombra', @idArtistaTripleT);
+ CALL altaAlbun (@idAlbumCaminos, 'Caminos Cruzados', @idArtistaElChapo);
+ CALL altaAlbun (@idAlbumSueños, 'Sueños de Verano', @idArtistalaMaquinaria);
+ CALL altaAlbun (@idAlbumEcos, 'Ecos del Pasado', @idArtistaElRenacido);
 
 -- Tabla Nacionalidad
 CALL altaNacionalidad ('Argentina', @idNacionalidadArgentina);
@@ -29,23 +29,23 @@ CALL altaGenero('Jazz', @idGeneroJazz);
 CALL altaGenero('Reggae', @idGeneroReggae);
 CALL altaGenero('Ranchera', @idGeneroRanchera);
 -- Tabla Cancion
-CALL altaCancion(@idCancion1, 'It\'s Over, Isn\'t It', '00:02:17', @idAlbum3, @idArtista1, @idGenero1);
-CALL altaCancion(@idCancion2, 'René', '00:07:41', @idAlbum2, @idArtista2, @idGenero2);
-CALL altaCancion(@idCancion3, 'Como Estrella', '00:03:40', @idAlbum1, @idArtista3, @idGenero3);
-CALL altaCancion(@idCancion4, 'Estos Celos', '00:03:10', @idAlbum4, @idArtista4, @idGenero4);
+CALL altaCancion(@@idCancionOver, 'Its Over, Isnt It', '00:02:17', @idAlbumSueños, @idArtistaElRenacido, @idGenero1);
+CALL altaCancion(@@idCancionRene, 'René', '00:07:41', @idAlbumCaminos, @idArtistaElChapo, @idGenero2);
+CALL altaCancion(@@idCancionEstrella, 'Como Estrella', '00:03:40', @idAlbumLuz, @idArtistalaMaquinaria, @idGenero3);
+CALL altaCancion(@@idCancionCelos, 'Estos Celos', '00:03:10', @idAlbumEcos, @idArtistaTripleT, @idGenero4);
 
 
 -- Tabla Historial Reproduccion
-CALL altaHistorial_reproduccion(@idHistorial1, @idUsuario1, @idCancion1, '2024-07-01 10:00:00');
-CALL altaHistorial_reproduccion(@idHistorial2, @idUsuario2, @idCancion2, '2024-07-01 11:00:00');
-CALL altaHistorial_reproduccion(@idHistorial3, @idUsuario3, @idCancion3, '2024-07-01 12:00:00');
-CALL altaHistorial_reproduccion(@idHistorial4, @idUsuario4, @idCancion4, '2024-07-01 13:00:00');
+CALL altaHistorial_reproduccion(@idHistorialMiguel, @idUsuarioMiguel, @@idCancionOver, '2024-07-01 10:00:00');
+CALL altaHistorial_reproduccion(@idHistorialJosu, @idUsuarioJosu, @@idCancionRene, '2024-07-01 11:00:00');
+CALL altaHistorial_reproduccion(@idHistorialRene, @idUsuarioRene, @@idCancionEstrella, '2024-07-01 12:00:00');
+CALL altaHistorial_reproduccion(@idHistorialCheng, @idUsuarioCheng, @@idCancionCelos, '2024-07-01 13:00:00');
 
 -- Tabla Playlist
-CALL altaPlaylist('Éxitos de Rock', @idUsuario1, @idPlaylist1);
-CALL altaPlaylist('Clásicos del Pop', @idUsuario2, @idPlaylist2);
-CALL altaPlaylist('Vibras de Jazz', @idUsuario3, @idPlaylist3);
-CALL altaPlaylist('Ritmos Chill', @idUsuario4, @idPlaylist4);
+CALL altaPlaylist('Éxitos de Rock', @idUsuarioMiguel,@idPlaylistRock);
+CALL altaPlaylist('Clásicos del Pop', @idUsuarioJosu,@idPlaylistPop);
+CALL altaPlaylist('Vibras de Jazz', @idUsuarioRene,@idPlaylistJazz);
+CALL altaPlaylist('Ritmos Chill', @idUsuarioCheng, @idPlaylistChill);
 
 
 -- Tabla Playlist_Cancion
