@@ -5,7 +5,7 @@ namespace Spotify.Core
         public int IdCacion {get;set;}
         public required string Titulo {get;set;} 
         public DateTime Duracion {get;set;}
-        public required Album album {get;set;}
-        public required Genero genero {get;set;}
+        public required Albun Albunes {get;set;}
+        public required Genero Generos {get;set;}
     }
 }

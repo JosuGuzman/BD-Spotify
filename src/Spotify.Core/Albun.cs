@@ -1,6 +1,6 @@
 namespace Spotify.Core
 {
-    public class Album
+    public class Albun
     {
         public int IdAlbum {get;set;}
         public required string Titulo {get;set;}
