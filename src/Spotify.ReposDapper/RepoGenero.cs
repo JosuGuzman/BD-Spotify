@@ -19,7 +19,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         _conexion.Execute("altaGenero", parametros, commandType: CommandType.StoredProcedure);
 
         genero.IdGenero = parametros.Get<byte>("@unidGenero");
-    }
+    } 
 
     public IList<Genero> Obtener()
     {
