@@ -1,7 +1,7 @@
 USE Spotify;
 
 -- Tabla Artista
-DELIMITER $$
+DELIMITER $$Albun
 DROP PROCEDURE IF EXISTS altaArtista $$
 CREATE PROCEDURE altaArtista (unNombreArtistico VARCHAR(35), unNombre VARCHAR(45), unApellido VARCHAR(45), out idArtista INT UNSIGNED)
 BEGIN 
@@ -11,17 +11,17 @@ BEGIN
 	SET idArtista = last_insert_id();
 END $$
 
--- Tabla Albun
+-- Tabla Album
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaAlbum $$
-CREATE PROCEDURE altaAlbum (OUT unidAlbun INT UNSIGNED,
+CREATE PROCEDURE altaAlbum (OUT unidAlbum INT UNSIGNED,
     unTitulo VARCHAR(45),
     unidArtista INT UNSIGNED)
 BEGIN 
 	INSERT INTO Album (Titulo,fechaLanzamiento,idArtista)
 		VALUES(unTitulo,CURDATE(),unidArtista)
 
-	SET unidAlbun = last_insert_id();
+	SET unidAlbum = last_insert_id();
 END$$
 
 
@@ -61,10 +61,10 @@ END$$
 -- Tabla Cancion
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaCancion $$
-CREATE PROCEDURE altaCancion (OUT unidCancion INT UNSGINED, unTitulo VARCHAR(45), unDuration Time, unidAlbun INT UNSIGNED, unidArtista INT UNSIGNED, unidGenero TINYINT UNSIGNED)
+CREATE PROCEDURE altaCancion (OUT unidCancion INT UNSIGNED, unTitulo VARCHAR(45), unDuration Time, unidAlbum INT UNSIGNED, unidArtista INT UNSIGNED, unidGenero TINYINT UNSIGNED)
 BEGIN 
-	INSERT INTO Cancion(Titulo,duration,idAlbun,idArtista,idGenero)
-		VALUES(unTItulo,unDuration,unidAlbun,unidArtista,unidGenero)
+	INSERT INTO Cancion(Titulo,duration,idAlbum,idArtista,idGenero)
+		VALUES(unTItulo,unDuration,unidAlbum,unidArtista,unidGenero)
 	
 	SET unidCancion = last_insert_id();
 END $$

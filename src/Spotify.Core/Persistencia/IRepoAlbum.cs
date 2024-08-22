@@ -1,6 +1,6 @@
 namespace Spotify.Core.Persistencia;
 
-public class IRepoAlbum
+public interface IRepoAlbum : IAlta<Album>, IListado<Album>, IDetallePorId<Album,int>
 {
     
 }

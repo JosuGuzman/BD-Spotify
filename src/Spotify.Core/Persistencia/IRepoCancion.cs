@@ -1,6 +1,5 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IRepoCancion : IAlta<Cancion>, IDetallePorId<Cancion, int>
+public interface IRepoCancion : IAlta<Cancion>
 {
-    IList<Cancion> Buscar(string cadena);
 }
