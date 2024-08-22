@@ -1,10 +1,4 @@
-using System.Data;
-using Dapper;
-using Spotify.Core;
-using Spotify.Core.Persistencia;
-
 namespace Spotify.ReposDapper;
-
 public class RepoGenero : RepoGenerico, IRepoGenero
 {
     public RepoGenero(IDbConnection conexion)
