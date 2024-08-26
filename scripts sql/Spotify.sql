@@ -19,7 +19,7 @@ USE `Spotify` ;
 -- Table `Spotify`.`Artista`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Spotify`.`Artista` (
-  `idArtista` INT NOT NULL AUTO_INCREMENT,
+  `idArtista` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `NombreArtistico` VARCHAR(35) NULL,
   `Nombre` VARCHAR(45) NOT NULL,
   `Apellido` VARCHAR(45) NOT NULL,
