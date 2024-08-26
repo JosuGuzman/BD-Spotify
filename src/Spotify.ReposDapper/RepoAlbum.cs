@@ -20,7 +20,7 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
 
     public IList<Album> Obtener()
     {
-        string consultarAlbumes = @"SELECT * from Cancion ORDER BY Cancion ASC";
+        string consultarAlbumes = @"SELECT * from Album ORDER BY Nombre ASC";
         var Albumes = _conexion.Query<Album>(consultarAlbumes);
         return Albumes.ToList();
     }
