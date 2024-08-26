@@ -160,55 +160,35 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Playlist_Canciones`
+-- Table `Spotify`.`TipoSuscripcion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Playlist_Canciones` (
-  `idPlaylist` INT UNSIGNED NOT NULL,
-  `idCancion` INT UNSIGNED NOT NULL,
-  `FechaIngresion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`idPlaylist`, `idCancion`),
-  INDEX `track_id` (`idCancion` ASC) VISIBLE,
-  CONSTRAINT `Playlist_Tracks_ibfk_1`
-    FOREIGN KEY (`idPlaylist`)
-    REFERENCES `Spotify`.`Playlist` (`idPlaylist`),
-  CONSTRAINT `Playlist_Tracks_ibfk_2`
-    FOREIGN KEY (`idCancion`)
-    REFERENCES `Spotify`.`Cancion` (`idCancion`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+CREATE TABLE IF NOT EXISTS `Spotify`.`TipoSuscripcion` (
+  `idTipoSuscripcion` INT UNSIGNED NOT NULL,
+  `Duracion` TINYINT UNSIGNED NOT NULL,
+  `Costo` TINYINT UNSIGNED NOT NULL,
+  `Tipo` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idTipoSuscripcion`))
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `Spotify`.`Suscripcion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Spotify`.`Suscripcion` (
-  `idSuscripcion` INT UNSIGNED NOT NULL,
-  `Duracion` TINYINT UNSIGNED NOT NULL,
-  `Costo` TINYINT UNSIGNED NOT NULL,
-  `tipoSuscripcion` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idSuscripcion`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `Spotify`.`Usuario_Suscripcion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Usuario_Suscripcion` (
   `idUsuario` INT UNSIGNED NOT NULL,
-  `idSuscripcion` INT UNSIGNED NOT NULL,
-  `tipoSuscripcion` VARCHAR(45) NOT NULL,
+  `idTipoSuscripcion` INT UNSIGNED NOT NULL,
+  `tipoTipoSuscripcion` VARCHAR(45) NOT NULL,
   `FechaInicio` DATE NULL,
-  PRIMARY KEY (`idUsuario`, `idSuscripcion`),
-  INDEX `fk_Usuario_Suscripcion_Suscripcion1_idx` (`idSuscripcion` ASC) VISIBLE,
-  CONSTRAINT `fk_Usuario_Suscripcion_Usuario1`
+  PRIMARY KEY (`idUsuario`, `idTipoSuscripcion`),
+  INDEX `fk_Suscripcion_TipoSuscripcion1_idx` (`idTipoSuscripcion` ASC) VISIBLE,
+  CONSTRAINT `fk_Suscripcion_Usuario1`
     FOREIGN KEY (`idUsuario`)
     REFERENCES `Spotify`.`Usuario` (`idUsuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Usuario_Suscripcion_Suscripcion1`
-    FOREIGN KEY (`idSuscripcion`)
-    REFERENCES `Spotify`.`Suscripcion` (`idSuscripcion`)
+  CONSTRAINT `fk_Suscripcion_TipoSuscripcion1`
+    FOREIGN KEY (`idTipoSuscripcion`)
+    REFERENCES `Spotify`.`TipoSuscripcion` (`idTipoSuscripcion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
