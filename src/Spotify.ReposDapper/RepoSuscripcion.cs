@@ -10,11 +10,6 @@ public class RepoSuscripcion : RepoGenerico, IRepoSuscripcion
         throw new NotImplementedException();
     }
 
-    public Suscripcion? DetalleDe(int id)
-    {
-        throw new NotImplementedException();
-    }
-
     public IList<Suscripcion> Obtener()
     {
         throw new NotImplementedException(); 

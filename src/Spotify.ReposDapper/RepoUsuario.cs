@@ -10,10 +10,6 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         throw new NotImplementedException();
     }
 
-    public Album? DetalleDe(int id)
-    {
-        throw new NotImplementedException();
-    } 
 
     public IList<Album> Obtener()
     {
