@@ -10,12 +10,6 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         throw new NotImplementedException();
     }
 
-    public Reproduccion? DetalleDe(int id)
-    {
-        throw new NotImplementedException();
-        
-    }
-
     public IList<Reproduccion> Obtener()
     {
         throw new NotImplementedException();
