@@ -16,7 +16,7 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         _conexion.Execute("altaalbum", parametros, commandType: CommandType.StoredProcedure);
 
         album.IdAlbum = parametros.Get<uint>("@unidAlbum");
-    }  
+    }   
  
     public IList<Album> Obtener()
     {

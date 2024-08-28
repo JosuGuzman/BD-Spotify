@@ -177,7 +177,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Spotify`.`Suscripcion` (
   `idUsuario` INT UNSIGNED NOT NULL,
   `idTipoSuscripcion` INT UNSIGNED NOT NULL,
-  `tipoTipoSuscripcion` VARCHAR(45) NOT NULL,
   `FechaInicio` DATE NULL,
   PRIMARY KEY (`idUsuario`, `idTipoSuscripcion`),
   INDEX `fk_Suscripcion_TipoSuscripcion1_idx` (`idTipoSuscripcion` ASC) VISIBLE,

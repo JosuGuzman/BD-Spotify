@@ -15,7 +15,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
 
         cancion.IdCancion = parametros.Get<uint>("@unidCancion");
     } 
- 
+  
     public IList<Cancion> Obtener()
     {
         string consultarCanciones = @"SELECT * from Cancion ORDER BY Titulo ASC";

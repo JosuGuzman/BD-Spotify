@@ -17,7 +17,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
 
         artista.IdArtista = parametros.Get<uint>("@unidArtista");
     }
-
+ 
     public IList<Artista> Obtener()
     {
         string consultarArtistas = @"SELECT * from Artista ORDER BY NombreArtistico ASC";

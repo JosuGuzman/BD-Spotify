@@ -16,7 +16,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
 
         nacionalidad.IdNacionalidad = parametros.Get<uint>("@unidNacionalidad");
     }
- 
+  
     public IList<Nacionalidad> Obtener ()
     {
         string consultarNacionalidades = @"SELECT * from Nacionalidad ORDER BY Pais ASC";

@@ -15,3 +15,4 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         throw new NotImplementedException();
     }
 }
+ 

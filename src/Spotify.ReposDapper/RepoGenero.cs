@@ -14,7 +14,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
 
         genero.IdGenero = parametros.Get<byte>("@unidGenero");
     } 
-
+ 
     public IList<Genero> Obtener()
     { 
         string consultarGeneros = @"SELECT * from Genero ORDER BY Genero ASC";

@@ -16,7 +16,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
 
         reproduccion.IdHistorial = parametros.Get<int>("@unidHistorial");
     }
-
+ 
     public IList<Reproduccion> Obtener()
     {
         string consultarReproducciones = @"SELECT * from HistorialReproducción ORDER BY FechaReproduccion ASC";

@@ -100,4 +100,4 @@ BEGIN
 		VALUES(unaDuracion,unCosto,UntipoSuscripcion)
 	
     SET unidSuscripcion = last_insert_id();
-END $$ 
+END $$

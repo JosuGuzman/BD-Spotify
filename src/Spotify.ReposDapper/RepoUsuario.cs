@@ -16,3 +16,4 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         throw new NotImplementedException();
     }
 }
+ 
