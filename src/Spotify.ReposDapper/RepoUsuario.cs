@@ -13,7 +13,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     public Album? DetalleDe(int id)
     {
         throw new NotImplementedException();
-    }
+    } 
 
     public IList<Album> Obtener()
     {

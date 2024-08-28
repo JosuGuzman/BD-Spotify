@@ -20,7 +20,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
 
     public IList<Artista> Obtener()
     {
-        string consultarArtistas = @"SELECT * from Artista ORDER BY NOmbreArtistico ASC";
+        string consultarArtistas = @"SELECT * from Artista ORDER BY NombreArtistico ASC";
         var Artistas = _conexion.Query<Artista>(consultarArtistas);
         return Artistas.ToList();
     }

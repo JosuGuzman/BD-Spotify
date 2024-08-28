@@ -13,6 +13,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
     public Reproduccion? DetalleDe(int id)
     {
         throw new NotImplementedException();
+        
     }
 
     public IList<Reproduccion> Obtener()

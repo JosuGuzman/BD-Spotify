@@ -16,7 +16,7 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
     }
 
     public IList<TipoSuscripcion> Obtener()
-    {
+    { 
         throw new NotImplementedException();
     }
 }
