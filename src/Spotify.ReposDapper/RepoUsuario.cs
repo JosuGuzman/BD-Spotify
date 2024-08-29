@@ -22,7 +22,9 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public IList<Usuario> Obtener()
     {
-        ();
+        string consultarUsuarios = @"SELECT * from Usuario ORDER BY NombreUsuario ASC";
+        var Usuarios = _conexion.Query<Usuario>(consultarUsuarios);
+        return Usuarios.ToList();
     }
 }
  

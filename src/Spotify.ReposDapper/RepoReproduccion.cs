@@ -14,7 +14,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         parametros.Add("@unFechaReproduccion", reproduccion.FechaReproccion);
         _conexion.Execute("altaHistorial_reproduccion", parametros, commandType: CommandType.StoredProcedure);
 
-        reproduccion.IdHistorial = parametros.Get<int>("@unidHistorial");
+        reproduccion.IdHistorial = parametros.Get<uint>("@unidHistorial");
     }
  
     public IList<Reproduccion> Obtener()

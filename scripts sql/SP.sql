@@ -111,7 +111,7 @@ CREATE PROCEDURE altaRegistroSuscripcion (unIdUsuario INT UNSIGNED,
 										  unidTipoSuscripcion INT UNSIGNED,
 										  )
 BEGIN
-	INSERT INTO Suscripcion (idUsuario,idTipoSuscripcion,FechaInicio)
+	INSERT INTO Suscripcion (idUsuario,Costo,idTipoSuscripcion,FechaInicio)
 		VALUES (unIdUsuario,unidTipoSuscripcion,CURDATE());
 END
 $$

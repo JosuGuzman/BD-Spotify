@@ -8,9 +8,13 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
     public void Alta(Registro registro)
     {
         var parametros = new DynamicParameters();
-        parametros.Add("@unidUsuario",registro.Usuarios.IdUsuario);
-        parametros.Add("@unidTipoSuscripcion", registro.Suscripciones.IdSuscripcion);
+        parametros.Add("@unidUsuario",registro.usuario.IdUsuario);
+        parametros.Add("@unidTipoSuscripcion", registro.tipoSuscripcion.IdTipoSuscripcion);
         parametros.Add("@unFechaInicio", registro.FechaInicio);
+        
+        
+        _conexion.Execute("altaRegistroSuscripcion", parametros, commandType: CommandType.StoredProcedure);
+
 
     }
     
