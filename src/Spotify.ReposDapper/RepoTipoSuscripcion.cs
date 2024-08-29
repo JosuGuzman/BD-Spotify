@@ -8,18 +8,20 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
     public void Alta(TipoSuscripcion tipoSuscripcion)
     {
         var parametros = new DynamicParameters();
-        parametros.Add("@unidCancion", direction: ParameterDirection.Output);
-        parametros.Add("@unTitulo", cancion.Titulo);
-        parametros.Add("@unDuration", cancion.Duracion);
+        parametros.Add("@unidTipoSuscripcion", direction: ParameterDirection.Output);
+        parametros.Add("@unCosto", tipoSuscripcion.Costo);
+        parametros.Add("@unaDuracion", tipoSuscripcion.Duracion);
+        parametros.Add("@UntipoSuscripcion", tipoSuscripcion.Tipo);
 
-        _conexion.Execute("altaCancion", parametros, commandType: CommandType.StoredProcedure);
+        _conexion.Execute("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
 
-        cancion.IdCancion = parametros.Get<uint>("@unidCancion");
+        tipoSuscripcion.IdTipoSuscripcion = parametros.Get<uint>("@unidTipoSuscripcion");
     }
 
     public IList<TipoSuscripcion> Obtener()
     { 
-        throw new NotImplementedException();
+        string consultarTipos = @"SELECT * from TipoSuscripcion ORDER BY Tipo ASC";
+        var Tipos = _conexion.Query<TipoSuscripcion>(consultarTipos);
+        return Tipos.ToList();
     }
 }
- 

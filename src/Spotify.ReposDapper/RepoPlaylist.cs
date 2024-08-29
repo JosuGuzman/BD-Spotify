@@ -10,12 +10,12 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         var parametros = new DynamicParameters();
         parametros.Add("@unidPlaylist", direction: ParameterDirection.Output);
         parametros.Add("@unNombre", playlist.Nombre);
-        parametros.Add("@unidUsuario", playlist.IdUsuario);
+        parametros.Add("@unidUsuario", playlist.usuario.IdUsuario);
 
 
         _conexion.Execute("altaPlaylist", parametros, commandType: CommandType.StoredProcedure);
 
-        playlist.IdPlaylist = parametros.Get<int>("@unidPlaylist");
+        playlist.IdPlaylist = parametros.Get<uint>("@unidPlaylist");
     }
    
     public IList<PlayList> Obtener ()
