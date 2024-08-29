@@ -1,8 +1,8 @@
 namespace Spotify.Core;
 
-public class Suscripcion
+public class Registro
 {
     public required Usuario Usuarios {get;set;}
-    public required Suscripcion Suscripciones {get;set;}
+    public required TipoSuscripcion Suscripciones {get;set;}
     public DateTime FechaInicio {get;set;}
 }

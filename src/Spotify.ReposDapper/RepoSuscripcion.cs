@@ -1,21 +1,23 @@
 namespace Spotify.ReposDapper;
 
-public class RepoSuscripcion : RepoGenerico, IRepoSuscripcion
+public class RepoSuscripcion : RepoGenerico, IRepoRegistro
 {
     public RepoSuscripcion(IDbConnection conexion) 
         : base(conexion) {}
 
-    public void Alta(Suscripcion suscripcion)
+    public void Alta(Registro registro)
     {
         var parametros = new DynamicParameters();
-        parametros.Add("@unid", direction: ParameterDirection.Output);
-        parametros.Add("@unTitulo", suscripcion);
-        parametros.Add("@unidArtista", suscripcion);
+        parametros.Add("@unidUsuario",registro.Usuarios.IdUsuario);
+        parametros.Add("@unidTipoSuscripcion", registro.Suscripciones.IdSuscripcion);
+        parametros.Add("@unFechaInicio", registro.FechaInicio);
 
     }
 
-    public IList<Suscripcion> Obtener()
+    public IList<Registro> Obtener()
     {
-        gfhfghfgh
+        string consultarRegistros = @"SELECT * from Suscripcion ORDER BY FechaInicio ASC";
+        var Registros = _conexion.Query<Registro>(consultarRegistros);
+        return Registros.ToList();
     }
 }
