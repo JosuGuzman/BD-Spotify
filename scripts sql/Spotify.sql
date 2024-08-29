@@ -172,7 +172,7 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Suscripcion`
+-- Table `Spotify`.`Suscripcion_Registro`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Spotify`.`Suscripcion` (
   `idUsuario` INT UNSIGNED NOT NULL,

@@ -91,13 +91,29 @@ BEGIN
     SET unidPlaylist = last_insert_id();
 END $$
 
--- Tabla Suscripcion
+-- Tabla TipoSuscripcion
 DELIMITER $$
-DROP PROCEDURE IF EXISTS altaSuscripcion $$
-CREATE PROCEDURE altaSuscripcion (OUT unidSuscripcion INT UNSIGNED, unaDuracion TINYINT UNSIGNED, unCosto TINYINT UNSIGNED, UntipoSuscripcion VARCHAR(45))
+DROP PROCEDURE IF EXISTS altaTipoSuscripcion $$
+CREATE PROCEDURE altaTipoSuscripcion (OUT unidTipoSuscripcion INT UNSIGNED, unaDuracion TINYINT UNSIGNED, unCosto TINYINT UNSIGNED, UntipoSuscripcion VARCHAR(45))
 BEGIN
-	INSERT INTO Suscripcion (Duracion,Costo,tipoSuscripcion)
+	INSERT INTO TipoSuscripcion (Duracion,Costo,Tipo)
 		VALUES(unaDuracion,unCosto,UntipoSuscripcion)
 	
-    SET unidSuscripcion = last_insert_id();
+    SET unidTipoSuscripcion = last_insert_id();
 END $$
+
+
+--	Registro Suscripcion
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS altaRegistroSuscripcion $$
+CREATE PROCEDURE altaRegistroSuscripcion (unIdUsuario INT UNSIGNED,
+										  unidTipoSuscripcion INT UNSIGNED,
+										  )
+BEGIN
+	INSERT INTO Suscripcion (idUsuario,idTipoSuscripcion,FechaInicio)
+		VALUES (unIdUsuario,unidTipoSuscripcion,CURDATE());
+END
+$$
+
+

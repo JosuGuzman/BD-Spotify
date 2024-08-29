@@ -1,202 +1,410 @@
-<mxfile host="65bd71144e">
-    <diagram id="S-sRWuuNM6G6KGqp-MVJ" name="Página-1">
-        <mxGraphModel dx="585" dy="589" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-            <root>
-                <mxCell id="0"/>
-                <mxCell id="1" parent="0"/>
-                <mxCell id="71" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#f5f4f4;strokeWidth=1;startArrow=none;startFill=0;startSize=6;jumpSize=3;endArrow=diamondThin;endFill=0;endSize=16;" parent="1" source="2" target="18" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="2" value="Genero" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="689" width="160" height="78" as="geometry">
-                        <mxRectangle x="70" y="110" width="80" height="30" as="alternateBounds"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="3" value="+ idGenero: sbyte&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="2" vertex="1">
-                    <mxGeometry y="26" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="4" value="+ Genero: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="2" vertex="1">
-                    <mxGeometry y="52" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="6" value="Nacionalidad" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="271" width="160" height="78" as="geometry">
-                        <mxRectangle x="660" y="140" width="110" height="30" as="alternateBounds"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="7" value="+ idNacionalidad: sbyte &#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
-                    <mxGeometry y="26" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="8" value="+ Pais: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="6" vertex="1">
-                    <mxGeometry y="52" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="83" style="edgeStyle=none;jumpSize=3;html=1;strokeWidth=1;startArrow=none;startFill=0;endArrow=diamondThin;endFill=0;startSize=6;endSize=16;" parent="1" source="10" target="14" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="10" value="Artista " style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="65" y="930" width="150" height="130" as="geometry">
-                        <mxRectangle x="590" y="90" width="80" height="30" as="alternateBounds"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="11" value="+ idArtista: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="10" vertex="1">
-                    <mxGeometry y="26" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="12" value="+ NombreArtistico: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="10" vertex="1">
-                    <mxGeometry y="52" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="13" value="+ Nombre: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="10" vertex="1">
-                    <mxGeometry y="78" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="22" value="+ Apellido: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="10" vertex="1">
-                    <mxGeometry y="104" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="86" style="edgeStyle=orthogonalEdgeStyle;jumpSize=3;html=1;strokeWidth=1;startArrow=none;startFill=0;endArrow=diamondThin;endFill=1;startSize=6;endSize=16;" parent="1" source="14" target="18" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="14" value="Album" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="290" y="930" width="180" height="130" as="geometry"/>
-                </mxCell>
-                <mxCell id="15" value="+ idAlbum:  int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="14" vertex="1">
-                    <mxGeometry y="26" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="16" value="+ Titulo: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="14" vertex="1">
-                    <mxGeometry y="52" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="17" value="+ FechaLanzamiento: dateonly" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="14" vertex="1">
-                    <mxGeometry y="78" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="23" value="+ artista: Artista" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="14" vertex="1">
-                    <mxGeometry y="104" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="70" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#f5f4f4;strokeWidth=1;startArrow=diamondThin;startFill=1;startSize=16;endArrow=none;endFill=0;jumpSize=3;" parent="1" source="18" target="62" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <Array as="points">
-                            <mxPoint x="395" y="655"/>
-                            <mxPoint x="395" y="655"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="18" value="Cancion" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="300" y="650" width="160" height="156" as="geometry"/>
-                </mxCell>
-                <mxCell id="19" value="+ idCancion: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="18" vertex="1">
-                    <mxGeometry y="26" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="21" value="+ Titulo: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="18" vertex="1">
-                    <mxGeometry y="52" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="20" value="+ Duracion: DATETIME" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="18" vertex="1">
-                    <mxGeometry y="78" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="26" value="+ albun: Album" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="18" vertex="1">
-                    <mxGeometry y="104" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="27" value="+ genero: Genero" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="18" vertex="1">
-                    <mxGeometry y="130" width="160" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="66" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=1;startArrow=none;startFill=0;startSize=16;endArrow=diamondThin;endFill=1;endSize=16;" parent="1" source="29" target="62" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="78" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#f5f4f4;strokeWidth=1;startArrow=diamondThin;startFill=1;endArrow=none;endFill=0;startSize=15;endSize=6;sourcePerimeterSpacing=0;" parent="1" source="29" target="43" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="81" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=diamondThin;startFill=0;endArrow=none;endFill=0;startSize=16;" parent="1" source="29" target="7" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="29" value="Usuario" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="290" y="206" width="180" height="208" as="geometry"/>
-                </mxCell>
-                <mxCell id="30" value="+ idUsuario: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="29" vertex="1">
-                    <mxGeometry y="26" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="31" value="+ NombreUsuario: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="29" vertex="1">
-                    <mxGeometry y="52" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="32" value="+ Gmail: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="29" vertex="1">
-                    <mxGeometry y="78" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="37" value="+ Contraseña: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="29" vertex="1">
-                    <mxGeometry y="104" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="82" value="+ registro: Registro" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="29" vertex="1">
-                    <mxGeometry y="130" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="38" value="+ nacionalidad: Nacionalidad" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="29" vertex="1">
-                    <mxGeometry y="156" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="88" value="+ reproduccion: Reproduccion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="29" vertex="1">
-                    <mxGeometry y="182" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="89" style="edgeStyle=orthogonalEdgeStyle;jumpSize=3;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=1;startArrow=diamondThin;startFill=1;endArrow=none;endFill=0;startSize=16;endSize=16;" parent="1" source="33" target="20" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="33" value="Playlist" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="580" y="206" width="140" height="130" as="geometry"/>
-                </mxCell>
-                <mxCell id="34" value="+ idPlaylist: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="33" vertex="1">
-                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="35" value="+ Nombre: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="33" vertex="1">
-                    <mxGeometry y="52" width="140" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="36" value="+ usuario: Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="33" vertex="1">
-                    <mxGeometry y="78" width="140" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="90" value="+ cancion: Cancion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="33">
-                    <mxGeometry y="104" width="140" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="43" value="Suscripcion" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="290" y="15" width="180" height="104" as="geometry">
-                        <mxRectangle x="290" y="15" width="160" height="30" as="alternateBounds"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="44" value="+ suscripcion: Suscripcion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="43" vertex="1">
-                    <mxGeometry y="26" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="45" value="+ usuario: Usuario" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="43" vertex="1">
-                    <mxGeometry y="52" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="46" value="+ FechaInicio: DATETIME" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="43" vertex="1">
-                    <mxGeometry y="78" width="180" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="79" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#f5f4f4;strokeWidth=1;startArrow=diamondThin;startFill=1;endArrow=none;endFill=0;startSize=16;endSize=6;sourcePerimeterSpacing=0;" parent="1" source="53" target="43" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <Array as="points">
-                            <mxPoint x="520" y="80"/>
-                            <mxPoint x="520" y="80"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="53" value="TipoSuscripcion" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="545" y="15" width="150" height="130" as="geometry"/>
-                </mxCell>
-                <mxCell id="54" value="+ idSuscripcion: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="53" vertex="1">
-                    <mxGeometry y="26" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="55" value="+ Duracion: sbyte" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="53" vertex="1">
-                    <mxGeometry y="52" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="56" value="+ Costo: sbyte" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="53" vertex="1">
-                    <mxGeometry y="78" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="57" value="+ Tipo : string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="53" vertex="1">
-                    <mxGeometry y="104" width="150" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="62" value="Reproduccion" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-                    <mxGeometry x="280" y="470" width="200" height="104" as="geometry"/>
-                </mxCell>
-                <mxCell id="63" value="+ idHistorial: int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="62" vertex="1">
-                    <mxGeometry y="26" width="200" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="65" value="+ cancion: Cancion" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="62" vertex="1">
-                    <mxGeometry y="52" width="200" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="69" value="+ FechaReproduccion: datetime" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="62" vertex="1">
-                    <mxGeometry y="78" width="200" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="76" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#f5f4f4;strokeWidth=1;startArrow=diamondThin;startFill=1;endArrow=none;endFill=0;startSize=16;endSize=6;jumpSize=6;" parent="1" source="31" target="33" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-            </root>
-        </mxGraphModel>
-    </diagram>
-</mxfile>
+<svg host="65bd71144e" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="661px" height="1049px" viewBox="-0.5 -0.5 661 1049" content="&lt;mxfile&gt;&lt;diagram id=&quot;S-sRWuuNM6G6KGqp-MVJ&quot; name=&quot;Página-1&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;">
+    <defs>
+        <clipPath id="mx-clip-4-705-152-26-0">
+            <rect x="4" y="705" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-4-731-152-26-0">
+            <rect x="4" y="731" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-4-287-152-26-0">
+            <rect x="4" y="287" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-4-313-152-26-0">
+            <rect x="4" y="313" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-9-946-142-26-0">
+            <rect x="9" y="946" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-9-972-142-26-0">
+            <rect x="9" y="972" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-9-998-142-26-0">
+            <rect x="9" y="998" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-9-1024-142-26-0">
+            <rect x="9" y="1024" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-946-172-26-0">
+            <rect x="234" y="946" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-972-172-26-0">
+            <rect x="234" y="972" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-993-172-26-0">
+            <rect x="234" y="993" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-1019-172-26-0">
+            <rect x="234" y="1019" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-244-666-152-26-0">
+            <rect x="244" y="666" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-244-692-152-26-0">
+            <rect x="244" y="692" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-244-713-152-26-0">
+            <rect x="244" y="713" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-244-739-152-26-0">
+            <rect x="244" y="739" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-244-765-152-26-0">
+            <rect x="244" y="765" width="152" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-222-172-26-0">
+            <rect x="234" y="222" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-248-172-26-0">
+            <rect x="234" y="248" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-274-172-26-0">
+            <rect x="234" y="274" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-300-172-26-0">
+            <rect x="234" y="300" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-326-172-26-0">
+            <rect x="234" y="326" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-352-172-26-0">
+            <rect x="234" y="352" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-378-172-26-0">
+            <rect x="234" y="378" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-524-222-132-26-0">
+            <rect x="524" y="222" width="132" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-524-248-132-26-0">
+            <rect x="524" y="248" width="132" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-524-274-132-26-0">
+            <rect x="524" y="274" width="132" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-524-300-132-26-0">
+            <rect x="524" y="300" width="132" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-31-172-26-0">
+            <rect x="234" y="31" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-57-172-26-0">
+            <rect x="234" y="57" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-234-83-172-26-0">
+            <rect x="234" y="83" width="172" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-489-31-142-26-0">
+            <rect x="489" y="31" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-489-57-142-26-0">
+            <rect x="489" y="57" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-489-83-142-26-0">
+            <rect x="489" y="83" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-489-109-142-26-0">
+            <rect x="489" y="109" width="142" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-224-486-192-26-0">
+            <rect x="224" y="486" width="192" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-224-512-192-26-0">
+            <rect x="224" y="512" width="192" height="26"/>
+        </clipPath>
+        <clipPath id="mx-clip-224-538-192-26-0">
+            <rect x="224" y="538" width="192" height="26"/>
+        </clipPath>
+    </defs>
+    <g>
+        <path d="M 160 713 L 222.01 713" fill="none" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="stroke"/>
+        <path d="M 239.01 713 L 230.51 718 L 222.01 713 L 230.51 708 Z" fill="none" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 0 700 L 0 674 L 160 674 L 160 700" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="all"/>
+        <path d="M 0 700 L 0 752 L 160 752 L 160 700" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 0 700 L 160 700" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" font-weight="bold" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="79.5" y="691.5">
+                Genero
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-4-705-152-26-0)" font-size="12px">
+            <text x="5.5" y="717.5">
+                + idGenero: sbyte
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-4-731-152-26-0)" font-size="12px">
+            <text x="5.5" y="743.5">
+                + Genero: string
+            </text>
+        </g>
+        <path d="M 0 282 L 0 256 L 160 256 L 160 282" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 0 282 L 0 334 L 160 334 L 160 282" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 0 282 L 160 282" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" font-weight="bold" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="79.5" y="273.5">
+                Nacionalidad
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-4-287-152-26-0)" font-size="12px">
+            <text x="5.5" y="299.5">
+                + idNacionalidad: sbyte
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-4-313-152-26-0)" font-size="12px">
+            <text x="5.5" y="325.5">
+                + Pais: string
+            </text>
+        </g>
+        <path d="M 155 980 L 212.01 980" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 229.01 980 L 220.51 985 L 212.01 980 L 220.51 975 Z" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 5 941 L 5 915 L 155 915 L 155 941" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 5 941 L 5 1045 L 155 1045 L 155 941" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 5 941 L 155 941" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="79.5" y="932.5">
+                Artista
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-9-946-142-26-0)" font-size="12px">
+            <text x="10.5" y="958.5">
+                + idArtista: int
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-9-972-142-26-0)" font-size="12px">
+            <text x="10.5" y="984.5">
+                + NombreArtistico: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-9-998-142-26-0)" font-size="12px">
+            <text x="10.5" y="1010.5">
+                + Nombre: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-9-1024-142-26-0)" font-size="12px">
+            <text x="10.5" y="1036.5">
+                + Apellido: string
+            </text>
+        </g>
+        <path d="M 320 915 L 320 808.99" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 320 791.99 L 325 800.49 L 320 808.99 L 315 800.49 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 941 L 230 915 L 410 915 L 410 941" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 941 L 230 1045 L 410 1045 L 410 941" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 941 L 410 941" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="319.5" y="932.5">
+                Album
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-946-172-26-0)" font-size="12px">
+            <text x="235.5" y="958.5">
+                + idAlbum:  int
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-972-172-26-0)" font-size="12px">
+            <text x="235.5" y="984.5">
+                + Titulo: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-993-172-26-0)" font-size="12px">
+            <text x="235.5" y="1010.5">
+                + FechaLanzamiento: dateonly
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-1019-172-26-0)" font-size="12px">
+            <text x="235.5" y="1036.5">
+                + artista: Artista
+            </text>
+        </g>
+        <path d="M 320 617.01 L 320 559" fill="none" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 320 634.01 L 315 625.51 L 320 617.01 L 325 625.51 Z" fill="#f5f4f4" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 240 661 L 240 635 L 400 635 L 400 661" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 240 661 L 240 791 L 400 791 L 400 661" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 240 661 L 400 661" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="319.5" y="652.5">
+                Cancion
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-244-666-152-26-0)" font-size="12px">
+            <text x="245.5" y="678.5">
+                + idCancion: int
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-244-692-152-26-0)" font-size="12px">
+            <text x="245.5" y="704.5">
+                + Titulo: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-244-713-152-26-0)" font-size="12px">
+            <text x="245.5" y="730.5">
+                + Duracion: DATETIME
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-244-739-152-26-0)" font-size="12px">
+            <text x="245.5" y="756.5">
+                + albun: Album
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-244-765-152-26-0)" font-size="12px">
+            <text x="245.5" y="782.5">
+                + genero: Genero
+            </text>
+        </g>
+        <path d="M 320 399 L 320 437.01" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 320 454.01 L 315 445.51 L 320 437.01 L 325 445.51 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 320 174.01 L 320 104" fill="none" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 320 190.01 L 315.29 182.01 L 320 174.01 L 324.71 182.01 Z" fill="#f5f4f4" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 212.01 295 L 160 295" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 229.01 295 L 220.51 300 L 212.01 295 L 220.51 290 Z" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 217 L 230 191 L 410 191 L 410 217" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 217 L 230 399 L 410 399 L 410 217" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 217 L 410 217" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="319.5" y="208.5">
+                Usuario
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-222-172-26-0)" font-size="12px">
+            <text x="235.5" y="234.5">
+                + idUsuario: int
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-248-172-26-0)" font-size="12px">
+            <text x="235.5" y="260.5">
+                + NombreUsuario: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-274-172-26-0)" font-size="12px">
+            <text x="235.5" y="286.5">
+                + Gmail: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-300-172-26-0)" font-size="12px">
+            <text x="235.5" y="312.5">
+                + Contraseña: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-326-172-26-0)" font-size="12px">
+            <text x="235.5" y="338.5">
+                + registro: Registro
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-352-172-26-0)" font-size="12px">
+            <text x="235.5" y="364.5">
+                + nacionalidad: Nacionalidad
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-378-172-26-0)" font-size="12px">
+            <text x="235.5" y="390.5">
+                + reproduccion: Reproduccion
+            </text>
+        </g>
+        <path d="M 590 338.99 L 590 716 Q 590 726 580 726 L 400 726" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 590 321.99 L 595 330.49 L 590 338.99 L 585 330.49 Z" fill="rgb(0, 0, 0)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 520 217 L 520 191 L 660 191 L 660 217" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 520 217 L 520 321 L 660 321 L 660 217" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 520 217 L 660 217" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" font-weight="bold" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="589.5" y="208.5">
+                Playlist
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-524-222-132-26-0)" font-size="12px">
+            <text x="525.5" y="234.5">
+                + idPlaylist: int
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-524-248-132-26-0)" font-size="12px">
+            <text x="525.5" y="260.5">
+                + Nombre: string
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-524-274-132-26-0)" font-size="12px">
+            <text x="525.5" y="286.5">
+                + usuario: Usuario
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-524-300-132-26-0)" font-size="12px">
+            <text x="525.5" y="312.5">
+                + cancion: Cancion
+            </text>
+        </g>
+        <path d="M 230 26 L 230 0 L 410 0 L 410 26" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 26 L 230 104 L 410 104 L 410 26" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 230 26 L 410 26" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" font-weight="bold" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="319.5" y="17.5">
+                Suscripcion
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-31-172-26-0)" font-size="12px">
+            <text x="235.5" y="43.5">
+                + suscripcion: TipoSuscripcion
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-57-172-26-0)" font-size="12px">
+            <text x="235.5" y="69.5">
+                + usuario: Usuario
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-234-83-172-26-0)" font-size="12px">
+            <text x="235.5" y="95.5">
+                + FechaInicio: DATETIME
+            </text>
+        </g>
+        <path d="M 467.01 65 L 463.51 65 Q 460 65 450 65 L 410 65" fill="none" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 484.01 65 L 475.51 70 L 467.01 65 L 475.51 60 Z" fill="#f5f4f4" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 485 26 L 485 0 L 635 0 L 635 26" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 485 26 L 485 130 L 635 130 L 635 26" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 485 26 L 635 26" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" font-weight="bold" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="559.5" y="17.5">
+                TipoSuscripcion
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-489-31-142-26-0)" font-size="12px">
+            <text x="490.5" y="43.5">
+                + idSuscripcion: int
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-489-57-142-26-0)" font-size="12px">
+            <text x="490.5" y="69.5">
+                + Duracion: sbyte
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-489-83-142-26-0)" font-size="12px">
+            <text x="490.5" y="95.5">
+                + Costo: sbyte
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-489-109-142-26-0)" font-size="12px">
+            <text x="490.5" y="121.5">
+                + Tipo : string
+            </text>
+        </g>
+        <path d="M 220 481 L 220 455 L 420 455 L 420 481" fill="rgb(255, 255, 255)" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 220 481 L 220 559 L 420 559 L 420 481" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 220 481 L 420 481" fill="none" stroke="rgb(0, 0, 0)" stroke-miterlimit="10" pointer-events="none"/>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" font-weight="bold" pointer-events="none" text-anchor="middle" font-size="12px">
+            <text x="319.5" y="472.5">
+                Reproduccion
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-224-486-192-26-0)" font-size="12px">
+            <text x="225.5" y="498.5">
+                + idHistorial: int
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-224-512-192-26-0)" font-size="12px">
+            <text x="225.5" y="524.5">
+                + cancion: Cancion
+            </text>
+        </g>
+        <g fill="rgb(0, 0, 0)" font-family="Helvetica" pointer-events="none" clip-path="url(#mx-clip-224-538-192-26-0)" font-size="12px">
+            <text x="225.5" y="550.5">
+                + FechaReproduccion: datetime
+            </text>
+        </g>
+        <path d="M 427.99 256 L 520 256" fill="none" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+        <path d="M 410.99 256 L 419.49 251 L 427.99 256 L 419.49 261 Z" fill="#f5f4f4" stroke="#f5f4f4" stroke-miterlimit="10" pointer-events="none"/>
+    </g>
+</svg>
