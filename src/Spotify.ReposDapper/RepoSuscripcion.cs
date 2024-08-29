@@ -13,6 +13,7 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         parametros.Add("@unFechaInicio", registro.FechaInicio);
 
     }
+    
 
     public IList<Registro> Obtener()
     {
