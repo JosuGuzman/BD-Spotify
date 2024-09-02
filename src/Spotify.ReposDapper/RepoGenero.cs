@@ -7,7 +7,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     public void Alta(Genero genero)
     {
         var parametros = new DynamicParameters();
-        parametros.Add("@unGenero", genero.Generos);
+        parametros.Add("@unGenero", genero.genero);
         parametros.Add("@unidGenero", direction: ParameterDirection.Output);
 
         _conexion.Execute("altaGenero", parametros, commandType: CommandType.StoredProcedure);

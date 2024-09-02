@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Workbench Bak
 *.mwb.bak
+
+# Usuario BD
+appSettings.json

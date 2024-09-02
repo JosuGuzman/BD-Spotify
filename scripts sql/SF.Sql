@@ -1,4 +1,4 @@
-USE Spotify;
+USE 5to_Spotify;
 
 -- 1
 DELIMITER $$

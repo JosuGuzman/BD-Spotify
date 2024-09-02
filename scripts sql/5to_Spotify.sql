@@ -5,20 +5,20 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema Spotify
+-- Schema 5to_Spotify
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `Spotify` ;
+DROP SCHEMA IF EXISTS `5to_Spotify` ;
 
 -- -----------------------------------------------------
--- Schema Spotify
+-- Schema 5to_Spotify
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Spotify` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
-USE `Spotify` ;
+CREATE SCHEMA IF NOT EXISTS `5to_Spotify` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `5to_Spotify` ;
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Artista`
+-- Table `5to_Spotify`.`Artista`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Artista` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Artista` (
   `idArtista` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `NombreArtistico` VARCHAR(35) NULL,
   `Nombre` VARCHAR(45) NOT NULL,
@@ -30,9 +30,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Album`
+-- Table `5to_Spotify`.`Album`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Album` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Album` (
   `idAlbun` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Titulo` VARCHAR(45) NOT NULL,
   `fechaLanzamiento` DATE NOT NULL,
@@ -41,16 +41,16 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Album` (
   INDEX `artist_id` (`idArtista` ASC) VISIBLE,
   CONSTRAINT `Albums_ibfk_1`
     FOREIGN KEY (`idArtista`)
-    REFERENCES `Spotify`.`Artista` (`idArtista`))
+    REFERENCES `5to_Spotify`.`Artista` (`idArtista`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Nacionalidad`
+-- Table `5to_Spotify`.`Nacionalidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Nacionalidad` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Nacionalidad` (
   `idNacionalidad` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Pais` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idNacionalidad`),
@@ -59,9 +59,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Usuario`
+-- Table `5to_Spotify`.`Usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Usuario` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Usuario` (
   `idUsuario` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `NombreUsuario` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Usuario` (
   INDEX `fk_Usuario_Nacionalidad1_idx` (`idNacionalidad` ASC) VISIBLE,
   CONSTRAINT `fk_Usuario_Nacionalidad1`
     FOREIGN KEY (`idNacionalidad`)
-    REFERENCES `Spotify`.`Nacionalidad` (`idNacionalidad`)
+    REFERENCES `5to_Spotify`.`Nacionalidad` (`idNacionalidad`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -81,9 +81,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Genero`
+-- Table `5to_Spotify`.`Genero`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Genero` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Genero` (
   `idGenero` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Genero` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idGenero`))
@@ -91,9 +91,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Cancion`
+-- Table `5to_Spotify`.`Cancion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Cancion` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Cancion` (
   `idCancion` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Titulo` VARCHAR(45) NOT NULL,
   `duration` TIME NOT NULL,
@@ -106,13 +106,13 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Cancion` (
   INDEX `fk_Canciones_Genero1_idx` (`idGenero` ASC) VISIBLE,
   CONSTRAINT `Tracks_ibfk_1`
     FOREIGN KEY (`idAlbun`)
-    REFERENCES `Spotify`.`Album` (`idAlbun`),
+    REFERENCES `5to_Spotify`.`Album` (`idAlbun`),
   CONSTRAINT `Tracks_ibfk_2`
     FOREIGN KEY (`idArtista`)
-    REFERENCES `Spotify`.`Artista` (`idArtista`),
+    REFERENCES `5to_Spotify`.`Artista` (`idArtista`),
   CONSTRAINT `fk_Canciones_Genero1`
     FOREIGN KEY (`idGenero`)
-    REFERENCES `Spotify`.`Genero` (`idGenero`)
+    REFERENCES `5to_Spotify`.`Genero` (`idGenero`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -121,9 +121,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`HistorialReproducción`
+-- Table `5to_Spotify`.`HistorialReproducción`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`HistorialReproducción` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`HistorialReproducción` (
   `idHistorial` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idUsuario` INT UNSIGNED NOT NULL,
   `idCancion` INT UNSIGNED NOT NULL,
@@ -133,19 +133,19 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`HistorialReproducción` (
   INDEX `track_id` (`idCancion` ASC) VISIBLE,
   CONSTRAINT `Listening_History_ibfk_1`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `Spotify`.`Usuario` (`idUsuario`),
+    REFERENCES `5to_Spotify`.`Usuario` (`idUsuario`),
   CONSTRAINT `Listening_History_ibfk_2`
     FOREIGN KEY (`idCancion`)
-    REFERENCES `Spotify`.`Cancion` (`idCancion`))
+    REFERENCES `5to_Spotify`.`Cancion` (`idCancion`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Playlist`
+-- Table `5to_Spotify`.`Playlist`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Playlist` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Playlist` (
   `idPlaylist` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(20) NOT NULL,
   `idUsuario` INT UNSIGNED NOT NULL,
@@ -153,16 +153,16 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Playlist` (
   INDEX `user_id` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `Playlists_ibfk_1`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `Spotify`.`Usuario` (`idUsuario`))
+    REFERENCES `5to_Spotify`.`Usuario` (`idUsuario`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`TipoSuscripcion`
+-- Table `5to_Spotify`.`TipoSuscripcion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`TipoSuscripcion` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`TipoSuscripcion` (
   `idTipoSuscripcion` INT UNSIGNED NOT NULL,
   `Duracion` TINYINT UNSIGNED NOT NULL,
   `Costo` TINYINT UNSIGNED NOT NULL,
@@ -172,9 +172,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Spotify`.`Suscripcion_Registro`
+-- Table `5to_Spotify`.`Suscripcion_Registro`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Spotify`.`Suscripcion` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Suscripcion` (
   `idUsuario` INT UNSIGNED NOT NULL,
   `idTipoSuscripcion` INT UNSIGNED NOT NULL,
   `FechaInicio` DATE NULL,
@@ -182,12 +182,12 @@ CREATE TABLE IF NOT EXISTS `Spotify`.`Suscripcion` (
   INDEX `fk_Suscripcion_TipoSuscripcion1_idx` (`idTipoSuscripcion` ASC) VISIBLE,
   CONSTRAINT `fk_Suscripcion_Usuario1`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `Spotify`.`Usuario` (`idUsuario`)
+    REFERENCES `5to_Spotify`.`Usuario` (`idUsuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Suscripcion_TipoSuscripcion1`
     FOREIGN KEY (`idTipoSuscripcion`)
-    REFERENCES `Spotify`.`TipoSuscripcion` (`idTipoSuscripcion`)
+    REFERENCES `5to_Spotify`.`TipoSuscripcion` (`idTipoSuscripcion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
