@@ -9,8 +9,8 @@ BEGIN
 	DECLARE Suscrito BOOL;
     IF (EXISTS(SELECT * 
 			   FROM Usuario_suscripcion US
-               WHERE US.idUsuario = unidUsuario
                JOIN Suscripcion S ON US.idSuscripcion = S.idSuscripcion
+               WHERE US.idUsuario = unidUsuario
                AND DATE_ADD(US.FechaInicio, INTERVAL S.Duracion MONTH) >= CURDATE())) THEN
         SET Suscrito = True;
 	ELSE
@@ -53,7 +53,7 @@ BEGIN
     RETURN artista;
 END $$
 
--- 3
+-- 4
 DELIMITER $$
 DROP FUNCTION IF EXISTS ultimaSuscripcion $$
 CREATE FUNCTION ultimaSuscripcion (unidUsuario INT)
@@ -68,5 +68,3 @@ BEGIN
 
     RETURN ultimoDia;
 END $$
-
--- 4

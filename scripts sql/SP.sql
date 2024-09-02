@@ -19,7 +19,7 @@ CREATE PROCEDURE altaAlbum (OUT unidAlbum INT UNSIGNED,
     unidArtista INT UNSIGNED)
 BEGIN 
 	INSERT INTO Album (Titulo,fechaLanzamiento,idArtista)
-		VALUES(unTitulo,CURDATE(),unidArtista)
+		VALUES(unTitulo,CURDATE(),unidArtista);
 
 	SET unidAlbum = last_insert_id();
 END$$
@@ -64,7 +64,7 @@ DROP PROCEDURE IF EXISTS altaCancion $$
 CREATE PROCEDURE altaCancion (OUT unidCancion INT UNSIGNED, unTitulo VARCHAR(45), unDuration Time, unidAlbum INT UNSIGNED, unidArtista INT UNSIGNED, unidGenero TINYINT UNSIGNED)
 BEGIN 
 	INSERT INTO Cancion(Titulo,duration,idAlbum,idArtista,idGenero)
-		VALUES(unTItulo,unDuration,unidAlbum,unidArtista,unidGenero)
+		VALUES(unTItulo,unDuration,unidAlbum,unidArtista,unidGenero);
 	
 	SET unidCancion = last_insert_id();
 END $$
@@ -74,15 +74,15 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS altaHistorial_reproduccion $$
 CREATE PROCEDURE altaHistorial_reproduccion (OUT unidHistorial INT UNSIGNED, unidUsuario INT UNSIGNED, unidCancion INT UNSIGNED, unFechaReproduccion DATETIME)
 BEGIN 
-	INSERT INTO (idUsuario,idCancion,FechaReproduccion)
-		VALUES(unidUsuario,unidCancion,unFechaReproduccion)
+	INSERT INTO HistorialReproducción (idUsuario,idCancion,FechaReproduccion)
+		VALUES(unidUsuario,unidCancion,unFechaReproduccion);
 	
 	SET unidHistorial = last_insert_id();
 END $$
 
 -- Tabla Playlist
 DELIMITER $$
-DROP PROCEDURE IF EXISTS IF EXISTS altaPlaylist $$
+DROP PROCEDURE IF EXISTS altaPlaylist $$
 CREATE PROCEDURE altaPlaylist (unNombre VARCHAR(20), unidUsuario INT UNSIGNED, out unidPlaylist INT UNSIGNED)
 BEGIN
 	INSERT INTO Playlist(Nombre,idUsuario)
@@ -97,7 +97,7 @@ DROP PROCEDURE IF EXISTS altaTipoSuscripcion $$
 CREATE PROCEDURE altaTipoSuscripcion (OUT unidTipoSuscripcion INT UNSIGNED, unaDuracion TINYINT UNSIGNED, unCosto TINYINT UNSIGNED, UntipoSuscripcion VARCHAR(45))
 BEGIN
 	INSERT INTO TipoSuscripcion (Duracion,Costo,Tipo)
-		VALUES(unaDuracion,unCosto,UntipoSuscripcion)
+		VALUES(unaDuracion,unCosto,UntipoSuscripcion);
 	
     SET unidTipoSuscripcion = last_insert_id();
 END $$
@@ -107,10 +107,8 @@ END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaRegistroSuscripcion $$
-CREATE PROCEDURE altaRegistroSuscripcion (unIdUsuario INT UNSIGNED, unidTipoSuscripcion INT UNSIGNED,)
+CREATE PROCEDURE altaRegistroSuscripcion (unIdUsuario INT UNSIGNED, unidTipoSuscripcion INT UNSIGNED)
 BEGIN
 	INSERT INTO Suscripcion (idUsuario,Costo,idTipoSuscripcion,FechaInicio)
 		VALUES (unIdUsuario,unidTipoSuscripcion,CURDATE());
 END $$
-
-
