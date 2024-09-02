@@ -4,7 +4,7 @@
 [![Abrir en Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Abrir%20en%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/ET12DE1Computacion/simpleTemplateCSharp)
 <!-- Borra este comentario y linea después haber cambiado arriba las ocurrencias de tu usuario/repo -->
 
-<h1 align="center">E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín"</h1>
+<h1 align="center"> E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín" </h1>
 <p align="center">
   <img src="https://et12.edu.ar/imgs/et12.svg">
 </p>
@@ -19,7 +19,7 @@
 
 **Curso**: 5 ° 7
 
-# Título del Proyecto
+# BD Spotify
 
 _Acá va un parrafo que describa lo que es el proyecto._
 
