@@ -3,7 +3,7 @@ USE 5to_Spotify;
 -- 1
 DELIMITER $$
 DROP TRIGGER IF EXISTS befInsertCancion $$
-CREATE TRIGGER befInsertCancion BEFORE INSERT ON Cacion
+CREATE TRIGGER befInsertCancion BEFORE INSERT ON Cancion
 FOR EACH ROW 
 BEGIN 
 	IF(NEW.Titulo = '') THEN

@@ -1,7 +1,7 @@
 USE 5to_Spotify;
 
 -- Tabla Artista
-DELIMITER $$Albun
+DELIMITER $$
 DROP PROCEDURE IF EXISTS altaArtista $$
 CREATE PROCEDURE altaArtista (unNombreArtistico VARCHAR(35), unNombre VARCHAR(45), unApellido VARCHAR(45), out idArtista INT UNSIGNED)
 BEGIN 

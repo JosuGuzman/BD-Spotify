@@ -33,11 +33,11 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `5to_Spotify`.`Album`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Album` (
-  `idAlbun` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `idAlbum` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Titulo` VARCHAR(45) NOT NULL,
   `fechaLanzamiento` DATE NOT NULL,
   `idArtista` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`idAlbun`),
+  PRIMARY KEY (`idAlbum`),
   INDEX `artist_id` (`idArtista` ASC) VISIBLE,
   CONSTRAINT `Albums_ibfk_1`
     FOREIGN KEY (`idArtista`)
@@ -97,16 +97,16 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Cancion` (
   `idCancion` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Titulo` VARCHAR(45) NOT NULL,
   `duration` TIME NOT NULL,
-  `idAlbun` INT UNSIGNED NOT NULL,
+  `idAlbum` INT UNSIGNED NOT NULL,
   `idArtista` INT UNSIGNED NOT NULL,
   `idGenero` TINYINT UNSIGNED NOT NULL,
   PRIMARY KEY (`idCancion`),
-  INDEX `album_id` (`idAlbun` ASC) VISIBLE,
+  INDEX `album_id` (`idAlbum` ASC) VISIBLE,
   INDEX `artist_id` (`idArtista` ASC) VISIBLE,
   INDEX `fk_Canciones_Genero1_idx` (`idGenero` ASC) VISIBLE,
   CONSTRAINT `Tracks_ibfk_1`
-    FOREIGN KEY (`idAlbun`)
-    REFERENCES `5to_Spotify`.`Album` (`idAlbun`),
+    FOREIGN KEY (`idAlbum`)
+    REFERENCES `5to_Spotify`.`Album` (`idAlbum`),
   CONSTRAINT `Tracks_ibfk_2`
     FOREIGN KEY (`idArtista`)
     REFERENCES `5to_Spotify`.`Artista` (`idArtista`),
@@ -175,10 +175,11 @@ ENGINE = InnoDB;
 -- Table `5to_Spotify`.`Suscripcion_Registro`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Suscripcion` (
+  `idSuscripcion` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idUsuario` INT UNSIGNED NOT NULL,
   `idTipoSuscripcion` INT UNSIGNED NOT NULL,
   `FechaInicio` DATE NULL,
-  PRIMARY KEY (`idUsuario`, `idTipoSuscripcion`),
+  PRIMARY KEY (`idSuscripcion` ),
   INDEX `fk_Suscripcion_TipoSuscripcion1_idx` (`idTipoSuscripcion` ASC) VISIBLE,
   CONSTRAINT `fk_Suscripcion_Usuario1`
     FOREIGN KEY (`idUsuario`)
