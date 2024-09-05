@@ -163,7 +163,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- Table `5to_Spotify`.`TipoSuscripcion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `5to_Spotify`.`TipoSuscripcion` (
-  `idTipoSuscripcion` INT UNSIGNED NOT NULL,
+  `idTipoSuscripcion` INT UNSIGNED AUTO_INCREMENT NOT NULL,
   `Duracion` TINYINT UNSIGNED NOT NULL,
   `Costo` TINYINT UNSIGNED NOT NULL,
   `Tipo` VARCHAR(45) NOT NULL,

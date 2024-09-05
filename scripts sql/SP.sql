@@ -107,8 +107,10 @@ END $$
 
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaRegistroSuscripcion $$
-CREATE PROCEDURE altaRegistroSuscripcion (unIdUsuario INT UNSIGNED, unidTipoSuscripcion INT UNSIGNED)
+CREATE PROCEDURE altaRegistroSuscripcion (out unidSuscripcion INT UNSIGNED,unIdUsuario INT UNSIGNED,unidTipoSuscripcion INT UNSIGNED)
 BEGIN
-	INSERT INTO Suscripcion (idUsuario,Costo,idTipoSuscripcion,FechaInicio)
+	INSERT INTO Suscripcion (idUsuario,idTipoSuscripcion,FechaInicio)
 		VALUES (unIdUsuario,unidTipoSuscripcion,CURDATE());
+
+	set unidSuscripcion = last_insert_id();
 END $$
