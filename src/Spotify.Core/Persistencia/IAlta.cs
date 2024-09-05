@@ -1,6 +1,6 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IAlta<T>
+public interface IAlta<T, N>
 {
-    void Alta(T elemento);
+    N Alta(T elemento);
 }

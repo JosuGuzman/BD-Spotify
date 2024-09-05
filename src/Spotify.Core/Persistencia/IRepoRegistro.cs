@@ -1,3 +1,3 @@
 namespace Spotify.Core.Persistencia;
-public interface IRepoRegistro : IAlta<Registro>, IListado<Registro> 
+public interface IRepoRegistro : IAlta<Registro, uint>, IListado<Registro> 
 { }

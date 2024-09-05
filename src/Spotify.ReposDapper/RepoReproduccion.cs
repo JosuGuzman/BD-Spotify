@@ -5,7 +5,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
     public RepoReproduccion(IDbConnection conexion) 
         : base(conexion) {}
 
-    public void Alta(Reproduccion reproduccion)
+    public uint Alta(Reproduccion reproduccion)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidHistorial", direction: ParameterDirection.Output);
@@ -15,6 +15,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         _conexion.Execute("altaHistorial_reproduccion", parametros, commandType: CommandType.StoredProcedure);
 
         reproduccion.IdHistorial = parametros.Get<uint>("@unidHistorial");
+
+        return reproduccion.IdHistorial;
     }
  
     public IList<Reproduccion> Obtener()

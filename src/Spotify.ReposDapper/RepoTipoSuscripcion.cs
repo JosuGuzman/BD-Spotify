@@ -5,7 +5,7 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
     public RepoTipoSuscripcion(IDbConnection conexion) 
         : base(conexion) {}
 
-    public void Alta(TipoSuscripcion tipoSuscripcion)
+    public uint Alta(TipoSuscripcion tipoSuscripcion)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidTipoSuscripcion", direction: ParameterDirection.Output);
@@ -16,6 +16,8 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         _conexion.Execute("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
 
         tipoSuscripcion.IdTipoSuscripcion = parametros.Get<uint>("@unidTipoSuscripcion");
+
+        return tipoSuscripcion.IdTipoSuscripcion;
     }
 
     public IList<TipoSuscripcion> Obtener()

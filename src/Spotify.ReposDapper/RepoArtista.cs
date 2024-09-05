@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace Spotify.ReposDapper;
 
 public class RepoArtista : RepoGenerico, IRepoArtista
@@ -5,7 +7,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
     public RepoArtista(IDbConnection conexion) 
         : base(conexion) { }
 
-    public void Alta(Artista artista)
+    public uint Alta(Artista artista)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidArtista", direction: ParameterDirection.Output);
@@ -16,6 +18,8 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         _conexion.Execute("altaArtista", parametros, commandType: CommandType.StoredProcedure);
 
         artista.IdArtista = parametros.Get<uint>("@unidArtista");
+
+        return artista.IdArtista;
     }
  
     public IList<Artista> Obtener()

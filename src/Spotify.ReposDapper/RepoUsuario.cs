@@ -5,7 +5,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     public RepoUsuario(IDbConnection conexion) 
         : base(conexion) {}
 
-    public void Alta(Usuario usuario)
+    public uint Alta(Usuario usuario)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidUsuario", direction: ParameterDirection.Output);
@@ -17,6 +17,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         _conexion.Execute("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
 
         usuario.IdUsuario = parametros.Get<uint>("@unidUsuario");
+        return usuario.IdUsuario;
     }
 
 

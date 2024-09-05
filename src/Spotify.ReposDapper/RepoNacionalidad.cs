@@ -6,7 +6,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public RepoNacionalidad(IDbConnection conexion) 
         : base(conexion) { }
     
-    public void Alta (Nacionalidad nacionalidad )
+    public uint Alta (Nacionalidad nacionalidad )
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidNacionalidad", direction: ParameterDirection.Output);
@@ -15,6 +15,8 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         _conexion.Execute("altaNacionalidad", parametros, commandType: CommandType.StoredProcedure);
 
         nacionalidad.IdNacionalidad = parametros.Get<uint>("@unidNacionalidad");
+
+        return nacionalidad.IdNacionalidad;
     }
   
     public IList<Nacionalidad> Obtener ()

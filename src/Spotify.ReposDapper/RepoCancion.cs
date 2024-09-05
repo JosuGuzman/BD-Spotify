@@ -4,7 +4,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
     public RepoCancion(IDbConnection conexion)
         : base(conexion) { }
 
-    public void Alta(Cancion cancion)
+    public uint Alta(Cancion cancion)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidCancion", direction: ParameterDirection.Output);
@@ -14,6 +14,8 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         _conexion.Execute("altaCancion", parametros, commandType: CommandType.StoredProcedure);
 
         cancion.IdCancion = parametros.Get<uint>("@unidCancion");
+
+        return cancion.IdCancion;
     } 
   
     public IList<Cancion> Obtener()

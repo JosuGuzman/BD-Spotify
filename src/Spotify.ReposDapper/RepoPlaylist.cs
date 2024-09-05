@@ -5,7 +5,7 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
     public RepoPlaylist(IDbConnection conexion) 
         : base(conexion) {}
 
-    public void Alta(PlayList playlist)
+    public uint Alta(PlayList playlist)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidPlaylist", direction: ParameterDirection.Output);
@@ -16,6 +16,8 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         _conexion.Execute("altaPlaylist", parametros, commandType: CommandType.StoredProcedure);
 
         playlist.IdPlaylist = parametros.Get<uint>("@unidPlaylist");
+
+        return playlist.IdPlaylist;
     }
    
     public IList<PlayList> Obtener ()

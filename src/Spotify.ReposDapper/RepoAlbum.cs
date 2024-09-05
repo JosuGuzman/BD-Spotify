@@ -6,7 +6,7 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
     public RepoAlbum(IDbConnection conexion) 
         : base(conexion) { }
 
-    public void Alta(Album album)
+    public uint Alta(Album album)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidAlbum", direction: ParameterDirection.Output);
@@ -16,6 +16,8 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         _conexion.Execute("altaalbum", parametros, commandType: CommandType.StoredProcedure);
 
         album.IdAlbum = parametros.Get<uint>("@unidAlbum");
+
+        return album.IdAlbum;
     }   
  
     public IList<Album> Obtener()

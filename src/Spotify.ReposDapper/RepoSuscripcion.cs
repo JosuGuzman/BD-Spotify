@@ -5,9 +5,10 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
     public RepoSuscripcion(IDbConnection conexion) 
         : base(conexion) {}
 
-    public void Alta(Registro registro)
+    public uint Alta(Registro registro)
     {
         var parametros = new DynamicParameters();
+        parametros.Add("@unidSuscripcion", direction : ParameterDirection.Output);
         parametros.Add("@unidUsuario",registro.usuario.IdUsuario);
         parametros.Add("@unidTipoSuscripcion", registro.tipoSuscripcion.IdTipoSuscripcion);
         parametros.Add("@unFechaInicio", registro.FechaInicio);
@@ -15,7 +16,8 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         
         _conexion.Execute("altaRegistroSuscripcion", parametros, commandType: CommandType.StoredProcedure);
 
-
+        registro.idSuscripcion = parametros.Get<uint>("@unidSuscripcion");
+        return registro.idSuscripcion;
     }
     
 
