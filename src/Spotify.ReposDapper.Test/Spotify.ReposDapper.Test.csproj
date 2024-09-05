@@ -25,4 +25,9 @@
     <ProjectReference Include="..\Spotify.Core\Spotify.Core.csproj" />
     <ProjectReference Include="..\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
   </ItemGroup>
+    <ItemGroup>
+    <None Update="appSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
