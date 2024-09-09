@@ -17,9 +17,9 @@ public class RepoArtista : RepoGenerico, IRepoArtista
 
         _conexion.Execute("altaArtista", parametros, commandType: CommandType.StoredProcedure);
 
-        artista.IdArtista = parametros.Get<uint>("@unidArtista");
+        artista.idArtista = parametros.Get<uint>("@unidArtista");
 
-        return artista.IdArtista;
+        return artista.idArtista;
     }
  
     public IList<Artista> Obtener()

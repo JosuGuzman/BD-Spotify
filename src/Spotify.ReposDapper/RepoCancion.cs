@@ -13,9 +13,9 @@ public class RepoCancion : RepoGenerico, IRepoCancion
 
         _conexion.Execute("altaCancion", parametros, commandType: CommandType.StoredProcedure);
 
-        cancion.IdCancion = parametros.Get<uint>("@unidCancion");
+        cancion.idCancion = parametros.Get<uint>("@unidCancion");
 
-        return cancion.IdCancion;
+        return cancion.idCancion;
     } 
   
     public IList<Cancion> Obtener()

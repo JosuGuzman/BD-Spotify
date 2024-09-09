@@ -2,10 +2,10 @@ namespace Spotify.Core
 {
     public class Cancion
     {
-        public uint IdCancion {get;set;}
+        public uint idCancion {get;set;}
         public required string Titulo {get;set;} 
         public DateTime Duracion {get;set;}
-        public required Album Albunes {get;set;}
-        public required Genero Generos {get;set;}
+        public required Album album {get;set;}
+        public required Genero genero {get;set;}
     }
 }

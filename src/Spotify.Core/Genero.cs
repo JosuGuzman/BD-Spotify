@@ -2,6 +2,6 @@ namespace Spotify.Core;
 
 public class Genero
 {
-    public uint IdGenero {get; set;}
+    public uint idGenero {get; set;}
     public required string genero {get; set;}
 }

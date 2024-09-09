@@ -10,7 +10,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         var parametros = new DynamicParameters();
         parametros.Add("@unidHistorial", direction: ParameterDirection.Output);
         parametros.Add("@unidUsuario", reproduccion.usuario.IdUsuario);
-        parametros.Add("@uniCancion", reproduccion.Canciones.IdCancion);
+        parametros.Add("@uniCancion", reproduccion.Canciones.idCancion);
         parametros.Add("@unFechaReproduccion", reproduccion.FechaReproccion);
         _conexion.Execute("altaHistorial_reproduccion", parametros, commandType: CommandType.StoredProcedure);
 

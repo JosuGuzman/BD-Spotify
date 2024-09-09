@@ -12,10 +12,20 @@ public class RepoGenero : RepoGenerico, IRepoGenero
 
         _conexion.Execute("altaGenero", parametros, commandType: CommandType.StoredProcedure);
 
-        genero.IdGenero = parametros.Get<uint>("@unidGenero");
-        return genero.IdGenero;
-    } 
- 
+        genero.idGenero = parametros.Get<uint>("@unidGenero");
+        return genero.idGenero;
+    }
+
+    public void Eliminar(Genero elemento)
+    {
+        string eliminarGenero = @"DELETE FROM Genero WHERE idGenero = @idGenero";
+        _conexion.Execute(eliminarGenero, elemento.idGenero);
+
+         string eliminarCanciones = @"DELETE FROM Cancion WHERE idGenero = @idGenero";
+        _conexion.Execute(eliminarCanciones, elemento.idGenero);
+
+    }
+
     public IList<Genero> Obtener()
     { 
         string consultarGeneros = @"SELECT * from Genero ORDER BY Genero ASC";

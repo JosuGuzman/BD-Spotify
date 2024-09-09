@@ -34,7 +34,7 @@ public class RepoGeneroTest : TestBase
 
         if (generoAEliminar != null)
         {
-            _repo.Eliminar(generoAEliminar.IdGenero);
+            _repo.Eliminar(generoAEliminar.idGenero);
             generos = _repo.Obtener();
             Assert.DoesNotContain(generos, g => g.genero == "Jazz");
         }

@@ -11,19 +11,27 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         var parametros = new DynamicParameters();
         parametros.Add("@unidAlbum", direction: ParameterDirection.Output);
         parametros.Add("@unTitulo", album.Titulo);
-        parametros.Add("@unidArtista", album.Artistas.IdArtista);
+        parametros.Add("@unidArtista", album.artista.idArtista);
 
         _conexion.Execute("altaalbum", parametros, commandType: CommandType.StoredProcedure);
+        album.idAlbum = parametros.Get<uint>("@unidAlbum");
+        return album.idAlbum;
+    }
 
-        album.IdAlbum = parametros.Get<uint>("@unidAlbum");
+    public void Eliminar(Album elemento)
+    {
+        string eliminarCanciones = @"DELETE FROM Cancion WHERE idAlbum = @idAlbum";
+        _conexion.Execute(eliminarCanciones, elemento.idAlbum);
 
-        return album.IdAlbum;
-    }   
- 
+        string eliminarAlbum = @"DELETE FROM Album WHERE idAlbum = @idAlbum";
+        _conexion.Execute(eliminarAlbum, elemento.idAlbum);
+    }
+
     public IList<Album> Obtener()
     {
         string consultarAlbumes = @"SELECT * from Album ORDER BY Nombre ASC";
         var Albumes = _conexion.Query<Album>(consultarAlbumes);
         return Albumes.ToList();
     }
+    
 }
