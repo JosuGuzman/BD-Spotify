@@ -18,13 +18,13 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         return album.idAlbum;
     }
 
-    public void Eliminar(Album elemento)
+    public void Eliminar(uint idAlbum)
     {
         string eliminarCanciones = @"DELETE FROM Cancion WHERE idAlbum = @idAlbum";
-        _conexion.Execute(eliminarCanciones, elemento.idAlbum);
+        _conexion.Execute(eliminarCanciones, new {idAlbum});
 
         string eliminarAlbum = @"DELETE FROM Album WHERE idAlbum = @idAlbum";
-        _conexion.Execute(eliminarAlbum, elemento.idAlbum);
+        _conexion.Execute(eliminarAlbum, new {idAlbum});
     }
 
     public IList<Album> Obtener()

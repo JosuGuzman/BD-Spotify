@@ -16,15 +16,20 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         return genero.idGenero;
     }
 
-    public void Eliminar(Genero elemento)
+    public void Eliminar(uint idGenero)
     {
+        string eliminarHistorialReproducciones = @"
+            DELETE FROM HistorialReproducción 
+            WHERE idCancion IN (SELECT idCancion FROM Cancion WHERE idGenero = @idGenero)";
+        _conexion.Execute(eliminarHistorialReproducciones, new { idGenero });
+
+        string eliminarCanciones = @"DELETE FROM Cancion WHERE idGenero = @idGenero";
+        _conexion.Execute(eliminarCanciones, new { idGenero });
+        
         string eliminarGenero = @"DELETE FROM Genero WHERE idGenero = @idGenero";
-        _conexion.Execute(eliminarGenero, elemento.idGenero);
-
-         string eliminarCanciones = @"DELETE FROM Cancion WHERE idGenero = @idGenero";
-        _conexion.Execute(eliminarCanciones, elemento.idGenero);
-
+        _conexion.Execute(eliminarGenero, new { idGenero });
     }
+
 
     public IList<Genero> Obtener()
     { 

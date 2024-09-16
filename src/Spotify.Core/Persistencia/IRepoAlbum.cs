@@ -1,4 +1,4 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IRepoAlbum : IAlta<Album, uint>, IListado<Album>, IEliminar<Album>
+public interface IRepoAlbum : IAlta<Album, uint>, IListado<Album>, IEliminar<uint>
 {}

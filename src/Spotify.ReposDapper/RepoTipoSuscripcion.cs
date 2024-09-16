@@ -20,6 +20,11 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         return tipoSuscripcion.IdTipoSuscripcion;
     }
 
+    public void Eliminar(uint elemento)
+    {
+        throw new NotImplementedException();
+    }
+
     public IList<TipoSuscripcion> Obtener()
     { 
         string consultarTipos = @"SELECT * from TipoSuscripcion ORDER BY Tipo ASC";

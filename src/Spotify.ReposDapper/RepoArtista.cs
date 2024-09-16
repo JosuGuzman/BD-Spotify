@@ -21,7 +21,12 @@ public class RepoArtista : RepoGenerico, IRepoArtista
 
         return artista.idArtista;
     }
- 
+
+    public void Eliminar(uint elemento)
+    {
+        throw new NotImplementedException();
+    }
+
     public IList<Artista> Obtener()
     {
         string consultarArtistas = @"SELECT * from Artista ORDER BY NombreArtistico ASC";

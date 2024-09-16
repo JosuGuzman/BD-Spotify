@@ -14,11 +14,16 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
 
         _conexion.Execute("altaNacionalidad", parametros, commandType: CommandType.StoredProcedure);
 
-        nacionalidad.IdNacionalidad = parametros.Get<uint>("@unidNacionalidad");
+        nacionalidad.idNacionalidad = parametros.Get<uint>("@unidNacionalidad");
 
-        return nacionalidad.IdNacionalidad;
+        return nacionalidad.idNacionalidad;
     }
-  
+
+    public void Eliminar(uint elemento)
+    {
+        throw new NotImplementedException();
+    }
+
     public IList<Nacionalidad> Obtener ()
     {
         string consultarNacionalidades = @"SELECT * from Nacionalidad ORDER BY Pais ASC";

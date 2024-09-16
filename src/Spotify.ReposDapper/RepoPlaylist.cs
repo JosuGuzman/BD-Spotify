@@ -10,7 +10,7 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         var parametros = new DynamicParameters();
         parametros.Add("@unidPlaylist", direction: ParameterDirection.Output);
         parametros.Add("@unNombre", playlist.Nombre);
-        parametros.Add("@unidUsuario", playlist.usuario.IdUsuario);
+        parametros.Add("@unidUsuario", playlist.usuario.idUsuario);
 
 
         _conexion.Execute("altaPlaylist", parametros, commandType: CommandType.StoredProcedure);
@@ -19,7 +19,12 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
 
         return playlist.IdPlaylist;
     }
-   
+
+    public void Eliminar(uint elemento)
+    {
+        throw new NotImplementedException();
+    }
+
     public IList<PlayList> Obtener ()
     {
         string consultarPlaylists = @"SELECT * from PlayList ORDER BY Nombre ASC";

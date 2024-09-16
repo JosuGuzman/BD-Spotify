@@ -1,4 +1,4 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IRepoReproduccion : IAlta<Reproduccion, uint>, IListado<Reproduccion>
+public interface IRepoReproduccion : IAlta<Reproduccion, uint>, IListado<Reproduccion>, IEliminar<uint>
 { }

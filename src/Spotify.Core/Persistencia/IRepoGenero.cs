@@ -1,5 +1,4 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IRepoGenero : IAlta<Genero, uint>, IListado<Genero>, IEliminar<Genero>
-{
-}
+public interface IRepoGenero : IAlta<Genero, uint>, IListado<Genero>, IEliminar<uint>
+{ }

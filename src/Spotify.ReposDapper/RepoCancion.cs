@@ -16,8 +16,13 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         cancion.idCancion = parametros.Get<uint>("@unidCancion");
 
         return cancion.idCancion;
-    } 
-  
+    }
+
+    public void Eliminar(uint elemento)
+    {
+        throw new NotImplementedException();
+    }
+
     public IList<Cancion> Obtener()
     {
         string consultarCanciones = @"SELECT * from Cancion ORDER BY Titulo ASC";

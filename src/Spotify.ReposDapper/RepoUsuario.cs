@@ -12,14 +12,18 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         parametros.Add("@unNombreUsuario", usuario.NombreUsuario);
         parametros.Add("@unaContraseña", usuario.Contraseña);
         parametros.Add("@unEmail", usuario.Gmail);
-        parametros.Add("@unidNacionalidad", usuario.nacionalidad.IdNacionalidad);
+        parametros.Add("@unidNacionalidad", usuario.nacionalidad.idNacionalidad);
 
         _conexion.Execute("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
 
-        usuario.IdUsuario = parametros.Get<uint>("@unidUsuario");
-        return usuario.IdUsuario;
+        usuario.idUsuario = parametros.Get<uint>("@unidUsuario");
+        return usuario.idUsuario;
     }
 
+    public void Eliminar(uint elemento)
+    {
+        throw new NotImplementedException();
+    }
 
     public IList<Usuario> Obtener()
     {
