@@ -21,8 +21,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
 
     public void Eliminar(uint elemento)
     {
-       string eliminarCanciones = @"DELETE FROM Cancion WHERE idNaciona = @idGenero";
-        _conexion.Execute(eliminarCanciones, new {idNacionalidad});
+        
     }
 
     public IList<Reproduccion> Obtener()

@@ -19,9 +19,13 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         return nacionalidad.idNacionalidad;
     }
 
-    public void Eliminar(uint elemento)
+    public void Eliminar(uint idNacionalidad)
     {
-        throw new NotImplementedException();
+        string eliminarUsuario = @"DELETE FROM Usuario WHERE idNacionalidad = @idNacionalidad";
+        _conexion.Execute(eliminarUsuario, new {idNacionalidad});
+
+        string eliminarNacionalidad = @"DELETE FROM Nacionalidad WHERE idNacionalidad = @idNacionalidad";
+        _conexion.Execute(eliminarNacionalidad, new {idNacionalidad});
     }
 
     public IList<Nacionalidad> Obtener ()
