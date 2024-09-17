@@ -16,9 +16,4 @@ public class RepoAlbumTest : TestBase
         Assert.Contains(album, a => a.Titulo == "Ecos del Pasado");
     }
 
-    [Fact]
-    public void AltaAlbumOK()
-    {
-        var nuevoAlbum = new Album {Titulo = "Baladas de Piratas", artista = };
-    }
 }
