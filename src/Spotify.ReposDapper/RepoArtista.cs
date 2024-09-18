@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-
 namespace Spotify.ReposDapper;
 
 public class RepoArtista : RepoGenerico, IRepoArtista
@@ -22,9 +20,13 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         return artista.idArtista;
     }
 
-    public void Eliminar(uint elemento)
+    public void Eliminar(uint idArtista)
     {
-        throw new NotImplementedException();
+        string eliminarAlbum = @"DELETE FROM Album WHERE idArtista = @idArtista";
+        _conexion.Execute(eliminarAlbum, new { idArtista });
+        
+        string eliminarArtista = @"DELETE FROM Artista WHERE idArtista = @idArtista";
+        _conexion.Execute(eliminarArtista, new { idArtista });
     }
 
     public IList<Artista> Obtener()
@@ -32,5 +34,15 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         string consultarArtistas = @"SELECT * from Artista ORDER BY NombreArtistico ASC";
         var Artistas = _conexion.Query<Artista>(consultarArtistas);
         return Artistas.ToList();
+    }
+
+    public Artista? DetalleDe(uint idArtista)
+    {
+        string consultarArtistas = @"SELECT * FROM Artista WHERE idArtista = @idArtista";
+        var Artistas = new {idArtista};
+
+        var artista = _conexion.QuerySingleOrDefault<Artista>(consultarArtistas, Artistas);
+
+        return artista;
     }
 }
