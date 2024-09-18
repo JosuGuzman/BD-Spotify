@@ -15,14 +15,15 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
 
         _conexion.Execute("altaPlaylist", parametros, commandType: CommandType.StoredProcedure);
 
-        playlist.IdPlaylist = parametros.Get<uint>("@unidPlaylist");
+        playlist.idPlaylist = parametros.Get<uint>("@unidPlaylist");
 
-        return playlist.IdPlaylist;
+        return playlist.idPlaylist;
     }
 
-    public void Eliminar(uint elemento)
+    public void Eliminar(uint idPlaylist)
     {
-        throw new NotImplementedException();
+        string eliminarPlayList = @"DELETE FROM PlayList WHERE idPlayList = @idPlayList";
+        _conexion.Execute(eliminarPlayList, new {idPlaylist});
     }
 
     public IList<PlayList> Obtener ()

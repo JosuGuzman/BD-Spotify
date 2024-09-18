@@ -16,4 +16,14 @@ public class RepoAlbumTest : TestBase
         Assert.Contains(album, a => a.Titulo == "Ecos del Pasado");
     }
 
+    [Fact]
+    public void AltaAlbum()
+    {
+        var nuevoAlbum = new Album { Titulo = "Rock", FechaLanzamiento == '2024-09-12', artista = "mIGUEL" };
+        var IdAlbum = _repo.Alta(nuevoAlbum);
+        
+        var Albunes = _repo.Obtener();
+        Assert.Contains(Albunes, );
+    }
+
 }
