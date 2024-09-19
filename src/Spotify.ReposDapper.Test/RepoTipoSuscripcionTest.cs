@@ -22,6 +22,26 @@ public class RepoTipoSuscripcionTest : TestBase
     [Fact]
     public void AltaTipoSuscripcion()
     {
+        var tipoSuscripcion = new TipoSuscripcion
+        {
+            Duracion = 4,
+            Costo = 23,
+            Tipo = "Anual"
+        };
 
+        var IdTipoSuscripcionCreado = _repoTipoSuscripcion.Alta(tipoSuscripcion );
+        
+        var ListaTiposSuscripcion = _repoTipoSuscripcion.Obtener();
+
+        Assert.Contains(ListaTiposSuscripcion, variable => variable.IdTipoSuscripcion == IdTipoSuscripcionCreado);
     }
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    public void DetalleIdTipoSuscripcion(uint parametro)
+    {
+        var tipoSuscripcionPorId = 
+    }
+
 }

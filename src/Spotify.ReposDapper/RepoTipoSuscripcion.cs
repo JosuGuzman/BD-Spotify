@@ -20,9 +20,15 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         return tipoSuscripcion.IdTipoSuscripcion;
     }
 
-    public void Eliminar(uint elemento)
+    public TipoSuscripcion DetalleDe(uint IdTipoSuscripcion)
     {
-        throw new NotImplementedException();
+        var BuscarTipoSuscripcionPorId = @"
+        Select * 
+        FROM TipoSuscripcion
+        Where idTipoSuscripcion = @idTipoSuscripcion
+        ";
+
+        
     }
 
     public IList<TipoSuscripcion> Obtener()
