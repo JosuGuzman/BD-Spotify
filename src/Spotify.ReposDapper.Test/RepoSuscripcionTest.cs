@@ -47,6 +47,8 @@ public class RepoSuscripcionTest : TestBase
 
     public void DetallePorIdDeSuscripcion(uint parametro)
     {
-        var SuscripcionPorId = _repoSuscripcion.
+        var SuscripcionPorId = _repoSuscripcion.DetalleDe(parametro);
+
+        Assert.NotNull(SuscripcionPorId);
     }
 }

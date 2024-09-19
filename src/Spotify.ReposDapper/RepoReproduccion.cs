@@ -19,10 +19,6 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         return reproduccion.IdHistorial;
     }
 
-    public void Eliminar(uint elemento)
-    {
-        
-    }
 
     public IList<Reproduccion> Obtener()
     {
