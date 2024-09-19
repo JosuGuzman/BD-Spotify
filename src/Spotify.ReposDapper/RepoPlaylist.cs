@@ -22,13 +22,13 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
 
     public void Eliminar(uint idPlaylist)
     {
-        string eliminarPlayList = @"DELETE FROM PlayList WHERE idPlayList = @idPlayList";
+        string eliminarPlayList = @"DELETE FROM Playlist WHERE idPlayList = @idPlayList";
         _conexion.Execute(eliminarPlayList, new {idPlaylist});
     }
 
     public IList<PlayList> Obtener ()
     {
-        string consultarPlaylists = @"SELECT * from PlayList ORDER BY Nombre ASC";
+        string consultarPlaylists = @"SELECT * from Playlist ORDER BY Nombre ASC";
         var Playlists = _conexion.Query<PlayList>(consultarPlaylists);
         return Playlists.ToList();
     }

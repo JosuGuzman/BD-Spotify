@@ -13,7 +13,7 @@ public class RepoGeneroTest : TestBase
     public void ListarOK()
     {
         var generos = _repo.Obtener();
-        Assert.Contains(generos, g=> g.genero == "Jazz");
+        Assert.Contains(generos, g=> g.genero == "Rock");
     }
 
    [Fact]

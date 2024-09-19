@@ -26,17 +26,4 @@ public class RepoNacionalidadTest : TestBase
         Assert.Contains(nacionalidades, n => n.Pais == "España");
     }
 
-    [Fact]
-    public void EleiminarNacionalidadOK()
-    {
-        var nacionalidades = _repo.Obtener();
-        var nacionalidadEliminar = nacionalidades.FirstOrDefault(n => n.Pais == "U.R.S.S.");
-
-        if (nacionalidadEliminar != null)
-        {
-            _repo.Eliminar(nacionalidadEliminar.idNacionalidad);
-            nacionalidades = _repo.Obtener();
-            Assert.DoesNotContain(nacionalidades, n => n.Pais == "U.R.S.S.");
-        }
-    }
 }

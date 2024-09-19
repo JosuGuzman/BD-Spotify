@@ -4,7 +4,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     public RepoGenero(IDbConnection conexion)
         : base(conexion) { }
 
-    public uint Alta(Genero genero)
+    public byte Alta(Genero genero)
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unGenero", genero.genero);
@@ -12,7 +12,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
 
         _conexion.Execute("altaGenero", parametros, commandType: CommandType.StoredProcedure);
 
-        genero.idGenero = parametros.Get<uint>("@unidGenero");
+        genero.idGenero = parametros.Get<byte>("@unidGenero");
         return genero.idGenero;
     }
 
