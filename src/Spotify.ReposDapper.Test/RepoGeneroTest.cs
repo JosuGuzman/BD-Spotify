@@ -23,7 +23,7 @@ public class RepoGeneroTest : TestBase
         var IdGenero = _repo.Alta(nuevoGenero);
         
         var generos = _repo.Obtener();
-        Assert.Contains(generos, g => g.genero == "Rock");
+        Assert.Contains(generos, g => g.idGenero == IdGenero);
     }
     /*
     [Fact]

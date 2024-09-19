@@ -20,9 +20,13 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return registro.idSuscripcion;
     }
 
-    public void Eliminar(uint elemento)
+    public Registro DetalleDe(uint idSuscripcion)
     {
-        throw new NotImplementedException();
+       var BuscarPorIdRegistro = @"SELECT * FROM Suscripcion Where idSuscripcion = @idSuscripcion";
+
+       var Registro = _conexion.QueryFirstOrDefault<Registro>(BuscarPorIdRegistro, new {idSuscripcion});
+
+       return Registro;
     }
 
     public IList<Registro> Obtener()

@@ -22,7 +22,7 @@ public class RepoAlbumTest : TestBase
     }
  
 
-
+    [Fact]
     public void AltaAlbum()
     {
         var unArtista = _repoArtista.Obtener().First();
