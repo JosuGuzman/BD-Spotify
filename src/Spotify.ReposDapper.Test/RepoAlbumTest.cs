@@ -19,15 +19,16 @@ public class RepoAlbumTest : TestBase
         var album = _repoAlbum.Obtener();
         Assert.Contains(album, a => a.Titulo == "Ecos del Pasado");
     }
-
-    [Fact]
+ 
+        [Fact]
     public void AltaAlbum()
     {   
-        var nuevoAlbum = new Album { Titulo = "Rock", FechaLanzamiento = DateTime.Now, artista = _repoArtista.};
+        var artis = _repoArtista.Obtener().First(); // Obtiene un artista para la prueba
+        var nuevoAlbum = new Album { Titulo = "Baladas del Mar", FechaLanzamiento = DateTime.Now, artista = artis };
         var IdAlbum = _repoAlbum.Alta(nuevoAlbum);
-        
+    
         var Albunes = _repoAlbum.Obtener();
-        Assert.Contains(Albunes, );
+        Assert.Contains(Albunes, a => a.Titulo == "Baladas del Mar");
     }
 
 }
