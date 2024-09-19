@@ -20,6 +20,19 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         return usuario.idUsuario;
     }
 
+    public Usuario? DetalleDe(uint idUsuario)
+    {
+        string BuscarUsuario = @"SELECT NombreUsuario FROM Usuario WHERE idUsuario = @idUsuario";
+
+        // Ejecutar la consulta y obtener el primer resultado o 'null' si no existe.
+        var usuario = _conexion.QueryFirstOrDefault<Usuario>(
+            BuscarUsuario, 
+            new { idUsuario }
+        );
+
+        return usuario;
+    }
+
     public void Eliminar(uint elemento)
     {
         throw new NotImplementedException();
