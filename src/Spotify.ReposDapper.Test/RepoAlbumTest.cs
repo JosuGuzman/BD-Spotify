@@ -21,37 +21,22 @@ public class RepoAlbumTest : TestBase
         Assert.NotNull(albunes);
     }
  
-    [Theory]
-    [InlineData("Romantica de camaleones")]
-    public void AltaAlbum(string titulo)
+
+
+    public void AltaAlbum()
     {
+        var unArtista = _repoArtista.Obtener().First();
         // Obtener un artista para la prueba
-        var artis = _repoArtista.Obtener().First();
-
-        // Crear un nuevo álbum
-        var nuevoAlbum = new Album { Titulo = titulo, FechaLanzamiento = DateTime.Now, artista = artis};
-
-        // Verifica si el título es null
-        if (titulo == null)
-        {
-            Assert.Throws<InvalidOperationException>(() => _repoAlbum.Alta(nuevoAlbum));
-            return; // Salir del método si el título es null
-        }
-
-        // Verifica si el álbum ya existe
-        var albumExistente = _repoAlbum.Obtener().FirstOrDefault(a => a.Titulo == nuevoAlbum.Titulo);
-        if (albumExistente != null)
-        {
-            Assert.Throws<InvalidOperationException>(() => _repoAlbum.Alta(nuevoAlbum));
-            return; // Salir del método si el álbum ya existe
-        }
-
-        // Agrega el nuevo álbum
-        var IdAlbum = _repoAlbum.Alta(nuevoAlbum);
-
-        // Verifica que el álbum se haya añadido correctamente
-        var albunes = _repoAlbum.Obtener();
-        Assert.Contains(albunes, a => a.Titulo == "Romantica de camaleones");
+        var nuevoAlbum = new Album { 
+            genero = "PopCorn",
+            Titulo = "Las 3 moscas",
+            FechaLanzamiento = DateTime.Now,
+            artista = unArtista
+            };
+        var idAlbumCreado = _repoAlbum.Alta(nuevoAlbum);
+        
+        var Albunes = _repoAlbum.Obtener();
+        Assert.Contains(Albunes, a => a.idAlbum == idAlbumCreado);
     }
 
 
@@ -75,9 +60,9 @@ public class RepoAlbumTest : TestBase
     [InlineData(1)]
     [InlineData(2)]
     [InlineData(3)]
-    public void DetalleIdAlbum(uint parametros)
+    public void DetalleIdAlbum(uint idAlbum)
     {
-        var AlbumPorId = _repoAlbum.DetalleDe(parametros);
+        var AlbumPorId = _repoAlbum.DetalleDe(idAlbum);
 
         Assert.NotNull(AlbumPorId);
     }

@@ -25,20 +25,30 @@ public class RepoUsuarioTest : TestBase
 
     public void AltaUsuarioOk()
     {
-        var ListaUsuarios = _repoUsuario.Obtener();
 
         var unaNacionalidad = _repoNacionalidad.Obtener().First();
 
         var parametros = new Usuario 
         {
-            NombreUsuario = "Sharklen12",
-            Gmail = "elquequieraperdersutiempoquelopierda@gmail.com",
+            NombreUsuario = "Sherklan12",
+            Gmail = "elquequieraperdr@gmail.com",
             Contraseña = "RomanRiquelme",
             nacionalidad = unaNacionalidad
         };
 
-        var AltaUsuario = _repoUsuario.Alta(parametros);
+        var idUsuarioCreado = _repoUsuario.Alta(parametros);
+        var ListaUsuarios = _repoUsuario.Obtener();
 
-        Assert.Contains(ListaUsuarios, variable => variable.NombreUsuario == "Sharklen12");
+        Assert.Contains(ListaUsuarios, variable => variable.idUsuario == idUsuarioCreado);
+    }
+    
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    public void DetalleIdUsuario (uint idUsuario)
+    {
+        var UsuarioPorId = _repoUsuario.DetalleDe(idUsuario);
+        Assert.NotNull(UsuarioPorId);
     }
 }
