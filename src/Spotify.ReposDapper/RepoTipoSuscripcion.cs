@@ -20,15 +20,17 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         return tipoSuscripcion.IdTipoSuscripcion;
     }
 
-    public TipoSuscripcion DetalleDe(uint IdTipoSuscripcion)
+    public TipoSuscripcion DetalleDe(uint idTipoSuscripcion)
     {
         var BuscarTipoSuscripcionPorId = @"
         Select * 
         FROM TipoSuscripcion
         Where idTipoSuscripcion = @idTipoSuscripcion
         ";
-
         
+        var TipoSuscripcion = _conexion.QueryFirstOrDefault<TipoSuscripcion>(BuscarTipoSuscripcionPorId, new {idTipoSuscripcion});
+
+        return TipoSuscripcion;
     }
 
     public IList<TipoSuscripcion> Obtener()

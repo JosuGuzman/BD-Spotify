@@ -41,7 +41,10 @@ public class RepoTipoSuscripcionTest : TestBase
     [InlineData(3)]
     public void DetalleIdTipoSuscripcion(uint parametro)
     {
-        var tipoSuscripcionPorId = 
+        var tipoSuscripcionPorId = _repoTipoSuscripcion.DetalleDe(parametro);
+
+        Assert.NotNull(tipoSuscripcionPorId);
     }
 
+    
 }
