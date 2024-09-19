@@ -14,7 +14,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         parametros.Add("@unEmail", usuario.Gmail);
         parametros.Add("@unidNacionalidad", usuario.nacionalidad.idNacionalidad);
 
-        _conexion.Execute("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
+        _conexion.Execute("altaUsuario", parametros, commandType: CommandType.StoredProcedure);
 
         usuario.idUsuario = parametros.Get<uint>("@unidUsuario");
         return usuario.idUsuario;

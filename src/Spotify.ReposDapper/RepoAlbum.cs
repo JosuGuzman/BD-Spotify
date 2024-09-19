@@ -17,6 +17,15 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         return album.idAlbum;
     }
 
+    public Artista? DetalleDe(uint idAlbum)
+    {
+        string consultarAlbum = @"SELECT * FROM Album WHERE idAlbum = @idAlbum";
+
+        var artista = _conexion.QuerySingleOrDefault<Artista>(consultarAlbum, new {idAlbum});
+
+        return artista;
+    }
+
     public void Eliminar(uint idAlbum)
     {
         string eliminarCanciones = @"DELETE FROM Cancion WHERE idAlbum = @idAlbum";
@@ -28,7 +37,7 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
 
     public IList<Album> Obtener()
     {
-        string consultarAlbumes = @"SELECT * from Album ORDER BY Nombre ASC";
+        string consultarAlbumes = @"SELECT * from Album ORDER BY Titulo ASC";
         var Albumes = _conexion.Query<Album>(consultarAlbumes);
         return Albumes.ToList();
     }

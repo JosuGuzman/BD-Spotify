@@ -25,5 +25,4 @@ public class RepoNacionalidadTest : TestBase
         var nacionalidades = _repo.Obtener();
         Assert.Contains(nacionalidades, n => n.Pais == "España");
     }
-
 }

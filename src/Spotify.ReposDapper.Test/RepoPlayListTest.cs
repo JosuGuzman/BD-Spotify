@@ -18,8 +18,8 @@ public class RepoPlayListTest : TestBase
     }
 
     [Fact]
-    public void EliminarPlayList()
+    public void AltaPlaylistOk()
     {
-
+        
     }
 }

@@ -30,13 +30,13 @@ public class RepoGeneroTest : TestBase
     public void EleminarGeneroOK()
     {
         var generos = _repo.Obtener();
-        var generoAEliminar = generos.FirstOrDefault(g => g.genero == "Jazz");
+        var generoAEliminar = generos.FirstOrDefault(g => g.genero == "Rock");
 
         if (generoAEliminar != null)
         {
             _repo.Eliminar(generoAEliminar.idGenero);
             generos = _repo.Obtener();
-            Assert.DoesNotContain(generos, g => g.genero == "Jazz");
+            Assert.DoesNotContain(generos, g => g.genero == "Rock");
         }
     }
 

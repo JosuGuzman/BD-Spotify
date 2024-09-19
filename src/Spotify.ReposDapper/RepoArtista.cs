@@ -38,10 +38,9 @@ public class RepoArtista : RepoGenerico, IRepoArtista
 
     public Artista? DetalleDe(uint idArtista)
     {
-        string consultarArtistas = @"SELECT * FROM Artista WHERE idArtista = @idArtista";
-        var Artistas = new {idArtista};
+        string consultarArtista = @"SELECT * FROM Artista WHERE idArtista = @idArtista";
 
-        var artista = _conexion.QuerySingleOrDefault<Artista>(consultarArtistas, Artistas);
+        var artista = _conexion.QuerySingleOrDefault<Artista>(consultarArtista, new {idArtista});
 
         return artista;
     }
