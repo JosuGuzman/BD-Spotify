@@ -7,5 +7,7 @@ namespace Spotify.Core
         public TimeSpan Duracion {get;set;}
         public required Album album {get;set;}
         public required Genero genero {get;set;}
+        public required Artista artista {get;set;}
+
     }
 }

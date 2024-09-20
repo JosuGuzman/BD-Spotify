@@ -10,6 +10,9 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         parametros.Add("@unidCancion", direction: ParameterDirection.Output);
         parametros.Add("@unTitulo", cancion.Titulo);
         parametros.Add("@unDuration", cancion.Duracion);
+        parametros.Add("@unidAlbum", cancion.album.idAlbum);
+        parametros.Add("@unidArtista", cancion.artista.idArtista);
+        parametros.Add("@unidGenero", cancion.genero.idGenero);
 
         _conexion.Execute("altaCancion", parametros, commandType: CommandType.StoredProcedure);
 
