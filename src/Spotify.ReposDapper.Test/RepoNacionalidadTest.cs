@@ -4,15 +4,17 @@ namespace Spotify.ReposDapper.Test;
 
 public class RepoNacionalidadTest : TestBase
 {
-    IRepoNacionalidad _repo;
+    RepoNacionalidad _repoNacionalidad;
     
     public RepoNacionalidadTest() : base()
-        => _repo = new RepoNacionalidad(Conexion);
+    {
+        _repoNacionalidad = new RepoNacionalidad(Conexion);
+    }
         
     [Fact]
     public void ListarOK()
     {
-        var nacionalidades = _repo.Obtener();
+        var nacionalidades = _repoNacionalidad.Obtener();
         Assert.Contains(nacionalidades, n=> n.Pais == "Argentina");
     }
 
@@ -20,9 +22,21 @@ public class RepoNacionalidadTest : TestBase
     public void AltaNacionalidadOK()
     {
         var nuevaNacionalidad = new Nacionalidad {Pais = "España"};
-        var IdNAcionalidad = _repo.Alta(nuevaNacionalidad);
+        var IdNAcionalidad = _repoNacionalidad.Alta(nuevaNacionalidad);
 
-        var nacionalidades = _repo.Obtener();
+        var nacionalidades = _repoNacionalidad.Obtener();
         Assert.Contains(nacionalidades, n => n.Pais == "España");
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+
+    public void DetalleIdNacionalidad(uint parametro)
+    {
+        var BuscarNacionalidadPorId = _repoNacionalidad.DetalleDe(parametro);
+
+        Assert.NotNull(BuscarNacionalidadPorId);
     }
 }

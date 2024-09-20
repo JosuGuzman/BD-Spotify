@@ -52,7 +52,6 @@ public class RepoPlayListTest : TestBase
     {
         var PlayListPorId = _repoPlayList.DetalleDe(parametro);
 
-
-        
+        Assert.NotNull(PlayListPorId);
     }
 }

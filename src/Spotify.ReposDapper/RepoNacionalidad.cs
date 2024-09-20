@@ -19,6 +19,14 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         return nacionalidad.idNacionalidad;
     }
 
+    public Nacionalidad? DetalleDe(uint idNacionalidad)
+    {
+        var BuscarNacionalidadPorId = @"SELECT * FROM Nacionalidad WHERE idNacionalidad = @idNacionalidad";
+
+        var Buscar = _conexion.QueryFirstOrDefault<Nacionalidad>(BuscarNacionalidadPorId, new{idNacionalidad});
+
+        return Buscar;
+    }
 
     public IList<Nacionalidad> Obtener ()
     {
