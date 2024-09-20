@@ -9,7 +9,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unidArtista", direction: ParameterDirection.Output);
-        parametros.Add("@unNobreArtistico", artista.NombreArtistico);
+        parametros.Add("@unNombreArtistico", artista.NombreArtistico);
         parametros.Add("@unNombre", artista.Nombre);
         parametros.Add("@unApellido", artista.Apellido);
 

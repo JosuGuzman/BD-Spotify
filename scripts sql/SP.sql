@@ -3,12 +3,12 @@ USE 5to_Spotify;
 -- Tabla Artista
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaArtista $$
-CREATE PROCEDURE altaArtista (unNombreArtistico VARCHAR(35), unNombre VARCHAR(45), unApellido VARCHAR(45), out idArtista INT UNSIGNED)
+CREATE PROCEDURE altaArtista (unNombreArtistico VARCHAR(35), unNombre VARCHAR(45), unApellido VARCHAR(45), out unidArtista INT UNSIGNED)
 BEGIN 
     INSERT INTO Artista(NombreArtistico,Nombre,Apellido)
    	    VALUES(unNombreArtistico,unNombre,unApellido);
     
-	SET idArtista = last_insert_id();
+	SET unidArtista = last_insert_id();
 END $$
 
 -- Tabla Album
