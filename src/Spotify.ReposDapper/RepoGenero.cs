@@ -16,9 +16,13 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         return genero.idGenero;
     }
 
-    public Genero? DetalleDe(byte id)
+    public Genero? DetalleDe(byte idGenero)
     {
-        throw new NotImplementedException();
+        var BuscarGeneroPorId = @"SELECT * FROM Genero WHERE idGenero = @idGenero";
+
+        var Buscar = _conexion.QueryFirstOrDefault<Genero>(BuscarGeneroPorId, new {idGenero});
+
+        return Buscar;
     }
 
     public void Eliminar(uint idGenero)
