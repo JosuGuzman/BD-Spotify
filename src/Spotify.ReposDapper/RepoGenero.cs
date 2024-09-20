@@ -16,6 +16,11 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         return genero.idGenero;
     }
 
+    public Genero? DetalleDe(byte id)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Eliminar(uint idGenero)
     {
         string eliminarHistorialReproducciones = @"
