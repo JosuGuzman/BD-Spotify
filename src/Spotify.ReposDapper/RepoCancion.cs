@@ -21,9 +21,13 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return cancion.idCancion;
     }
 
-    public void Eliminar(uint elemento)
+    public Cancion? DetalleDe(uint idCancion)
     {
-        throw new NotImplementedException();
+        var BuscarCancionPorId = @"SELECT * FROM Cancion WHERE idCancion = @idCancion";
+
+        var Buscar = _conexion.QueryFirstOrDefault<Cancion>(BuscarCancionPorId, new {idCancion});
+
+        return Buscar;
     }
 
     public IList<Cancion> Obtener()

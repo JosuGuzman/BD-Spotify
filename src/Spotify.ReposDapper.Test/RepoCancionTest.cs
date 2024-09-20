@@ -19,7 +19,9 @@ public class RepoCancionTest : TestBase
     [Fact]
     public void ListarOk()
     {
-        
+        var ListaCanciones = _repoCancion.Obtener();
+
+        Assert.NotNull(ListaCanciones);
     }
 
     [Fact]
@@ -44,5 +46,17 @@ public class RepoCancionTest : TestBase
 
         Assert.Contains(ListaCanciones, variable => variable.idCancion == idCancionInsertada);
 
+    }
+    
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+
+    public void DetallaIdCanciones(uint parametros)
+    {
+        var BuscarIdCanciones = _repoCancion.DetalleDe(parametros);
+
+        Assert.NotNull(BuscarIdCanciones);
     }
 }
