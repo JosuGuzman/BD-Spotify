@@ -25,7 +25,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
 
     public IList<Cancion> Obtener()
     {
-        string consultarCanciones = @"SELECT * from Cancion ORDER BY Titulo ASC";
+        string consultarCanciones = "SELECT * from Cancion ORDER BY Titulo ASC";
         var Canciones = _conexion.Query<Cancion>(consultarCanciones);
         return Canciones.ToList();
     }

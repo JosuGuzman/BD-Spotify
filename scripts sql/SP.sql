@@ -64,7 +64,7 @@ DROP PROCEDURE IF EXISTS altaCancion $$
 CREATE PROCEDURE altaCancion (OUT unidCancion INT UNSIGNED, unTitulo VARCHAR(45), unDuration Time, unidAlbum INT UNSIGNED, unidArtista INT UNSIGNED, unidGenero TINYINT UNSIGNED)
 BEGIN 
 	INSERT INTO Cancion(Titulo,duration,idAlbum,idArtista,idGenero)
-		VALUES(unTItulo,unDuration,unidAlbum,unidArtista,unidGenero);
+		VALUES(unTitulo,unDuration,unidAlbum,unidArtista,unidGenero);
 	
 	SET unidCancion = last_insert_id();
 END $$

@@ -20,10 +20,13 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         return playlist.idPlaylist;
     }
 
-    public void Eliminar(uint idPlaylist)
+    public PlayList DetalleDe(uint idPlaylist)
     {
-        string eliminarPlayList = @"DELETE FROM Playlist WHERE idPlayList = @idPlayList";
-        _conexion.Execute(eliminarPlayList, new {idPlaylist});
+        var BuscarPlayListPorId = @"SELECT * FROM Playlist WHERE idPlaylist = @idPlaylist";
+
+        var Buscar = _conexion.QueryFirstOrDefault<PlayList>(BuscarPlayListPorId, new {idPlaylist});
+
+        return Buscar; 
     }
 
     public IList<PlayList> Obtener ()

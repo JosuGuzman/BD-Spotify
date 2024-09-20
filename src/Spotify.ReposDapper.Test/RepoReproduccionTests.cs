@@ -10,6 +10,8 @@ public class RepoReproduccionTests : TestBase
     public RepoReproduccionTests() : base()
     {
         this._repoReproduccion = new RepoReproduccion(Conexion);
+        this._repoUsuario = new RepoUsuario(Conexion);
+        this._repoCancion = new RepoCancion (Conexion);
     }
 
     [Fact]
@@ -31,12 +33,24 @@ public class RepoReproduccionTests : TestBase
         {
             usuario = unUsuario,
             cancion = unaCancion,
-            FechaReproccion = DateTime.Now
+            FechaReproduccion = DateTime.Now
         };
 
         var idCreadoReproduccion = _repoReproduccion.Alta(CrearReproduccion);
         var ListadoDeReproducciones = _repoReproduccion.Obtener();
 
         Assert.Contains(ListadoDeReproducciones, variable => variable.IdHistorial == idCreadoReproduccion);
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+
+    public void DetalleIdReproduccion(uint parametro)
+    {
+        var ReproduccionPorId = _repoReproduccion.DetalleDe(parametro);
+
+        Assert.NotNull(ReproduccionPorId);
     }
 }
