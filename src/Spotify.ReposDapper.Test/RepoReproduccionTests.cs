@@ -1,4 +1,5 @@
-
+using Spotify.Core;
+using Spotify.Core.Persistencia;
 namespace Spotify.ReposDapper.Test;
 
 public class RepoReproduccionTests : TestBase 

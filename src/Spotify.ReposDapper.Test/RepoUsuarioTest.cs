@@ -1,6 +1,5 @@
 using Spotify.Core;
-using Xunit;
-
+using Spotify.Core.Persistencia;
 namespace Spotify.ReposDapper.Test;
 
 public class RepoUsuarioTest : TestBase
