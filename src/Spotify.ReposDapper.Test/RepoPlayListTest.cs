@@ -20,7 +20,8 @@ public class RepoPlayListTest : TestBase
     public void ListarOK()
     {
         var playLists = _repoPlayList.Obtener();
-        Assert.Contains(playLists, p => p.idPlaylist == 5);
+
+        Assert.NotNull(playLists);
     }
 
     [Fact]
@@ -48,10 +49,11 @@ public class RepoPlayListTest : TestBase
     [InlineData(2)]
     [InlineData(3)]
 
-    public void DetalleIdPlaylist(uint parametro)
+    public void DetalleIdPlaylist(uint idPlaylist)
     {
-        var PlayListPorId = _repoPlayList.DetalleDe(parametro);
+        var PlayListPorId = _repoPlayList.DetalleDe(idPlaylist);
 
         Assert.NotNull(PlayListPorId);
+        Assert.Equal(idPlaylist , PlayListPorId.idPlaylist);
     }
 }

@@ -33,10 +33,11 @@ public class RepoNacionalidadTest : TestBase
     [InlineData(2)]
     [InlineData(3)]
 
-    public void DetalleIdNacionalidad(uint parametro)
+    public void DetalleIdNacionalidad(uint idNacionalidad)
     {
-        var BuscarNacionalidadPorId = _repoNacionalidad.DetalleDe(parametro);
+        var BuscarNacionalidadPorId = _repoNacionalidad.DetalleDe(idNacionalidad);
 
         Assert.NotNull(BuscarNacionalidadPorId);
+        Assert.Equal(idNacionalidad , BuscarNacionalidadPorId.idNacionalidad);
     }
 }

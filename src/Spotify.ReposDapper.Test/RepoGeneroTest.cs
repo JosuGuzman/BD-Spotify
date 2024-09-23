@@ -31,11 +31,12 @@ public class RepoGeneroTest : TestBase
     [InlineData(2)]
     [InlineData(3)]
 
-    public void DetalleGeneroPorId(byte parametro)
+    public void DetalleGeneroPorId(byte idGenero)
     {
-        var BuscarGenero = _repoGenero.DetalleDe(parametro);
+        var BuscarGenero = _repoGenero.DetalleDe(idGenero);
 
         Assert.NotNull(BuscarGenero);
+        Assert.Equal(idGenero , BuscarGenero.idGenero);
     }
 
     /*

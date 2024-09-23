@@ -53,10 +53,11 @@ public class RepoCancionTest : TestBase
     [InlineData(2)]
     [InlineData(3)]
 
-    public void DetallaIdCanciones(uint parametros)
+    public void DetallaIdCanciones(uint idCancion)
     {
-        var BuscarIdCanciones = _repoCancion.DetalleDe(parametros);
+        var BuscarIdCanciones = _repoCancion.DetalleDe(idCancion);
 
         Assert.NotNull(BuscarIdCanciones);
+        Assert.Equal(idCancion, BuscarIdCanciones.idCancion);
     }
 }
