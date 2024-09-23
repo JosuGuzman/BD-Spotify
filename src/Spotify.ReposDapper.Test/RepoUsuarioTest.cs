@@ -17,6 +17,8 @@ public class RepoUsuarioTest : TestBase
     public void ListarOk()
     {
         var listaUsuarios = _repoUsuario.Obtener();
+
+        Assert.NotEmpty(listaUsuarios);
         Assert.NotNull(listaUsuarios);
     }
 

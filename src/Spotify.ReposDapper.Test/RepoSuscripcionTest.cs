@@ -20,6 +20,7 @@ public class RepoSuscripcionTest : TestBase
         var ListaSuscripciones = _repoSuscripcion.Obtener();
 
         Assert.NotNull(ListaSuscripciones);
+        Assert.NotEmpty(ListaSuscripciones);
     }
 
     [Fact]

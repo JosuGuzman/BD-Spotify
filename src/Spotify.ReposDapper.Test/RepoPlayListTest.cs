@@ -22,6 +22,7 @@ public class RepoPlayListTest : TestBase
         var playLists = _repoPlayList.Obtener();
 
         Assert.NotNull(playLists);
+        Assert.NotEmpty(playLists);
     }
 
     [Fact]

@@ -22,6 +22,7 @@ public class RepoReproduccionTests : TestBase
         var ListaDeReproducciones = _repoReproduccion.Obtener();
 
         Assert.NotNull(ListaDeReproducciones);
+        Assert.NotEmpty(ListaDeReproducciones);
     }
 
     [Fact]

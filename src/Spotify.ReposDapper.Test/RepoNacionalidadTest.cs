@@ -15,6 +15,7 @@ public class RepoNacionalidadTest : TestBase
     public void ListarOK()
     {
         var nacionalidades = _repoNacionalidad.Obtener();
+
         Assert.Contains(nacionalidades, n=> n.Pais == "Argentina");
     }
 
@@ -25,6 +26,7 @@ public class RepoNacionalidadTest : TestBase
         var IdNAcionalidad = _repoNacionalidad.Alta(nuevaNacionalidad);
 
         var nacionalidades = _repoNacionalidad.Obtener();
+        
         Assert.Contains(nacionalidades, n => n.Pais == "España");
     }
 

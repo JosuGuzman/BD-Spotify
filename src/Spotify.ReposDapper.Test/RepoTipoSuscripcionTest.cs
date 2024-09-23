@@ -17,6 +17,7 @@ public class RepoTipoSuscripcionTest : TestBase
         var ListaTiposSuscripcion = _repoTipoSuscripcion.Obtener();
 
         Assert.NotEmpty(ListaTiposSuscripcion);
+        Assert.NotNull(ListaTiposSuscripcion);
     }
 
     [Fact]
