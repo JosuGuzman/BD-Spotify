@@ -28,7 +28,6 @@ public class RepoAlbumTest : TestBase
         var unArtista = _repoArtista.Obtener().First();
         // Obtener un artista para la prueba
         var nuevoAlbum = new Album { 
-            genero = "PopCorn",
             Titulo = "Las 3 moscas",
             FechaLanzamiento = DateTime.Now,
             artista = unArtista
@@ -65,6 +64,6 @@ public class RepoAlbumTest : TestBase
         var AlbumPorId = _repoAlbum.DetalleDe(idAlbum);
 
         Assert.NotNull(AlbumPorId);
-        Assert.NotEmpty(AlbumPorId.Nombre);
+        Assert.Equal(idAlbum, AlbumPorId.idAlbum);
     }
 }   

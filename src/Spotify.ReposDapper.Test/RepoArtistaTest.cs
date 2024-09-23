@@ -40,10 +40,11 @@ public class RepoArtistaTest : TestBase
     [InlineData(2)]
     [InlineData(3)]
 
-    public void DetalleArtistaPorId(uint parametro)
+    public void DetalleArtistaPorId(uint idArtista)
     {
-        var ArtistaPorId = _repoArtista.DetalleDe(parametro);
+        var ArtistaPorId = _repoArtista.DetalleDe(idArtista);
 
         Assert.NotNull(ArtistaPorId);
+        Assert.Equal(idArtista , ArtistaPorId.idArtista);
     }
 }

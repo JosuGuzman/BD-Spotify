@@ -17,13 +17,13 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         return album.idAlbum;
     }
 
-    public Artista? DetalleDe(uint idAlbum)
+    public Album? DetalleDe(uint idAlbum)
     {
         string consultarAlbum = @"SELECT * FROM Album WHERE idAlbum = @idAlbum";
 
-        var artista = _conexion.QuerySingleOrDefault<Artista>(consultarAlbum, new {idAlbum});
+        var Album = _conexion.QuerySingleOrDefault<Album>(consultarAlbum, new {idAlbum});
 
-        return artista;
+        return Album;
     }
 
     public void Eliminar(uint idAlbum)
