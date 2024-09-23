@@ -48,6 +48,8 @@ public class RepoUsuarioTest : TestBase
     public void DetalleIdUsuario (uint idUsuario)
     {
         var UsuarioPorId = _repoUsuario.DetalleDe(idUsuario);
+
         Assert.NotNull(UsuarioPorId);
+        Assert.Equal(idUsuario, UsuarioPorId.idUsuario);
     }
 }

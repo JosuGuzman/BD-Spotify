@@ -48,10 +48,11 @@ public class RepoReproduccionTests : TestBase
     [InlineData(2)]
     [InlineData(3)]
 
-    public void DetalleIdReproduccion(uint parametro)
+    public void DetalleIdReproduccion(uint idReproduccion)
     {
-        var ReproduccionPorId = _repoReproduccion.DetalleDe(parametro);
+        var ReproduccionPorId = _repoReproduccion.DetalleDe(idReproduccion);
 
         Assert.NotNull(ReproduccionPorId);
+        Assert.Equal(idReproduccion, ReproduccionPorId.IdHistorial);
     }
 }

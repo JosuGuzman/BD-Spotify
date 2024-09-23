@@ -29,7 +29,7 @@ public class RepoTipoSuscripcionTest : TestBase
             Tipo = "Anual"
         };
 
-        var IdTipoSuscripcionCreado = _repoTipoSuscripcion.Alta(tipoSuscripcion );
+        var IdTipoSuscripcionCreado = _repoTipoSuscripcion.Alta(tipoSuscripcion);
         
         var ListaTiposSuscripcion = _repoTipoSuscripcion.Obtener();
 
@@ -39,11 +39,12 @@ public class RepoTipoSuscripcionTest : TestBase
     [InlineData(1)]
     [InlineData(2)]
     [InlineData(3)]
-    public void DetalleIdTipoSuscripcion(uint parametro)
+    public void DetalleIdTipoSuscripcion(uint idTipoSuscripcion)
     {
-        var tipoSuscripcionPorId = _repoTipoSuscripcion.DetalleDe(parametro);
+        var tipoSuscripcionPorId = _repoTipoSuscripcion.DetalleDe(idTipoSuscripcion);
 
         Assert.NotNull(tipoSuscripcionPorId);
+        Assert.Equal(idTipoSuscripcion, tipoSuscripcionPorId.IdTipoSuscripcion);
     }
 
     

@@ -45,10 +45,11 @@ public class RepoSuscripcionTest : TestBase
     [InlineData(2)]
     [InlineData(3)]
 
-    public void DetallePorIdDeSuscripcion(uint parametro)
+    public void DetallePorIdDeSuscripcion(uint idSuscripcion)
     {
-        var SuscripcionPorId = _repoSuscripcion.DetalleDe(parametro);
+        var SuscripcionPorId = _repoSuscripcion.DetalleDe(idSuscripcion);
 
         Assert.NotNull(SuscripcionPorId);
+        Assert.Equal(idSuscripcion, SuscripcionPorId.idSuscripcion);
     }
 }
