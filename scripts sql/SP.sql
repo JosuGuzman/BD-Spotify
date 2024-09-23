@@ -39,7 +39,7 @@ END $$
 -- Tabla Usuario
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaUsuario $$
-CREATE PROCEDURE altaUsuario (unNombreUsuario VARCHAR(45), unEmail VARCHAR(45), unaContraseniaa VARCHAR(64), unidNacionalidad INT UNSIGNED, out unidUsuario INT UNSIGNED)
+CREATE PROCEDURE altaUsuario (unNombreUsuario VARCHAR(45), unEmail VARCHAR(45), unaContraseña VARCHAR(64), unidNacionalidad INT UNSIGNED, out unidUsuario INT UNSIGNED)
 BEGIN
     INSERT INTO Usuario(NombreUsuario,Email,Contraseña,idNacionalidad)
    	    VALUES(unNombreUsuario,unEmail,SHA2(unaContraseña, 256),unidNacionalidad);
