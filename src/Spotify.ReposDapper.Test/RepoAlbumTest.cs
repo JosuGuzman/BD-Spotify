@@ -65,5 +65,6 @@ public class RepoAlbumTest : TestBase
         var AlbumPorId = _repoAlbum.DetalleDe(idAlbum);
 
         Assert.NotNull(AlbumPorId);
+        Assert.NotEmpty(AlbumPorId.Nombre);
     }
 }   
