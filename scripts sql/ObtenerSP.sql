@@ -84,3 +84,37 @@ BEGIN
 END
 $$
 
+--Obtener Suscripciones
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ObtenerSuscripciones $$
+CREATE PROCEDURE ObtenerSuscripciones ()
+BEGIN
+	SELECT * 
+	from Suscripcion
+	ORDER BY FechaInicio ASC;
+END
+$$
+
+-- Obtener TipoSuscripciones
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ObtenerTipoSuscripciones $$
+CREATE PROCEDURE ObtenerTipoSuscripciones  ()
+BEGIN
+	SELECT * 
+	from TipoSuscripcion
+	ORDER BY Tipo ASC;
+END
+$$
+
+-- Obtener Usuarios
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS ObtenerUsuarios $$
+CREATE PROCEDURE ObtenerUsuarios ()
+BEGIN
+	SELECT * 
+	from Usuario
+	ORDER BY NombreUsuario ASC;
+END
+$$
