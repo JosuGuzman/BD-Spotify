@@ -42,8 +42,8 @@ public class RepoGenero : RepoGenerico, IRepoGenero
 
     public IList<Genero> Obtener()
     { 
-        string consultarGeneros = @"SELECT * from Genero ORDER BY Genero ASC";
-        var generos = _conexion.Query<Genero>(consultarGeneros);
-        return generos.ToList();
+        var Generos =  _conexion.Query<Genero>("ObtenerGeneros", commandType: CommandType.StoredProcedure);
+        
+        return Generos.ToList();
     }
 }

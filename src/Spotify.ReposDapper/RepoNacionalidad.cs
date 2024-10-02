@@ -30,8 +30,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
 
     public IList<Nacionalidad> Obtener ()
     {
-        string consultarNacionalidades = @"SELECT * from Nacionalidad ORDER BY Pais ASC";
-        var Nacionalidades = _conexion.Query<Nacionalidad>(consultarNacionalidades);
+        var Nacionalidades = _conexion.Query<Nacionalidad>("ObtenerNacionalidades", commandType: CommandType.StoredProcedure);
         return Nacionalidades.ToList();
     }
 }

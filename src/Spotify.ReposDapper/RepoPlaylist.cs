@@ -31,9 +31,9 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
 
     public IList<PlayList> Obtener ()
     {
-        string consultarPlaylists = @"SELECT * from Playlist ORDER BY Nombre ASC";
-        var Playlists = _conexion.Query<PlayList>(consultarPlaylists);
-        return Playlists.ToList();
+        var PlayLists = _conexion.Query<PlayList>("ObtenerPlayLists", commandType: CommandType.StoredProcedure);
+        
+        return PlayLists.ToList();
     }
     
 } 

@@ -30,8 +30,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
 
     public IList<Reproduccion> Obtener()
     {
-        string consultarReproducciones = @"SELECT * from HistorialReproducción ORDER BY FechaReproduccion ASC";
-        var Reproducciones = _conexion.Query<Reproduccion>(consultarReproducciones);
+        var Reproducciones = _conexion.Query<Reproduccion>("ObtenerHistorialReproducciones",  commandType: CommandType.StoredProcedure);
         return Reproducciones.ToList();
     }
 }

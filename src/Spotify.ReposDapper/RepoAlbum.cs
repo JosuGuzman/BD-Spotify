@@ -37,8 +37,7 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
 
     public IList<Album> Obtener()
     {
-        string consultarAlbumes = @"SELECT * from Album ORDER BY Titulo ASC";
-        var Albumes = _conexion.Query<Album>(consultarAlbumes);
+        var Albumes = _conexion.Query<Album>("ObtenerAlbum", commandType: CommandType.StoredProcedure);
         return Albumes.ToList();
     }
     
