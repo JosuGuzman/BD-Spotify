@@ -30,7 +30,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
 
     public IList<Reproduccion> Obtener()
     {
-        var Reproducciones = _conexion.Query<Reproduccion>("ObtenerHistorialReproducciones",  commandType: CommandType.StoredProcedure);
+        var Reproducciones = _conexion.Query<Reproduccion>("ObtenerHistorialReproduccion",  commandType: CommandType.StoredProcedure);
         return Reproducciones.ToList();
     }
 }

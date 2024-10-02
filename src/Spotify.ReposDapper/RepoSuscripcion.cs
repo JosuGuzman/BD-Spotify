@@ -31,8 +31,7 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
 
     public IList<Registro> Obtener()
     {
-        string consultarRegistros = @"SELECT * from Suscripcion ORDER BY FechaInicio ASC";
-        var Registros = _conexion.Query<Registro>(consultarRegistros);
+        var Registros =  _conexion.Query<Registro>("ObtenerSuscripciones",  commandType: CommandType.StoredProcedure);
         return Registros.ToList();
     }
 }

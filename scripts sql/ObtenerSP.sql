@@ -75,7 +75,7 @@ $$
 --Obtener Reproducciones
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS ObtenerHistorialReproducciones$$
+DROP PROCEDURE IF EXISTS ObtenerHistorialReproduccion$$
 CREATE PROCEDURE ObtenerHistorialReproduccion ()
 BEGIN
 	SELECT * 

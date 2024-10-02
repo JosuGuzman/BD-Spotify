@@ -35,8 +35,9 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
 
     public IList<TipoSuscripcion> Obtener()
     { 
-        string consultarTipos = @"SELECT * from TipoSuscripcion ORDER BY Tipo ASC";
-        var Tipos = _conexion.Query<TipoSuscripcion>(consultarTipos);
-        return Tipos.ToList();
+        var TipoSuscripciones = _conexion.Query<TipoSuscripcion>("ObtenerTipoSuscripciones", commandType: CommandType.StoredProcedure);
+        return TipoSuscripciones.ToList();
     }
+
+
 }

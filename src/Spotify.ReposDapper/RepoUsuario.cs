@@ -37,8 +37,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public IList<Usuario> Obtener()
     {
-        string consultarUsuarios = @"SELECT * from Usuario ORDER BY NombreUsuario ASC";
-        var Usuarios = _conexion.Query<Usuario>(consultarUsuarios);
+        var Usuarios = _conexion.Query<Usuario>("ObtenerUsuarios", commandType: CommandType.StoredProcedure);
         return Usuarios.ToList();
     }
 }
