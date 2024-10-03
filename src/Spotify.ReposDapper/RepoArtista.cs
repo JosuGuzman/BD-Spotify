@@ -29,11 +29,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         _conexion.Execute(eliminarArtista, new { idArtista });
     }
 
-    public IList<Artista> Obtener()
-    {
-        var ListaArtista = _conexion.Query<Artista>("ObtenerArtistas", commandType: CommandType.StoredProcedure);
-        return ListaArtista.ToList();
-    }
+    public IList<Artista> Obtener() => EjecutarSPConReturnDeTipoLista<Artista>("ObtenerArtistas").ToList();
 
     public Artista? DetalleDe(uint idArtista)
     {

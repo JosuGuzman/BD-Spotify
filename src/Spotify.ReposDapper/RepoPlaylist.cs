@@ -29,11 +29,6 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         return Buscar; 
     }
 
-    public IList<PlayList> Obtener ()
-    {
-        var PlayLists = _conexion.Query<PlayList>("ObtenerPlayLists", commandType: CommandType.StoredProcedure);
-        
-        return PlayLists.ToList();
-    }
+    public IList<PlayList> Obtener () => EjecutarSPConReturnDeTipoLista<PlayList>("ObtenerPlayLists").ToList();
     
 } 

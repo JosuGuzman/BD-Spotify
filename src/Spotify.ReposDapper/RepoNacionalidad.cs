@@ -28,9 +28,5 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         return Buscar;
     }
 
-    public IList<Nacionalidad> Obtener ()
-    {
-        var Nacionalidades = _conexion.Query<Nacionalidad>("ObtenerNacionalidades", commandType: CommandType.StoredProcedure);
-        return Nacionalidades.ToList();
-    }
+    public IList<Nacionalidad> Obtener () => EjecutarSPConReturnDeTipoLista<Nacionalidad>("ObtenerNacionalidades").ToList();
 }

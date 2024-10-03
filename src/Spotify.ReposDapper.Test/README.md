@@ -7,4 +7,5 @@
   "ConnectionStrings": {
     "MySQL": "server=localhost;database=tuBD;user=tuUsuarioBD;password=tuPass"
   }
+  }
   ```

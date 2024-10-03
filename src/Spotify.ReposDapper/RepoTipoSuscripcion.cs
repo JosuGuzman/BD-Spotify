@@ -33,11 +33,6 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         return TipoSuscripcion;
     }
 
-    public IList<TipoSuscripcion> Obtener()
-    { 
-        var TipoSuscripciones = _conexion.Query<TipoSuscripcion>("ObtenerTipoSuscripciones", commandType: CommandType.StoredProcedure);
-        return TipoSuscripciones.ToList();
-    }
-
+    public IList<TipoSuscripcion> Obtener() => EjecutarSPConReturnDeTipoLista<TipoSuscripcion>("ObtenerTipoSuscripciones").ToList();
 
 }

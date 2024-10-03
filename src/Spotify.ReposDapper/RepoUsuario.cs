@@ -35,10 +35,6 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         throw new NotImplementedException();
     }
 
-    public IList<Usuario> Obtener()
-    {
-        var Usuarios = _conexion.Query<Usuario>("ObtenerUsuarios", commandType: CommandType.StoredProcedure);
-        return Usuarios.ToList();
-    }
+    public IList<Usuario> Obtener() => EjecutarSPConReturnDeTipoLista<Usuario>("ObtenerUsuarios").ToList();
 }
  

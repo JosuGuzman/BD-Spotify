@@ -30,10 +30,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return Buscar;
     }
 
-    public IList<Cancion> Obtener()
-    {
-        var Canciones =_conexion.Query<Cancion>("ObtenerCanciones", commandType: CommandType.StoredProcedure);
-        return Canciones.ToList();
-    }
+    public IList<Cancion> Obtener() => EjecutarSPConReturnDeTipoLista<Cancion>("ObtenerCanciones").ToList();
+
 
 }

@@ -28,9 +28,5 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         return Buscar;
     }
 
-    public IList<Reproduccion> Obtener()
-    {
-        var Reproducciones = _conexion.Query<Reproduccion>("ObtenerHistorialReproduccion",  commandType: CommandType.StoredProcedure);
-        return Reproducciones.ToList();
-    }
+    public IList<Reproduccion> Obtener() => EjecutarSPConReturnDeTipoLista<Reproduccion>("ObtenerHistorialReproduccion").ToList();
 }

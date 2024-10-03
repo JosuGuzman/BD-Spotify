@@ -40,10 +40,5 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     }
 
 
-    public IList<Genero> Obtener()
-    { 
-        var Generos =  _conexion.Query<Genero>("ObtenerGeneros", commandType: CommandType.StoredProcedure);
-        
-        return Generos.ToList();
-    }
+    public IList<Genero> Obtener() => EjecutarSPConReturnDeTipoLista<Genero>("ObtenerGeneros").ToList();
 }

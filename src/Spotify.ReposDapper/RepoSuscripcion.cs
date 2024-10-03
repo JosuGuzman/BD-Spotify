@@ -29,9 +29,5 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
        return Registro;
     }
 
-    public IList<Registro> Obtener()
-    {
-        var Registros =  _conexion.Query<Registro>("ObtenerSuscripciones",  commandType: CommandType.StoredProcedure);
-        return Registros.ToList();
-    }
+    public IList<Registro> Obtener() => EjecutarSPConReturnDeTipoLista<Registro>("ObtenerSuscripciones").ToList();
 }
