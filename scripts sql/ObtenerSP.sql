@@ -118,3 +118,14 @@ BEGIN
 	ORDER BY NombreUsuario ASC;
 END
 $$
+
+-- Procedimiento para buscar canciones por título usando texto completo
+DELIMITER $$
+DROP PROCEDURE IF EXISTS BuscarCancionesPorTitulo $$
+CREATE PROCEDURE BuscarCancionesPorTitulo(IN unTitulo VARCHAR(45))
+BEGIN
+	SELECT * 
+	FROM Cancion 
+	WHERE MATCH(Titulo) AGAINST(unTitulo IN NATURAL LANGUAGE MODE);
+END
+$$
