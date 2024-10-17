@@ -30,6 +30,17 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return Buscar;
     }
 
+    public List<string>? Matcheo(string Cadena)
+    {
+        var parametro = new DynamicParameters();
+        parametro.Add("@InputCancion", Cadena);
+
+        var Lista = _conexion.Query<string>("MatcheoCancion", parametro, commandType: CommandType.StoredProcedure);
+
+        return Lista.ToList();
+    }
+
+
     public IList<Cancion> Obtener() => EjecutarSPConReturnDeTipoLista<Cancion>("ObtenerCanciones").ToList();
 
 

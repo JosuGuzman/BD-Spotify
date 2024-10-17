@@ -115,3 +115,13 @@ BEGIN
 	set unidSuscripcion = last_insert_id();
 END $$
 
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS MatcheoCancion $$
+CREATE PROCEDURE MatcheoCancion(InputCancion VARCHAR(45))
+BEGIN
+	SELECT Titulo
+	FROM Cancion
+	WHERE MATCH(Titulo) AGAINST(CONCAT(InputCancion, "*") IN BOOLEAN MODE);
+END$$

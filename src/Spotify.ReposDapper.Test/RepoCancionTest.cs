@@ -58,4 +58,20 @@ public class RepoCancionTest : TestBase
         Assert.NotNull(BuscarIdCanciones);
         Assert.Equal(idCancion, BuscarIdCanciones.idCancion);
     }
+
+
+    [Theory]
+    [InlineData("Re")]
+    [InlineData("Co")]
+
+    public void MatcheoDeTituloPorTitulo(string cadena)
+    {
+        var CancionesTitulo = _repoCancion.Matcheo(cadena);
+
+        foreach (var titulo in CancionesTitulo)
+        {    
+        Console.WriteLine(titulo);
+        }
+    }
 }
+
