@@ -37,7 +37,25 @@ https://github.com/JosuGuzman/BD-Spotify
 
 ## Despliegue 📦
 
-_Agrega notas adicionales sobre que cosas se debe instalar, configurar y como hacer deploy_
+_Para iniciar el proyecto primero debe desplegar la base de datos y para eso tiene que hacer segundo click en la carpeta scripts sql_
+_y presionar en terminal integrado, le aparecera una terminal donde tiene que poner lo siguiente:_
+
+```
+mysql -u tuUsuario -p 
+:tuContraseña
+```
+
+_Luego dirigirse a la carpeta src y dentro de la carpeta Spotify.ReposDapper.Test_
+
+1. Crear `appSettings.json`: nombre del archivo json que tiene que estar en la misma carpeta.
+El contenido del archivo tiene que ser:  
+  ```json
+  {
+  "ConnectionStrings": {
+    "MySQL": "server=localhost;database=tuBD;user=tuUsuarioBD;password=tuPass"
+  }
+  }
+  ```
 
 ## Construido con 🛠️
 
