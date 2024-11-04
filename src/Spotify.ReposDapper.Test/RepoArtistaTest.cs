@@ -3,7 +3,7 @@ namespace Spotify.ReposDapper.Test;
 public class RepoArtistaTest : TestBase
 {
     private RepoArtista _repoArtista;
-    public RepoArtistaTest() : base()
+    public RepoArtistaTest() : base("Artista")
     {
         this._repoArtista = new RepoArtista(Conexion);
     }

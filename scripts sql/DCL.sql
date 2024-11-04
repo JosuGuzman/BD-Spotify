@@ -12,7 +12,7 @@ GRANT ALL PRIVILEGES ON 5to_Spotify.* TO 'Admin'@'%';
 GRANT SELECT, INSERT, UPDATE ON 5to_Spotify.Usuario TO 'Usuario'@'10.120.2.%';
 GRANT SELECT ON 5to_Spotify.Cancion TO 'Usuario'@'10.120.2.%';
 
--- Asignación de permisos para UsuarioLocal
+--  de permisos para UsuarioLocal
 GRANT SELECT ON 5to_Spotify.* TO 'UsuarioLocal'@'localhost';
 
 -- Creación de un nuevo usuario con permisos específicos
@@ -22,3 +22,4 @@ GRANT SELECT ON 5to_Spotify.Album TO 'Gestor'@'localhost';
 
 -- Aplicar los cambios
 FLUSH PRIVILEGES;
+Asignación
