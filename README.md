@@ -1,9 +1,3 @@
-<!-- Completa abajo cambiando ET12DE1Computacion a tu user|organización y template a tu repo, te recomiendo usar el Find & Replace de tu editor -->
-![main build.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/main-build.NET6/badge.svg?branch=main) ![main test.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/main-test.NET6/badge.svg?branch=main)
-![dev build.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/dev-build.NET6/badge.svg?branch=dev) ![dev test.NET6](https://github.com/ET12DE1Computacion/simpleTemplateCSharp/workflows/dev-test.NET6/badge.svg?branch=dev)
-[![Abrir en Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Abrir%20en%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/ET12DE1Computacion/simpleTemplateCSharp)
-<!-- Borra este comentario y linea después haber cambiado arriba las ocurrencias de tu usuario/repo -->
-
 <h1 align="center"> E.T. Nº12 D.E. 1º "Libertador Gral. José de San Martín" </h1>
 <p align="center">
   <img src="https://et12.edu.ar/imgs/et12.gif">
@@ -21,7 +15,7 @@
 
 # BD Spotify
 
-_Acá va un parrafo que describa lo que es el proyecto._
+El proyecto BD Spotify es una base de datos diseñada para almacenar y gestionar información relacionada con la música y los usuarios de la plataforma Spotify. Esta base de datos tiene como objetivo proporcionar una estructura organizada para el almacenamiento de datos de canciones, álbumes, artistas, usuarios y sus preferencias musicales. El proyecto busca implementar una solución escalable y eficiente para el manejo de grandes cantidades de datos, permitiendo a los usuarios interactuar con la base de datos de manera sencilla y segura.
 
 ## Comenzando 🚀
 
@@ -31,12 +25,18 @@ Clonar el repositorio github, desde Github Desktop o ejecutar en la terminal o C
 https://github.com/JosuGuzman/BD-Spotify
 ```
 
-### Pre-requisitos 📋
+## Pre-requisitos 📋
 
 - .NET 8 (SDK .NET 8.0.105) - [Descargar](https://dotnet.microsoft.com/es-es/download/dotnet/8.0)
+- Visual Studio Code - [Descargar](https://code.visualstudio.com/#alt-downloads)
+- Git - [Descargar](https://git-scm.com/downloads)
+- MySQL - [Descargar](https://dev.mysql.com/downloads/mysql/)
+- Dapper - Micro ORM para .NET
+- Entity Framework Core - Para la gestión de datos en .NET
 
 ## Despliegue 📦
 
+<<<<<<< Updated upstream
 _Para iniciar el proyecto primero debe desplegar la base de datos y para eso tiene que hacer segundo click en la carpeta scripts sql_
 _y presionar en terminal integrado, le aparecera una terminal donde tiene que poner lo siguiente:_
 
@@ -56,15 +56,81 @@ El contenido del archivo tiene que ser:
   }
   }
   ```
+=======
+Para desplegar el proyecto, sigue los siguientes pasos:
+
+
+1. **Abrir el proyecto**:
+   - Navega al directorio del proyecto clonado:
+     ```
+     cd BD-Spotify
+     ```
+   - Abre el proyecto en Visual Studio Code ejecutando:
+     ```
+     code .
+     ```
+
+2. **Instalar dependencias**:
+   - Asegúrate de tener instalado el SDK de .NET 8.0.105. Si no lo tienes, descárgalo desde [aquí](https://dotnet.microsoft.com/es-es/download/dotnet/8.0).
+   - En la terminal de Visual Studio Code, ejecuta el siguiente comando para restaurar las dependencias del proyecto:
+     ```
+     dotnet restore
+     ```
+
+3. **Configurar la base de datos**:
+   - Asegúrate de tener MySQL instalado y en funcionamiento.
+   - Crea una base de datos llamada `5to_Spotify` en tu servidor MySQL.
+   - Navega a la carpeta `scripts sql` dentro del proyecto:
+     ```
+     cd scripts sql
+     ```
+   - Ejecuta el siguiente comando para importar los scripts SQL necesarios:
+     ```
+     mysql -u UsuarioMySQL -p
+     ```
+   - Luego, ingresa la contraseña de tu usuario y ejecuta:
+     ```
+     SOURCE install.sql
+     ```
+
+4. **Ejecutar el proyecto**:
+   - Regresa al directorio raíz del proyecto:
+     ```
+     cd ..
+     ```
+   - Ejecuta el proyecto utilizando el siguiente comando:
+     ```
+     dotnet run
+     ```
+
+5. **Probar el proyecto**:
+   - Para ejecutar las pruebas unitarias, utiliza el siguiente comando:
+     ```
+     dotnet test
+     ```
+
+6. **Acceder a la aplicación**:
+   - Una vez que el proyecto esté en ejecución, podrás acceder a la aplicación a través de tu navegador en la dirección que se indique en la terminal (generalmente `http://localhost:5000` o similar).
+
+En la carpeta `src` encontrarás el código fuente del proyecto. En la carpeta `scripts sql` encontrarás los scripts SQL utilizados para la creación y manipulación de la base de datos.
+>>>>>>> Stashed changes
 
 ## Construido con 🛠️
 
-_Menciona las herramientas y versiones que utilizaste para crear tu proyecto_
+El proyecto fue construido utilizando las siguientes herramientas y versiones:
 
-* [Visual Studio Code](https://code.visualstudio.com/#alt-downloads) - Editor de código.
+* .NET 8 (SDK .NET 8.0.105)
+* Visual Studio Code
+* Git
+* SQL Server
+* Dapper (versión 2.1.35)
+* Entity Framework Core
+* MySQL (versión 8.0 o superior)
+* XUnit (para pruebas unitarias)
+
 
 ## Autores ✒️
 
-_Menciona a todos aquellos que ayudaron a levantar el proyecto desde sus inicios_
-
-
+* Josu Duran - Creador de la base de datos y parte de las clases de C#
+* Rene Terraza - Encargado de la documentacion y parte de los tests
+* Miguel Verdugues - Creador de la Logica del Proyecto y parte de las clases de C#
