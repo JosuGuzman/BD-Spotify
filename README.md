@@ -36,7 +36,6 @@ https://github.com/JosuGuzman/BD-Spotify
 
 ## Despliegue 📦
 
-<<<<<<< Updated upstream
 _Para iniciar el proyecto primero debe desplegar la base de datos y para eso tiene que hacer segundo click en la carpeta scripts sql_
 _y presionar en terminal integrado, le aparecera una terminal donde tiene que poner lo siguiente:_
 
