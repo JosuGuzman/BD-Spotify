@@ -119,7 +119,6 @@ El proyecto fue construido utilizando las siguientes herramientas y versiones:
 
 * .NET 8 (SDK .NET 8.0.105)
 * Visual Studio Code
-* Git
 * SQL Server
 * Dapper (versión 2.1.35)
 * Entity Framework Core
