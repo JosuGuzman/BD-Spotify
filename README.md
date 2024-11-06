@@ -61,18 +61,18 @@ Para desplegar el proyecto, sigue los siguientes pasos:
 
 1. **Abrir el proyecto**:
    - Navega al directorio del proyecto clonado:
-     ```
+     ``` bash
      cd BD-Spotify
      ```
    - Abre el proyecto en Visual Studio Code ejecutando:
-     ```
+     ``` bash
      code .
      ```
 
 2. **Instalar dependencias**:
    - Asegúrate de tener instalado el SDK de .NET 8.0.105. Si no lo tienes, descárgalo desde [aquí](https://dotnet.microsoft.com/es-es/download/dotnet/8.0).
    - En la terminal de Visual Studio Code, ejecuta el siguiente comando para restaurar las dependencias del proyecto:
-     ```
+     ``` bash
      dotnet restore
      ```
 
@@ -80,21 +80,21 @@ Para desplegar el proyecto, sigue los siguientes pasos:
    - Asegúrate de tener MySQL instalado y en funcionamiento.
    - Crea una base de datos llamada `5to_Spotify` en tu servidor MySQL.
    - Navega a la carpeta `scripts sql` dentro del proyecto:
-     ```
+     ``` bash
      cd scripts sql
      ```
    - Ejecuta el siguiente comando para importar los scripts SQL necesarios:
-     ```
+     ``` bash
      mysql -u UsuarioMySQL -p
      ```
    - Luego, ingresa la contraseña de tu usuario y ejecuta:
-     ```
-     SOURCE install.sql
+     ``` shell
+     mysql >> SOURCE install.sql
      ```
 
 4. **Ejecutar el proyecto**:
    - Regresa al directorio raíz del proyecto:
-     ```
+     ``` bash
      cd ..
      ```
    - Ejecuta el proyecto utilizando el siguiente comando:
@@ -104,7 +104,7 @@ Para desplegar el proyecto, sigue los siguientes pasos:
 
 5. **Probar el proyecto**:
    - Para ejecutar las pruebas unitarias, utiliza el siguiente comando:
-     ```
+     ``` bash
      dotnet test
      ```
 
