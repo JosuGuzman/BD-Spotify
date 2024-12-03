@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Usuario` (
   `idUsuario` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `NombreUsuario` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NOT NULL,
-  `Contraseña` VARCHAR(64) NOT NULL,
+  `Contrasenia` VARCHAR(64) NOT NULL,
   `idNacionalidad` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`idUsuario`),
   UNIQUE INDEX `email` (`Email` ASC) VISIBLE,
@@ -130,7 +130,7 @@ ADD FULLTEXT INDEX `ft_index_titulo` (`Titulo`);
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`HistorialReproducción`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `5to_Spotify`.`HistorialReproducción` (
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`HistorialReproduccion` (
   `idHistorial` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `idUsuario` INT UNSIGNED NOT NULL,
   `idCancion` INT UNSIGNED NOT NULL,
@@ -199,6 +199,30 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Suscripcion` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `5to_Spotify`.`Cancion_Playlist`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Cancion_Playlist` (
+  `idCancion` INT UNSIGNED NOT NULL,
+  `idPlaylist` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`idCancion`, `idPlaylist`),
+  INDEX `fk_Cancion_Playlist_Cancion1_idx` (`idCancion` ASC) VISIBLE,
+  INDEX `fk_Cancion_Playlist_Playlist1_idx` (`idPlaylist` ASC) VISIBLE,
+  CONSTRAINT `fk_Cancion_Playlist_Cancion1`
+    FOREIGN KEY (`idCancion`)
+    REFERENCES `5to_Spotify`.`Cancion` (`idCancion`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Cancion_Playlist_Playlist1`
+    FOREIGN KEY (`idPlaylist`)
+    REFERENCES `5to_Spotify`.`Playlist` (`idPlaylist`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

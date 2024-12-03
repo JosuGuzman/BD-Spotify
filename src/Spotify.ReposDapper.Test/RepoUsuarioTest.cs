@@ -31,7 +31,7 @@ public class RepoUsuarioTest : TestBase
         {
             NombreUsuario = "Sherklan12",
             Gmail = "elquequieraperdr@gmail.com",
-            Contraseña = "RomanRiquelme",
+            Contrasenia = "RomanRiquelme",
             nacionalidad = unaNacionalidad
         };
 

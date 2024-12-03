@@ -39,10 +39,10 @@ END $$
 -- Tabla Usuario
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaUsuario $$
-CREATE PROCEDURE altaUsuario (unNombreUsuario VARCHAR(45), unEmail VARCHAR(45), unaContraseña VARCHAR(64), unidNacionalidad INT UNSIGNED, out unidUsuario INT UNSIGNED)
+CREATE PROCEDURE altaUsuario (unNombreUsuario VARCHAR(45), unEmail VARCHAR(45), unaContrasenia VARCHAR(64), unidNacionalidad INT UNSIGNED, out unidUsuario INT UNSIGNED)
 BEGIN
-    INSERT INTO Usuario(NombreUsuario,Email,Contraseña,idNacionalidad)
-   	    VALUES(unNombreUsuario,unEmail,SHA2(unaContraseña, 256),unidNacionalidad);
+    INSERT INTO Usuario(NombreUsuario,Email,Contrasenia,idNacionalidad)
+   	    VALUES(unNombreUsuario,unEmail,SHA2(unaContrasenia, 256),unidNacionalidad);
     
 	SET unidUsuario = last_insert_id();
 END $$
@@ -74,7 +74,7 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS altaHistorial_reproduccion $$
 CREATE PROCEDURE altaHistorial_reproduccion (OUT unidHistorial INT UNSIGNED, unidUsuario INT UNSIGNED, unidCancion INT UNSIGNED, unFechaReproduccion DATETIME)
 BEGIN 
-	INSERT INTO HistorialReproducción (idUsuario,idCancion,FechaReproduccion)
+	INSERT INTO HistorialReproduccion (idUsuario,idCancion,FechaReproduccion)
 		VALUES(unidUsuario,unidCancion,unFechaReproduccion);
 	
 	SET unidHistorial = last_insert_id();
@@ -115,9 +115,16 @@ BEGIN
 	set unidSuscripcion = last_insert_id();
 END $$
 
+DELIMITER $$
+DROP PROCEDURE IF EXISTS altaPlaylistCancion $$
+CREATE PROCEDURE altaPlaylistCancion (unidCancion INT UNSIGNED,unidPlaylist INT UNSIGNED)
+BEGIN 
+	INSERT INTO Cancion_Playlist(idCancion, idPlaylist)
+	VALUES (unidCancion, unidPlaylist);
+END$$
+
 
 DELIMITER $$
-
 DROP PROCEDURE IF EXISTS MatcheoCancion $$
 CREATE PROCEDURE MatcheoCancion(InputCancion VARCHAR(45))
 BEGIN

@@ -54,6 +54,15 @@ CALL altaTipoSuscripcion(@idSuscripcionBimestral,2,12,"Bimestral");
 CALL altaTipoSuscripcion(@idSuscripcionTrimestral,3,15,"Trimestral");
 CALL altaTipoSuscripcion(@idSuscripcionCuatrimestral,4,20,"Cuatrimestral");
 
+-- Tabla Cancion_Playlist
+
+CALL altaPlaylistCancion(@idCancionOver, @idPlaylistRock);
+CALL altaPlaylistCancion(@idCancionRene, @idPlaylistPop);
+CALL altaPlaylistCancion(@idCancionEstrella, @idPlaylistJazz);
+CALL altaPlaylistCancion(@idCancionCelos, @idPlaylistChill);
+
+
+
 -- Tabla Suscripcion_Usuario
 INSERT INTO Suscripcion (idUsuario,idSuscripcion,idTipoSuscripcion,FechaInicio)
  VALUES

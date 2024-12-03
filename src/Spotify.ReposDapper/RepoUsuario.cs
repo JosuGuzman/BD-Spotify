@@ -10,7 +10,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         var parametros = new DynamicParameters();
         parametros.Add("@unidUsuario", direction: ParameterDirection.Output);
         parametros.Add("@unNombreUsuario", usuario.NombreUsuario);
-        parametros.Add("@unaContraseña", usuario.Contraseña);
+        parametros.Add("@unaContrasenia", usuario.Contrasenia);
         parametros.Add("@unEmail", usuario.Gmail);
         parametros.Add("@unidNacionalidad", usuario.nacionalidad.idNacionalidad);
 
