@@ -1,4 +1,7 @@
 namespace Spotify.ReposDapper.Test;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class RepoPlayListTest : TestBase
 {
@@ -54,5 +57,26 @@ public class RepoPlayListTest : TestBase
 
         Assert.NotNull(PlayListPorId);
         Assert.Equal(idPlaylist , PlayListPorId.idPlaylist);
+    }
+
+    [Fact]
+    public void DetallePlaylistOk()
+    {
+        // Act
+        var cancionesObtenidas = _repoPlayList.DetallePlaylist(8);
+
+        // Assert
+        Assert.NotNull(cancionesObtenidas);
+        Assert.Contains(cancionesObtenidas, c => c.Titulo == "Estos Celos");
+    }
+
+    [Fact]
+    public void DetallePlaylistNoExistente()
+    {
+        // Act
+        var cancionesObtenidas = _repoPlayList.DetallePlaylist(1); // ID de playlist que no existe
+
+        // Assert
+        Assert.Empty(cancionesObtenidas);
     }
 }

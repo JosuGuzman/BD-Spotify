@@ -21,7 +21,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
 
     public Reproduccion? DetalleDe(uint idHistorial)
     {
-        var BuscarReproduccionPorId = @"SELECT * FROM HistorialReproducción WHERE idHistorial = @idHistorial";
+        var BuscarReproduccionPorId = @"SELECT * FROM HistorialReproduccion WHERE idHistorial = @idHistorial";
 
         var Buscar = _conexion.QueryFirstOrDefault<Reproduccion>(BuscarReproduccionPorId, new {idHistorial});
         

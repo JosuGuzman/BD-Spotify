@@ -31,4 +31,16 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
 
     public IList<PlayList> Obtener () => EjecutarSPConReturnDeTipoLista<PlayList>("ObtenerPlayLists").ToList();
     
+    public IList<Cancion>? DetallePlaylist(uint idPlaylist)
+    {
+        var query = @"
+            SELECT c.* 
+            FROM Cancion c
+            JOIN Cancion_Playlist cp ON c.idCancion = cp.idCancion
+            WHERE cp.idPlaylist = @idPlaylist";
+
+        var canciones = _conexion.Query<Cancion>(query, new { idPlaylist }).ToList();
+
+        return canciones;
+    }
 } 
