@@ -33,6 +33,14 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
     
     public IList<Cancion>? DetallePlaylist(uint idPlaylist)
     {
+        var consultaExistenciaPlaylist = "SELECT COUNT(*) FROM Playlist WHERE idPlaylist = @idPlaylist";
+        var noExiste = _conexion.ExecuteScalar<int>(consultaExistenciaPlaylist, new { idPlaylist }) == 0;
+
+        if (noExiste)
+        {
+            return null; 
+        }
+
         var query = @"
             SELECT c.* 
             FROM Cancion c
@@ -41,6 +49,7 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
 
         var canciones = _conexion.Query<Cancion>(query, new { idPlaylist }).ToList();
 
-        return canciones;
+        
+        return canciones; 
     }
 } 
