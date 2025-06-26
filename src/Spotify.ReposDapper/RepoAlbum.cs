@@ -30,6 +30,7 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
     }
 
 
+
     public Album? DetalleDe(uint idAlbum)
     {
         string consultarAlbum = @"SELECT * FROM Album WHERE idAlbum = @idAlbum";
@@ -66,11 +67,6 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         await _conexion.ExecuteAsync(eliminarAlbum, new { idAlbum });
     }
 
-    public Task EliminarAsync()
-    {
-        throw new NotImplementedException();
-    }
-
     public IList<Album> Obtener() => EjecutarSPConReturnDeTipoLista<Album>("ObtenerAlbum").ToList();
 
     public async Task<List<Album>> ObtenerAsync()
@@ -79,8 +75,4 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         return resultado.ToList();
     }
 
-    Task<Album> IListadoAsync<Album>.ObtenerAsync()
-    {
-        throw new NotImplementedException();
-    }
 }
