@@ -7,5 +7,5 @@ public interface IListado<T>
 
 public interface IListadoAsync<T>
 {
-    Task<T> ObtenerAsync();
+    Task<IEnumerable<T>> ObtenerAsync();
 }

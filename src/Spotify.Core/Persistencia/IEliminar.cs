@@ -7,5 +7,5 @@ public interface IEliminar <T>
 
 public interface IEliminarAsync<T>
 {
-    Task EliminarAsync();
+    Task EliminarAsync(T id);
 }

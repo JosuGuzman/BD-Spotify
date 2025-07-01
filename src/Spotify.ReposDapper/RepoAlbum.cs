@@ -1,3 +1,4 @@
+
 namespace Spotify.ReposDapper;
 
 public class RepoAlbum : RepoGenerico, IRepoAlbum
@@ -28,8 +29,6 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         album.idAlbum = parametros.Get<uint>("@unidAlbum");
         return album;
     }
-
-
 
     public Album? DetalleDe(uint idAlbum)
     {
@@ -69,10 +68,8 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
 
     public IList<Album> Obtener() => EjecutarSPConReturnDeTipoLista<Album>("ObtenerAlbum").ToList();
 
-    public async Task<List<Album>> ObtenerAsync()
+    public Task<IEnumerable<Album>> ObtenerAsync()
     {
-        var resultado = await _conexion.QueryAsync<Album>("ObtenerAlbum", commandType: CommandType.StoredProcedure);
-        return resultado.ToList();
+        throw new NotImplementedException();
     }
-
 }

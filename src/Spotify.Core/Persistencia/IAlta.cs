@@ -7,5 +7,5 @@ public interface IAlta<T, N>
 
 public interface IAltaAsync<T, N>
 {
-    Task<T> AltaAsync();
+    Task<T> AltaAsync(T elemento);
 }
