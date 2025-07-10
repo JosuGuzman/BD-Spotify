@@ -3,7 +3,7 @@ namespace Spotify.ReposDapper;
 public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
 {
     public RepoNacionalidad(IDbConnection conexion) 
-        : base(conexion) { }
+        : base(conexion) {}
     
     public uint Alta (Nacionalidad nacionalidad )
     {
@@ -16,19 +16,6 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         nacionalidad.idNacionalidad = parametros.Get<uint>("@unidNacionalidad");
 
         return nacionalidad.idNacionalidad;
-    }
-
-    public async Task<Nacionalidad> AltaAsync(Nacionalidad nacionalidad)
-    {
-        var parametros = new DynamicParameters();
-        parametros.Add("@unidNacionalidad", direction: ParameterDirection.Output);
-        parametros.Add("@unPais", nacionalidad.Pais);
-
-        await _conexion.ExecuteAsync("altaNacionalidad", parametros, commandType: CommandType.StoredProcedure);
-
-        nacionalidad.idNacionalidad = parametros.Get<uint>("@unidNacionalidad");
-
-        return nacionalidad;
     }
 
     public Nacionalidad? DetalleDe(uint idNacionalidad)
@@ -50,9 +37,4 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     }
 
     public IList<Nacionalidad> Obtener () => EjecutarSPConReturnDeTipoLista<Nacionalidad>("ObtenerNacionalidades").ToList();
-
-    public Task<IEnumerable<Nacionalidad>> ObtenerAsync()
-    {
-        throw new NotImplementedException();
-    }
 }
