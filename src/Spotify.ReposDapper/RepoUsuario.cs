@@ -1,3 +1,6 @@
+
+using System.Threading.Tasks;
+
 namespace Spotify.ReposDapper;
 
 public class RepoUsuario : RepoGenerico, IRepoUsuario
@@ -20,12 +23,35 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         return usuario.idUsuario;
     }
 
-    public Usuario? DetalleDe(uint idUsuario)
+    public async Task<Usuario> AltaAsync(Usuario usuario)
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@unidUsuario", direction: ParameterDirection.Output);
+        parametros.Add("@unNombreUsuario", usuario.NombreUsuario);
+        parametros.Add("@unaContrasenia", usuario.Contrasenia);
+        parametros.Add("@unEmail", usuario.Gmail);
+        parametros.Add("@unidNacionalidad", usuario.nacionalidad.idNacionalidad);
+
+        await _conexion.ExecuteAsync("altaUsuario", parametros, commandType: CommandType.StoredProcedure);
+
+        usuario.idUsuario = parametros.Get<uint>("@unidUsuario");
+        return usuario;
+    }
+
+    public async Task<Usuario?> DetalleDe(uint idUsuario)
     {
         string BuscarUsuario = @"SELECT * FROM Usuario WHERE idUsuario = @idUsuario";
 
-        // Ejecutar la consulta y obtener el primer resultado o 'null' si no existe.
-        var usuario = _conexion.QueryFirstOrDefault<Usuario>(BuscarUsuario, new { idUsuario });
+        var usuario = await _conexion.QueryFirstOrDefaultAsync<Usuario>(BuscarUsuario, new { idUsuario });
+
+        return usuario;
+    }
+
+    public async Task<Usuario?> DetalleDeAsync(uint id)
+    {
+        string BuscarUsuario = @"SELECT * FROM Usuario WHERE idUsuario = @idUsuario";
+
+        var usuario = await _conexion.QueryFirstOrDefaultAsync<Usuario>(BuscarUsuario, new { idUsuario });
 
         return usuario;
     }
@@ -35,6 +61,15 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         throw new NotImplementedException();
     }
 
+    public Task EliminarAsync(uint id)
+    {
+        throw new NotImplementedException();
+    }
+
     public IList<Usuario> Obtener() => EjecutarSPConReturnDeTipoLista<Usuario>("ObtenerUsuarios").ToList();
+
+    public Task<IEnumerable<Usuario>> ObtenerAsync()
+    {
+        throw new NotImplementedException();
+    }
 }
- 
