@@ -13,8 +13,3 @@ public interface IDetallePorId<T, N> where N : IBinaryNumber<N>
 {
     T? DetalleDe(N id);
 }
-
-public interface IDetallePorIdAsync<T, N> where N : IBinaryNumber<N>
-{
-    Task<T?> DetalleDeAsync(N id);
-}
