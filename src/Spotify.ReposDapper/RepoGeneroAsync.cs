@@ -1,4 +1,3 @@
-
 namespace Spotify.ReposDapper;
 
 public class RepoGeneroAsync : RepoGenerico, IRepoGeneroAsync
