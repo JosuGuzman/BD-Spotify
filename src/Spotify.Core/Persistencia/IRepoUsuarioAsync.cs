@@ -1,4 +1,4 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IRepoUsuarioAsync : IAltaAsync<Usuario, uint>, IListado<Usuario>, IEliminarAsync<uint>, IDetallePorIdAsync<Usuario, uint>
+public interface IRepoUsuarioAsync : IAltaAsync<Usuario, uint>, IListado<Usuario>, IDetallePorIdAsync<Usuario, uint>
 {}
