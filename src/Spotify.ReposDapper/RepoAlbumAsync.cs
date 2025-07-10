@@ -1,7 +1,7 @@
 
 namespace Spotify.ReposDapper;
 
-public class RepoAlbumAsync : RepoGenerico,IRepoAlbumAsync
+public class RepoAlbumAsync : RepoGenerico , IRepoAlbumAsync
 {
     public RepoAlbumAsync(IDbConnection conexion)
         : base(conexion) {}
