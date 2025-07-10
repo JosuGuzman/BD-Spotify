@@ -3,7 +3,7 @@ namespace Spotify.ReposDapper;
 public class RepoArtista : RepoGenerico, IRepoArtista
 {
     public RepoArtista(IDbConnection conexion) 
-        : base(conexion) { }
+        : base(conexion) {}
 
     public uint Alta(Artista artista)
     {
