@@ -17,25 +17,25 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         return album.idAlbum;
     }
 
-public Album? DetalleDe(uint idAlbum)
-{
-    string sql = @"
-        SELECT * FROM Album WHERE idAlbum = @idAlbum;
-        SELECT * FROM Artista WHERE idArtista = (
-            SELECT idArtista FROM Album WHERE idAlbum = @idAlbum
-        );
-    ";
-
-    using var multi = _conexion.QueryMultiple(sql, new { idAlbum });
-
-    var album = multi.ReadSingleOrDefault<Album>();
-    if (album is not null)
+    public Album? DetalleDe(uint idAlbum)
     {
-        album.artista = multi.ReadSingleOrDefault<Artista>();
+        string sql = @"
+            SELECT * FROM Album WHERE idAlbum = @idAlbum;
+            SELECT * FROM Artista WHERE idArtista = (
+                SELECT idArtista FROM Album WHERE idAlbum = @idAlbum
+            );
+        ";
+    
+        using var multi = _conexion.QueryMultiple(sql, new { idAlbum });
+    
+        var album = multi.ReadSingleOrDefault<Album>();
+        if (album is not null)
+        {
+            album.artista = multi.ReadSingleOrDefault<Artista>();
+        }
+    
+        return album;
     }
-
-    return album;
-}
 
     public void Eliminar(uint idAlbum)
     {
