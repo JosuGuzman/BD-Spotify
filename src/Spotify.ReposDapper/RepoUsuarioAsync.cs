@@ -30,5 +30,9 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsync
         return usuario;
     }
 
-    public IList<Usuario> Obtener() => EjecutarSPConReturnDeTipoLista<Usuario>("ObtenerUsuarios").ToList();
+    public async Task<List<Usuario>> Obtener()
+    {
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Usuario>("ObtenerUsuario");
+        return task.ToList();
+    }
 }

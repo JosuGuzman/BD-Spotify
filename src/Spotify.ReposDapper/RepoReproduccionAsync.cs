@@ -29,5 +29,9 @@ public class RepoReproduccionAsync : RepoGenerico, IRepoReproduccionAsync
         return Buscar;
     }
 
-    public IList<Reproduccion> Obtener() => EjecutarSPConReturnDeTipoLista<Reproduccion>("ObtenerHistorialReproduccion").ToList();
+    public async Task<List<Reproduccion>> Obtener()
+    {
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Reproduccion>("ObtenerHistorialReproduccion");
+        return task.ToList();
+    }
 }

@@ -3,8 +3,8 @@ namespace Spotify.ReposDapper;
 
 public class RepoPlaylistAsync : RepoGenerico, IRepoPlaylistAsync
 {
-    public RepoPlaylistAsync(IDbConnection conexion) 
-        : base(conexion) {}
+    public RepoPlaylistAsync(IDbConnection conexion)
+        : base(conexion) { }
 
     public async Task<PlayList> AltaAsync(PlayList playlist)
     {
@@ -25,10 +25,14 @@ public class RepoPlaylistAsync : RepoGenerico, IRepoPlaylistAsync
     {
         var BuscarPlayListPorId = @"SELECT * FROM Playlist WHERE idPlaylist = @idPlaylist";
 
-        var Buscar = await _conexion.QueryFirstOrDefaultAsync<PlayList>(BuscarPlayListPorId, new {idPlaylist});
+        var Buscar = await _conexion.QueryFirstOrDefaultAsync<PlayList>(BuscarPlayListPorId, new { idPlaylist });
 
         return Buscar;
     }
 
-    public IList<PlayList> Obtener() => EjecutarSPConReturnDeTipoLista<PlayList>("ObtenerPlayLists").ToList();
+    public async Task<List<PlayList>> Obtener()
+    {
+        var task = await EjecutarSPConReturnDeTipoListaAsync<PlayList>("ObtenerPlaylists");
+        return task.ToList();
+    }
 }

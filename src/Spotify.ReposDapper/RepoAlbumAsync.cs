@@ -36,5 +36,9 @@ public class RepoAlbumAsync : RepoGenerico , IRepoAlbumAsync
         await _conexion.ExecuteAsync(eliminarAlbum, new { idAlbum });
     }
 
-    public IList<Album> Obtener() => EjecutarSPConReturnDeTipoLista<Album>("ObtenerAlbum").ToList();
+    public async Task<List<Album>> Obtener()
+    { 
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Album>("ObtenerAlbum");
+        return task.ToList();
+    }
 }

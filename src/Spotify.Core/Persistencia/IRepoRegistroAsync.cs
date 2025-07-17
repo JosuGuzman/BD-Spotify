@@ -1,4 +1,4 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IRepoRegistroAsync : IAltaAsync<Registro, uint>, IListado<Registro>, IDetallePorIdAsync<Registro, uint>
+public interface IRepoRegistroAsync : IAltaAsync<Registro, uint>, IListadoAsync<Registro>, IDetallePorIdAsync<Registro, uint>
 {}

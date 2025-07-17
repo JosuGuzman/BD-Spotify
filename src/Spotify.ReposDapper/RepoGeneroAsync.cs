@@ -40,5 +40,9 @@ public class RepoGeneroAsync : RepoGenerico, IRepoGeneroAsync
         await _conexion.ExecuteAsync(eliminarGenero, new { idGenero });
     }
 
-    public IList<Genero> Obtener() => EjecutarSPConReturnDeTipoLista<Genero>("ObtenerGeneros").ToList();
+    public async Task<List<Genero>> Obtener()
+    { 
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Genero>("ObtenerGenero");
+        return task.ToList();
+    }
 }
