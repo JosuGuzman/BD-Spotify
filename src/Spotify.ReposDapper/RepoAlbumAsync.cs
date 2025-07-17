@@ -18,14 +18,25 @@ public class RepoAlbumAsync : RepoGenerico , IRepoAlbumAsync
         return album;
     }
 
-    public async Task<Album?> DetalleDeAsync(uint idAlbum)
+public async Task<Album?> DetalleDeAsync(uint idAlbum)
+{
+    string sql = @"
+        SELECT * FROM Album WHERE idAlbum = @idAlbum;
+        SELECT * FROM Artista WHERE idArtista = (
+            SELECT idArtista FROM Album WHERE idAlbum = @idAlbum
+        );
+    ";
+
+    using var multi = await _conexion.QueryMultipleAsync(sql, new { idAlbum });
+
+    var album = await multi.ReadSingleOrDefaultAsync<Album>();
+    if (album is not null)
     {
-        string consultarAlbum = @"SELECT * FROM Album WHERE idAlbum = @idAlbum";
-
-        var Album = await _conexion.QuerySingleOrDefaultAsync<Album>(consultarAlbum, new { idAlbum });
-
-        return Album;
+        album.artista = await multi.ReadSingleOrDefaultAsync<Artista>();
     }
+
+    return album;
+}
 
     public async Task EliminarAsync(uint idAlbum)
     {
