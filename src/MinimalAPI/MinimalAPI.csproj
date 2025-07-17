@@ -8,6 +8,12 @@
     <PackageReference Include="MySqlConnector" Version="2.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Spotify.Core\Spotify.Core.csproj" />
+    <ProjectReference Include="..\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
+    <ProjectReference Include="..\Spotify.ReposDapper.Test\Spotify.ReposDapper.Test.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>

@@ -1,4 +1,5 @@
 using Spotify.Core;
+using Scalar.AspNetCore;
 using Spotify.ReposDapper;
 using System.Data;
 using MySqlConnector;
@@ -28,11 +29,7 @@ if (app.Environment.IsDevelopment())
     {
         options.RouteTemplate = "/openapi/{documentName}.json";
     });
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "Spotify API v1");
-        options.RoutePrefix = "swagger";
-    });
+    app.MapScalarApiReference();
 }
 
 // Endpoints Artista
