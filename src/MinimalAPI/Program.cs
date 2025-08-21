@@ -4,6 +4,7 @@ using Spotify.ReposDapper;
 using System.Data;
 using MySqlConnector;
 using Spotify.Core.Persistencia;
+using MinimalAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,85 @@ app.MapPost("/albumes", (IRepoAlbum repo, Album album) =>
 {
     var id = repo.Alta(album);
     return Results.Created($"/albumes/{id}", album);
+});
+
+// Endpoints Usuario con DTO
+app.MapGet("/usuarios", (IRepoUsuario repo) =>
+{
+    var usuarios = repo.Obtener();
+    return Results.Ok(usuarios.Select(u => new UsuarioOutputDTO
+    {
+        idUsuario = u.idUsuario,
+        NombreUsuario = u.NombreUsuario,
+        Gmail = u.Gmail,
+        Nacionalidad = u.nacionalidad.Pais
+    }));
+});
+
+app.MapGet("/usuarios/{id}", (IRepoUsuario repo, uint id) =>
+{
+    var usuario = repo.DetalleDe(id);
+
+    if (usuario is null)
+        return Results.NotFound();
+
+    return Results.Ok(new UsuarioOutputDTO
+    {
+        idUsuario = usuario.idUsuario,
+        NombreUsuario = usuario.NombreUsuario,
+        Gmail = usuario.Gmail,
+        Nacionalidad = usuario.nacionalidad.Pais
+    });
+});
+
+app.MapPost("/usuarios", (IRepoUsuario repo, UsuarioInputDTO usuarioDto) =>
+{
+    var usuario = new Usuario
+    {
+        NombreUsuario = usuarioDto.NombreUsuario,
+        Gmail = usuarioDto.Gmail,
+        Contrasenia = usuarioDto.Contrasenia,
+        nacionalidad = new Nacionalidad { Pais = usuarioDto.Nacionalidad }
+    };
+
+    var id = repo.Alta(usuario);
+
+    return Results.Created($"/usuarios/{id}", new UsuarioOutputDTO
+    {
+        idUsuario = id,
+        NombreUsuario = usuario.NombreUsuario,
+        Gmail = usuario.Gmail,
+        Nacionalidad = usuario.nacionalidad.Pais
+    });
+});
+
+// Endpoints Canción
+app.MapGet("/canciones", (IRepoCancion repo) =>
+{
+    var canciones = repo.Obtener();
+    return Results.Ok(canciones.Select(c => new CancionOutputDTO
+    {
+        idCancion = c.idCancion,
+        Titulo = c.Titulo,
+        Duracion = c.Duracion,
+        Artista = c.artista.NombreArtistico
+    }));
+});
+
+app.MapGet("/canciones/{id}", (IRepoCancion repo, uint id) =>
+{
+    var cancion = repo.DetalleDe(id);
+
+    if (cancion is null)
+        return Results.NotFound();
+
+    return Results.Ok(new CancionOutputDTO
+    {
+        idCancion = cancion.idCancion,
+        Titulo = cancion.Titulo,
+        Duracion = cancion.Duracion,
+        Artista = cancion.artista.NombreArtistico
+    });
 });
 
 app.Run();
