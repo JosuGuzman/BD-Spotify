@@ -5,6 +5,7 @@ using System.Data;
 using MySqlConnector;
 using Spotify.Core.Persistencia;
 using MinimalAPI;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +16,10 @@ var connectionString = builder.Configuration.GetConnectionString("MySQL");
 builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
 
 // Registrar repositorios
-builder.Services.AddScoped<IRepoArtista,RepoArtista>();
-builder.Services.AddScoped<IRepoAlbum,RepoAlbum>();
+builder.Services.AddScoped<IRepoArtista, RepoArtista>();
+builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
+builder.Services.AddScoped<IRepoUsuario, RepoUsuario>();
+builder.Services.AddScoped<IRepoCancion, RepoCancion>();
 
 // Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -33,7 +36,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-// Endpoints Artista
+// ==================== Endpoints Artista ====================
 app.MapGet("/artistas", (IRepoArtista repo) => repo.Obtener());
 
 app.MapGet("/artistas/{id}", (IRepoArtista repo, uint id) =>
@@ -48,7 +51,7 @@ app.MapPost("/artistas", (IRepoArtista repo, Artista artista) =>
     return Results.Created($"/artistas/{id}", artista);
 });
 
-// Endpoints Álbum
+// ==================== Endpoints Álbum ====================
 app.MapGet("/albumes", (IRepoAlbum repo) => repo.Obtener());
 
 app.MapGet("/albumes/{id}", (IRepoAlbum repo, uint id) =>
@@ -63,7 +66,7 @@ app.MapPost("/albumes", (IRepoAlbum repo, Album album) =>
     return Results.Created($"/albumes/{id}", album);
 });
 
-// Endpoints Usuario con DTO
+// ==================== Endpoints Usuario con DTO ====================
 app.MapGet("/usuarios", (IRepoUsuario repo) =>
 {
     var usuarios = repo.Obtener();
@@ -72,9 +75,10 @@ app.MapGet("/usuarios", (IRepoUsuario repo) =>
         idUsuario = u.idUsuario,
         NombreUsuario = u.NombreUsuario,
         Gmail = u.Gmail,
-        Nacionalidad = u.nacionalidad.Pais
+        Nacionalidad = u.nacionalidad?.Pais ?? "Desconocida"
     }));
 });
+
 
 app.MapGet("/usuarios/{id}", (IRepoUsuario repo, uint id) =>
 {
@@ -88,58 +92,29 @@ app.MapGet("/usuarios/{id}", (IRepoUsuario repo, uint id) =>
         idUsuario = usuario.idUsuario,
         NombreUsuario = usuario.NombreUsuario,
         Gmail = usuario.Gmail,
-        Nacionalidad = usuario.nacionalidad.Pais
+        idNacionalidad = usuario.nacionalidad.Pais
     });
 });
 
-app.MapPost("/usuarios", (IRepoUsuario repo, UsuarioInputDTO usuarioDto) =>
+app.MapPost("/usuarios", ([FromServices] IRepoUsuario repo, [FromBody] UsuarioInputDTO usuarioDto) =>
 {
     var usuario = new Usuario
     {
         NombreUsuario = usuarioDto.NombreUsuario,
         Gmail = usuarioDto.Gmail,
         Contrasenia = usuarioDto.Contrasenia,
-        nacionalidad = new Nacionalidad { Pais = usuarioDto.Nacionalidad }
+        nacionalidad = new Nacionalidad { idNacionalidad = usuarioDto.Nacionalidad }
     };
 
     var id = repo.Alta(usuario);
 
-    return Results.Created($"/usuarios/{id}", new UsuarioOutputDTO
+    return Results.Ok(new UsuarioOutputDTO
     {
-        idUsuario = id,
+        idUsuario = usuario.idUsuario,
         NombreUsuario = usuario.NombreUsuario,
         Gmail = usuario.Gmail,
-        Nacionalidad = usuario.nacionalidad.Pais
-    });
-});
-
-// Endpoints Canción
-app.MapGet("/canciones", (IRepoCancion repo) =>
-{
-    var canciones = repo.Obtener();
-    return Results.Ok(canciones.Select(c => new CancionOutputDTO
-    {
-        idCancion = c.idCancion,
-        Titulo = c.Titulo,
-        Duracion = c.Duracion,
-        Artista = c.artista.NombreArtistico
-    }));
-});
-
-app.MapGet("/canciones/{id}", (IRepoCancion repo, uint id) =>
-{
-    var cancion = repo.DetalleDe(id);
-
-    if (cancion is null)
-        return Results.NotFound();
-
-    return Results.Ok(new CancionOutputDTO
-    {
-        idCancion = cancion.idCancion,
-        Titulo = cancion.Titulo,
-        Duracion = cancion.Duracion,
-        Artista = cancion.artista.NombreArtistico
-    });
+        Nacionalidad = usuario.nacionalidad?.Pais ?? "Desconocida"
+        });
 });
 
 app.Run();
