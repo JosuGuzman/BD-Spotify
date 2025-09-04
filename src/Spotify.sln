@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotify.ReposDapper.Test", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalAPI", "MinimalAPI\MinimalAPI.csproj", "{C313FCE5-DF5C-48AD-A2D2-0CF33573D0C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotify.MVC", "..\Spotify.MVC\Spotify.MVC.csproj", "{673801BC-2C85-45AB-B0E6-D95BCFED8C61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotify.Mvc", "Spotify.Mvc\Spotify.Mvc.csproj", "{673801BC-2C85-45AB-B0E6-D95BCFED8C61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
