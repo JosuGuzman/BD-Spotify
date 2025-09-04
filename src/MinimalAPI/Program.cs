@@ -67,54 +67,54 @@ app.MapPost("/albumes", (IRepoAlbum repo, Album album) =>
 });
 
 // ==================== Endpoints Usuario con DTO ====================
-app.MapGet("/usuarios", (IRepoUsuario repo) =>
-{
-    var usuarios = repo.Obtener();
-    return Results.Ok(usuarios.Select(u => new UsuarioOutputDTO
-    {
-        idUsuario = u.idUsuario,
-        NombreUsuario = u.NombreUsuario,
-        Gmail = u.Gmail,
-        Nacionalidad = u.nacionalidad?.Pais ?? "Desconocida"
-    }));
-});
-
-
-app.MapGet("/usuarios/{id}", (IRepoUsuario repo, uint id) =>
-{
-    var usuario = repo.DetalleDe(id);
-
-    if (usuario is null)
-        return Results.NotFound();
-
-    return Results.Ok(new UsuarioOutputDTO
-    {
-        idUsuario = usuario.idUsuario,
-        NombreUsuario = usuario.NombreUsuario,
-        Gmail = usuario.Gmail,
-        idNacionalidad = usuario.nacionalidad.Pais
-    });
-});
-
-app.MapPost("/usuarios", ([FromServices] IRepoUsuario repo, [FromBody] UsuarioInputDTO usuarioDto) =>
-{
-    var usuario = new Usuario
-    {
-        NombreUsuario = usuarioDto.NombreUsuario,
-        Gmail = usuarioDto.Gmail,
-        Contrasenia = usuarioDto.Contrasenia,
-        nacionalidad = new Nacionalidad { idNacionalidad = usuarioDto.Nacionalidad }
-    };
-
-    var id = repo.Alta(usuario);
-
-    return Results.Ok(new UsuarioOutputDTO
-    {
-        idUsuario = usuario.idUsuario,
-        NombreUsuario = usuario.NombreUsuario,
-        Gmail = usuario.Gmail,
-        Nacionalidad = usuario.nacionalidad?.Pais ?? "Desconocida"
-        });
-});
+//app.MapGet("/usuarios", (IRepoUsuario repo) =>
+//{
+//    var usuarios = repo.Obtener();
+//    return Results.Ok(usuarios.Select(u => new UsuarioOutputDTO
+//    {
+//        idUsuario = u.idUsuario,
+//        NombreUsuario = u.NombreUsuario,
+//        Gmail = u.Gmail,
+//        Nacionalidad = u.nacionalidad?.Pais ?? "Desconocida"
+//    }));
+//});
+//
+//
+//app.MapGet("/usuarios/{id}", (IRepoUsuario repo, uint id) =>
+//{
+//    var usuario = repo.DetalleDe(id);
+//
+//    if (usuario is null)
+//        return Results.NotFound();
+//
+//    return Results.Ok(new UsuarioOutputDTO
+//    {
+//        idUsuario = usuario.idUsuario,
+//        NombreUsuario = usuario.NombreUsuario,
+//        Gmail = usuario.Gmail,
+//        idNacionalidad = usuario.nacionalidad.Pais
+//    });
+//});
+//
+//app.MapPost("/usuarios", ([FromServices] IRepoUsuario repo, [FromBody] UsuarioInputDTO usuarioDto) =>
+//{
+//    var usuario = new Usuario
+//    {
+//        NombreUsuario = usuarioDto.NombreUsuario,
+//        Gmail = usuarioDto.Gmail,
+//        Contrasenia = usuarioDto.Contrasenia,
+//        nacionalidad = new Nacionalidad { idNacionalidad = usuarioDto.Nacionalidad }
+//    };
+//
+//    var id = repo.Alta(usuario);
+//
+//    return Results.Ok(new UsuarioOutputDTO
+//    {
+//        idUsuario = usuario.idUsuario,
+//        NombreUsuario = usuario.NombreUsuario,
+//        Gmail = usuario.Gmail,
+//        Nacionalidad = usuario.nacionalidad?.Pais ?? "Desconocida"
+//        });
+//});
 
 app.Run();

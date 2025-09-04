@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Spotify.Core\Spotify.Core.csproj" />
+    <ProjectReference Include="..\src\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
+    <ProjectReference Include="..\src\MinimalAPI\MinimalAPI.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
