@@ -53,15 +53,6 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return Registro;
     }
 
-    public Task EliminarAsync(uint id)
-    {
-        throw new NotImplementedException();
-    }
-
     public IList<Registro> Obtener() => EjecutarSPConReturnDeTipoLista<Registro>("ObtenerSuscripciones").ToList();
 
-    public Task<IEnumerable<Registro>> ObtenerAsync()
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -32,7 +32,7 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsync
 
     public async Task<List<Usuario>> Obtener()
     {
-        var task = await EjecutarSPConReturnDeTipoListaAsync<Usuario>("ObtenerUsuario");
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Usuario>("ObtenerUsuarios");
         return task.ToList();
     }
 }

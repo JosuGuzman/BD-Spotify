@@ -29,7 +29,7 @@ public class RepoGeneroAsync : RepoGenerico, IRepoGeneroAsync
     public async Task EliminarAsync(uint idGenero)
     {
         string eliminarHistorialReproducciones = @"
-            DELETE FROM HistorialReproducción 
+            DELETE FROM HistorialReproduccion 
             WHERE idCancion IN (SELECT idCancion FROM Cancion WHERE idGenero = @idGenero)";
         await _conexion.ExecuteAsync(eliminarHistorialReproducciones, new { idGenero });
 
@@ -42,7 +42,7 @@ public class RepoGeneroAsync : RepoGenerico, IRepoGeneroAsync
 
     public async Task<List<Genero>> Obtener()
     { 
-        var task = await EjecutarSPConReturnDeTipoListaAsync<Genero>("ObtenerGenero");
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Genero>("ObtenerGeneros");
         return task.ToList();
     }
 }

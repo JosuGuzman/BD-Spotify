@@ -41,7 +41,7 @@ public class RepoArtistaAsync : RepoGenerico, IRepoArtistaAsync
 
         public async Task<List<Artista>> Obtener()
     { 
-        var task = await EjecutarSPConReturnDeTipoListaAsync<Artista>("ObtenerArtista");
+        var task = await EjecutarSPConReturnDeTipoListaAsync<Artista>("ObtenerArtistas");
         return task.ToList();
     }
 }
