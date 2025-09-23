@@ -1,29 +1,45 @@
+
+using Spotify.Core;
+using Spotify.Core.Persistencia;
+using Spotify.ReposDapper;
+using System.Data;
+using MySqlConnector;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Obtener cadena de conexión
+var connectionString = builder.Configuration.GetConnectionString("MySQL");
+
+// Registrar IDbConnection
+builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
+
+// Registrar repositorios
+builder.Services.AddScoped<IRepoArtista, RepoArtista>();
+builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
+builder.Services.AddScoped<IRepoUsuario, RepoUsuario>();
+builder.Services.AddScoped<IRepoGenero, RepoGenero>();
+
+// MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseRouting();
+app.UseStaticFiles();
 
+app.UseRouting();
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
+// Ruta por defecto
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
