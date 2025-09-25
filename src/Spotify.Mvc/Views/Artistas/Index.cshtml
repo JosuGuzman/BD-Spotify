@@ -1,0 +1,38 @@
+@model IEnumerable<Spotify.DTOs.UsuarioOutputDTO>
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h2>Usuarios</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Crear Usuario</a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nombre Usuario</th>
+            <th>Email</th>
+            <th>Nacionalidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var u in Model)
+    {
+        <tr>
+            <td>@u.idUsuario</td>
+            <td>@u.NombreUsuario</td>
+            <td>@u.Gmail</td>
+            <td>@u.Nacionalidad</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@u.idUsuario" class="btn btn-sm btn-info">Detalles</a>
+                <a asp-action="Edit" asp-route-id="@u.idUsuario" class="btn btn-sm btn-warning">Editar</a>
+                <a asp-action="Delete" asp-route-id="@u.idUsuario" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

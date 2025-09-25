@@ -1,4 +1,4 @@
-namespace MinimalAPI.DTOs;
+namespace Spotify.DTOs;
 
 public class UsuarioInputDTO
 {

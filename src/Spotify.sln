@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalAPI", "MinimalAPI\Mi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotify.Mvc", "Spotify.Mvc\Spotify.Mvc.csproj", "{673801BC-2C85-45AB-B0E6-D95BCFED8C61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spotify.DTOs", "Spotify.DTOs\Spotify.DTOs.csproj", "{D24D830F-F0B7-48AB-984A-9F0D2920056F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{673801BC-2C85-45AB-B0E6-D95BCFED8C61}.Release|x64.Build.0 = Release|Any CPU
 		{673801BC-2C85-45AB-B0E6-D95BCFED8C61}.Release|x86.ActiveCfg = Release|Any CPU
 		{673801BC-2C85-45AB-B0E6-D95BCFED8C61}.Release|x86.Build.0 = Release|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Debug|x64.Build.0 = Debug|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Debug|x86.Build.0 = Debug|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Release|x64.ActiveCfg = Release|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Release|x64.Build.0 = Release|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Release|x86.ActiveCfg = Release|Any CPU
+		{D24D830F-F0B7-48AB-984A-9F0D2920056F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

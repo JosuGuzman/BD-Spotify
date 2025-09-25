@@ -1,7 +1,7 @@
 using Spotify.Core;
 using Spotify.Core.Persistencia;
 using Spotify.ReposDapper;
-using MinimalAPI.DTOs;
+using Spotify.DTOs;
 using Scalar.AspNetCore;
 using System.Data;
 using MySqlConnector;

@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Spotify.Core\Spotify.Core.csproj" />
     <ProjectReference Include="..\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
     <ProjectReference Include="..\MinimalAPI\MinimalAPI.csproj" />
+    <ProjectReference Include="..\Spotify.DTOs\Spotify.DTOs.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
