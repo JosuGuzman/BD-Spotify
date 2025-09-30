@@ -1,46 +1,95 @@
+// Controllers/ArtistasController.cs
 using Microsoft.AspNetCore.Mvc;
 using Spotify.Core;
 using Spotify.Core.Persistencia;
+using Spotify.Mvc.Models;
 
-namespace Spotify.Mvc.Controllers;
+namespace Spotify.Controllers;
 
 public class ArtistasController : Controller
 {
-    private readonly IRepoArtista _repo;
+    private readonly IRepoArtista _repoArtista;
 
-    public ArtistasController(IRepoArtista repo)
+    public ArtistasController(IRepoArtista repoArtista)
     {
-        _repo = repo;
+        _repoArtista = repoArtista;
     }
 
-    // GET: /Artistas
     public IActionResult Index()
     {
-        var artistas = _repo.Obtener();
-        return View(artistas);
+        var artistas = _repoArtista.Obtener();
+        var viewModel = artistas.Select(a => new ArtistaViewModel
+        {
+            IdArtista = a.idArtista,
+            NombreArtistico = a.NombreArtistico,
+            Nombre = a.Nombre,
+            Apellido = a.Apellido
+        }).ToList();
+
+        return View(viewModel);
     }
 
-    // GET: /Artistas/Details/5
     public IActionResult Details(uint id)
     {
-        var artista = _repo.DetalleDe(id);
-        if (artista is null) return NotFound();
-        return View(artista);
+        var artista = _repoArtista.DetalleDe(id);
+        if (artista == null)
+            return NotFound();
+
+        var viewModel = new ArtistaViewModel
+        {
+            IdArtista = artista.idArtista,
+            NombreArtistico = artista.NombreArtistico,
+            Nombre = artista.Nombre,
+            Apellido = artista.Apellido
+        };
+
+        return View(viewModel);
     }
 
-    // GET: /Artistas/Create
-    public IActionResult Create() => View();
+    public IActionResult Create()
+    {
+        return View(new ArtistaCreateViewModel());
+    }
 
-    // POST: /Artistas/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(Artista artista)
+    public IActionResult Create(ArtistaCreateViewModel viewModel)
     {
         if (ModelState.IsValid)
         {
-            _repo.Alta(artista);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                var artista = new Artista
+                {
+                    NombreArtistico = viewModel.NombreArtistico,
+                    Nombre = viewModel.Nombre,
+                    Apellido = viewModel.Apellido
+                };
+
+                _repoArtista.Alta(artista);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Error al crear artista: {ex.Message}");
+            }
         }
-        return View(artista);
+        return View(viewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Delete(uint id)
+    {
+        try
+        {
+            _repoArtista.Eliminar(id);
+            TempData["SuccessMessage"] = "Artista eliminado correctamente";
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Error al eliminar artista: {ex.Message}";
+        }
+        return RedirectToAction(nameof(Index));
     }
 }

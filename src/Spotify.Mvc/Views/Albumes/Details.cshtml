@@ -1,4 +1,4 @@
-@model Spotify.Models.ViewModels.AlbumViewModel
+@model Spotify.Mvc.Models.AlbumViewModel
 @{
     ViewData["Title"] = "Detalles del Álbum";
 }
@@ -35,9 +35,9 @@
                         <dl>
                             <dt>Artista:</dt>
                             <dd>
-                                <a asp-controller="Artistas" asp-action="Details" asp-route-id="@Model.ArtistaId" 
-                                   class="text-decoration-none">
-                                    @Model.ArtistaNombre
+                                <a asp-controller="Artistas" asp-action="Details" asp-route-id="@Model.IdArtista" 
+                                    class="text-decoration-none">
+                                    @Model.NombreArtista
                                 </a>
                             </dd>
 
@@ -60,7 +60,7 @@
                         <i class="fas fa-plus"></i> Agregar Canción
                     </a>
                     <form asp-action="Delete" method="post" class="d-grid">
-                        <input type="hidden" name="id" value="@Model.IdAlbum" />
+                        <input type="hidden" name="id" value="@Model.IdAlbum"/>
                         <button type="submit" class="btn btn-outline-danger" 
                                 onclick="return confirm('¿Estás seguro de eliminar este álbum?')">
                             <i class="fas fa-trash"></i> Eliminar Álbum

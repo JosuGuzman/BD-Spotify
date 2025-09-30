@@ -1,4 +1,4 @@
-@model List<Spotify.Models.ViewModels.AlbumViewModel>
+@model List<Spotify.Mvc.Models.AlbumViewModel>
 @{
     ViewData["Title"] = "Álbumes";
 }
@@ -44,12 +44,12 @@
                                 <td>
                                     <strong>@album.Titulo</strong>
                                 </td>
-                                <td>@album.ArtistaNombre</td>
+                                <td>@album.NombreArtista</td>
                                 <td>@album.FechaLanzamiento.ToString("dd/MM/yyyy")</td>
                                 <td class="text-end">
                                     <div class="btn-group" role="group">
                                         <a asp-action="Details" asp-route-id="@album.IdAlbum" 
-                                           class="btn btn-sm btn-outline-info" title="Ver detalles">
+                                            class="btn btn-sm btn-outline-info" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <form asp-action="Delete" method="post" class="d-inline">

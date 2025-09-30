@@ -11,7 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Spotify.Core\Spotify.Core.csproj" />
     <ProjectReference Include="..\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
-    <ProjectReference Include="..\Spotify.ReposDapper.Test\Spotify.ReposDapper.Test.csproj" />
     <ProjectReference Include="..\Spotify.DTOs\Spotify.DTOs.csproj" />
   </ItemGroup>
 
