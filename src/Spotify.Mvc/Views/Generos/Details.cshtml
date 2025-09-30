@@ -1,0 +1,61 @@
+@model Spotify.Models.ViewModels.GeneroViewModel
+@{
+    ViewData["Title"] = "Detalles del Género";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-guitar text-success"></i> Detalles del Género
+    </h1>
+    <div>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+        <form asp-action="Delete" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.IdGenero" />
+            <button type="submit" class="btn btn-outline-danger" 
+                    onclick="return confirm('¿Estás seguro de eliminar este género?')">
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Información del Género</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl>
+                            <dt>ID:</dt>
+                            <dd>@Model.IdGenero</dd>
+
+                            <dt>Género Musical:</dt>
+                            <dd class="h5 text-success">@Model.Genero</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Estadísticas</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">
+                    <i class="fas fa-info-circle text-success"></i> 
+                    Este género está asociado a múltiples canciones en el sistema.
+                </p>
+                <p class="text-muted">
+                    Al eliminar el género, se eliminarán todas las asociaciones con las canciones.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+@model Spotify.Models.ViewModels.UsuarioCreateViewModel
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-user-plus text-primary"></i> Crear Usuario
+    </h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Volver
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Información del Nuevo Usuario</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="NombreUsuario" class="form-label">Nombre de Usuario *</label>
+                                <input asp-for="NombreUsuario" class="form-control" />
+                                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Gmail" class="form-label">Email *</label>
+                                <input asp-for="Gmail" type="email" class="form-control" />
+                                <span asp-validation-for="Gmail" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Contrasenia" class="form-label">Contraseña *</label>
+                                <input asp-for="Contrasenia" type="password" class="form-control" />
+                                <span asp-validation-for="Contrasenia" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="NacionalidadId" class="form-label">Nacionalidad *</label>
+                                <select asp-for="NacionalidadId" class="form-select" 
+                                        asp-items="@(new SelectList(Model.Nacionalidades ?? new List<Spotify.Core.Nacionalidad>(), "idNacionalidad", "Pais"))">
+                                    <option value="">-- Seleccionar País --</option>
+                                </select>
+                                <span asp-validation-for="NacionalidadId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-spotify">
+                            <i class="fas fa-save"></i> Crear Usuario
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Información</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">
+                    <i class="fas fa-info-circle text-primary"></i> 
+                    Completa todos los campos obligatorios (*) para crear un nuevo usuario.
+                </p>
+                <p class="text-muted">
+                    El usuario podrá acceder al sistema con su nombre de usuario y contraseña.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

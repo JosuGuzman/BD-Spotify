@@ -1,0 +1,64 @@
+@model List<Spotify.Models.ViewModels.UsuarioViewModel>
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-users text-primary"></i> Usuarios
+    </h1>
+    <a asp-action="Create" class="btn btn-spotify">
+        <i class="fas fa-plus"></i> Nuevo Usuario
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-4">
+                <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                <h5>No hay usuarios registrados</h5>
+                <p class="text-muted">Comienza agregando el primer usuario.</p>
+                <a asp-action="Create" class="btn btn-spotify">Crear Primer Usuario</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre de Usuario</th>
+                            <th>Email</th>
+                            <th>País</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usuario in Model)
+                        {
+                            <tr>
+                                <td>@usuario.IdUsuario</td>
+                                <td>
+                                    <strong>@usuario.NombreUsuario</strong>
+                                </td>
+                                <td>@usuario.Gmail</td>
+                                <td>@usuario.Pais</td>
+                                <td class="text-end">
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@usuario.IdUsuario" 
+                                           class="btn btn-sm btn-outline-info" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

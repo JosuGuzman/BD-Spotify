@@ -1,14 +1,14 @@
-@model List<Spotify.Models.ViewModels.ArtistaViewModel>
+@model List<Spotify.Models.ViewModels.GeneroViewModel>
 @{
-    ViewData["Title"] = "Artistas";
+    ViewData["Title"] = "Géneros Musicales";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>
-        <i class="fas fa-users text-primary"></i> Artistas
+        <i class="fas fa-guitar text-success"></i> Géneros Musicales
     </h1>
     <a asp-action="Create" class="btn btn-spotify">
-        <i class="fas fa-plus"></i> Nuevo Artista
+        <i class="fas fa-plus"></i> Nuevo Género
     </a>
 </div>
 
@@ -17,10 +17,10 @@
         @if (!Model.Any())
         {
             <div class="text-center py-4">
-                <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                <h5>No hay artistas registrados</h5>
-                <p class="text-muted">Comienza agregando el primer artista.</p>
-                <a asp-action="Create" class="btn btn-spotify">Crear Primer Artista</a>
+                <i class="fas fa-guitar fa-3x text-muted mb-3"></i>
+                <h5>No hay géneros registrados</h5>
+                <p class="text-muted">Comienza agregando el primer género musical.</p>
+                <a asp-action="Create" class="btn btn-spotify">Crear Primer Género</a>
             </div>
         }
         else
@@ -30,33 +30,29 @@
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
-                            <th>Nombre Artístico</th>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
+                            <th>Género Musical</th>
                             <th class="text-end">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var artista in Model)
+                        @foreach (var genero in Model)
                         {
                             <tr>
-                                <td>@artista.IdArtista</td>
+                                <td>@genero.IdGenero</td>
                                 <td>
-                                    <strong>@artista.NombreArtistico</strong>
+                                    <strong>@genero.Genero</strong>
                                 </td>
-                                <td>@artista.Nombre</td>
-                                <td>@artista.Apellido</td>
                                 <td class="text-end">
                                     <div class="btn-group" role="group">
-                                        <a asp-action="Details" asp-route-id="@artista.IdArtista" 
+                                        <a asp-action="Details" asp-route-id="@genero.IdGenero" 
                                            class="btn btn-sm btn-outline-info" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <form asp-action="Delete" method="post" class="d-inline">
-                                            <input type="hidden" name="id" value="@artista.IdArtista" />
+                                            <input type="hidden" name="id" value="@genero.IdGenero" />
                                             <button type="submit" class="btn btn-sm btn-outline-danger" 
                                                     title="Eliminar" 
-                                                    onclick="return confirm('¿Estás seguro de eliminar este artista?')">
+                                                    onclick="return confirm('¿Estás seguro de eliminar este género?')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>

@@ -1,0 +1,66 @@
+@model Spotify.Models.ViewModels.GeneroCreateViewModel
+@{
+    ViewData["Title"] = "Crear Género";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-guitar text-success"></i> Crear Género Musical
+    </h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Volver
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Información del Nuevo Género</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Genero" class="form-label">Nombre del Género *</label>
+                        <input asp-for="Genero" class="form-control" placeholder="Ej: Rock, Pop, Jazz, etc." />
+                        <span asp-validation-for="Genero" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-spotify">
+                            <i class="fas fa-save"></i> Crear Género
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Tipos de Género</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">
+                    Algunos ejemplos de géneros musicales:
+                </p>
+                <ul class="text-muted">
+                    <li>Rock</li>
+                    <li>Pop</li>
+                    <li>Jazz</li>
+                    <li>Hip Hop</li>
+                    <li>Electrónica</li>
+                    <li>Reggaetón</li>
+                    <li>Clásica</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

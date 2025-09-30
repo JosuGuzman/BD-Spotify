@@ -48,3 +48,33 @@ button.accept-policy {
   text-align: center;
   background-color: #f8f9fa;
 }
+
+.navbar-brand { 
+    font-weight: bold; 
+    color: #1DB954 !important;
+}
+
+.table-actions { 
+    white-space: nowrap; 
+    width: 1%;
+}
+
+.card { 
+    margin-bottom: 20px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-spotify {
+    background-color: #1DB954;
+    border-color: #1DB954;
+    color: white;
+}
+
+.btn-spotify:hover {
+    background-color: #1ed760;
+    border-color: #1ed760;
+}
+
+.nav-link:hover {
+    color: #1DB954 !important;
+}
