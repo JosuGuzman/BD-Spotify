@@ -1,0 +1,78 @@
+@model Spotify.Mvc.Models.CancionViewModel
+@{
+    ViewData["Title"] = "Detalles de la Canción";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-music text-warning"></i> Detalles de la Canción
+    </h1>
+    <div>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Volver
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Información de la Canción</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl>
+                            <dt>ID:</dt>
+                            <dd>@Model.IdCancion</dd>
+
+                            <dt>Título:</dt>
+                            <dd class="h5 text-warning">@Model.Titulo</dd>
+
+                            <dt>Duración:</dt>
+                            <dd>@Model.Duracion.ToString(@"mm\:ss")</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl>
+                            <dt>Álbum:</dt>
+                            <dd>@(string.IsNullOrEmpty(Model.AlbumTitulo) ? "Álbum Desconocido" : Model.AlbumTitulo)</dd>
+                            
+                            <dt>Artista:</dt>
+                            <dd>@(string.IsNullOrEmpty(Model.ArtistaNombre) ? "Artista Desconocido" : Model.ArtistaNombre)</dd>
+                            
+                            <dt>Género:</dt>
+                            <dd>
+                                <span class="badge bg-info">
+                                    @(string.IsNullOrEmpty(Model.Genero) ? "Género Desconocido" : Model.Genero)
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Acciones</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a asp-controller="Playlists" asp-action="Index" class="btn btn-spotify">
+                        <i class="fas fa-list"></i> Agregar a Playlist
+                    </a>
+                    <form asp-action="Delete" method="post" class="d-grid">
+                        <input type="hidden" name="id" value="@Model.IdCancion"/>
+                        <button type="submit" class="btn btn-outline-danger" 
+                                onclick="return confirm('¿Estás seguro de eliminar esta canción?')">
+                            <i class="fas fa-trash"></i> Eliminar Canción
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

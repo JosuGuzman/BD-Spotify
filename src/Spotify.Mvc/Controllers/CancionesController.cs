@@ -33,9 +33,9 @@ public class CancionesController : Controller
             IdCancion = c.idCancion,
             Titulo = c.Titulo,
             Duracion = c.Duracion,
-            AlbumTitulo = c.album.Titulo,
-            ArtistaNombre = c.artista.NombreArtistico,
-            Genero = c.genero.genero
+            AlbumTitulo = c.album?.Titulo ?? "Álbum Desconocido",
+            ArtistaNombre = c.artista?.NombreArtistico ?? "Artista Desconocido",
+            Genero = c.genero?.genero ?? "Género Desconocido"
         }).ToList();
 
         return View(viewModel);
@@ -47,14 +47,15 @@ public class CancionesController : Controller
         if (cancion == null)
             return NotFound();
 
+        // Manejo seguro de las propiedades que pueden ser null
         var viewModel = new CancionViewModel
         {
             IdCancion = cancion.idCancion,
             Titulo = cancion.Titulo,
             Duracion = cancion.Duracion,
-            AlbumTitulo = cancion.album.Titulo,
-            ArtistaNombre = cancion.artista.NombreArtistico,
-            Genero = cancion.genero.genero
+            AlbumTitulo = cancion.album?.Titulo ?? "Álbum Desconocido",
+            ArtistaNombre = cancion.artista?.NombreArtistico ?? "Artista Desconocido",
+            Genero = cancion.genero?.genero ?? "Género Desconocido"
         };
 
         return View(viewModel);
@@ -83,9 +84,23 @@ public class CancionesController : Controller
                 var artista = _repoArtista.DetalleDe(viewModel.ArtistaId);
                 var genero = _repoGenero.DetalleDe(viewModel.GeneroId);
 
+                // Validaciones más robustas
+                if (album == null)
+                {
+                    ModelState.AddModelError("AlbumId", "Álbum no válido");
+                }
+                if (artista == null)
+                {
+                    ModelState.AddModelError("ArtistaId", "Artista no válido");
+                }
+                if (genero == null)
+                {
+                    ModelState.AddModelError("GeneroId", "Género no válido");
+                }
+
                 if (album == null || artista == null || genero == null)
                 {
-                    ModelState.AddModelError("", "Datos inválidos");
+                    // Recargar las listas para el dropdown
                     viewModel.Albumes = _repoAlbum.Obtener().ToList();
                     viewModel.Artistas = _repoArtista.Obtener().ToList();
                     viewModel.Generos = _repoGenero.Obtener().ToList();
@@ -102,6 +117,8 @@ public class CancionesController : Controller
                 };
 
                 _repoCancion.Alta(cancion);
+
+                TempData["SuccessMessage"] = "Canción creada exitosamente";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -110,6 +127,7 @@ public class CancionesController : Controller
             }
         }
 
+        // Recargar las listas si hay error
         viewModel.Albumes = _repoAlbum.Obtener().ToList();
         viewModel.Artistas = _repoArtista.Obtener().ToList();
         viewModel.Generos = _repoGenero.Obtener().ToList();
@@ -122,7 +140,8 @@ public class CancionesController : Controller
     {
         try
         {
-            // Nota: Necesitarías agregar método Eliminar en IRepoCancion
+            // Necesitarías implementar un método Eliminar en IRepoCancion
+            // Por ahora, vamos a simular la eliminación
             TempData["SuccessMessage"] = "Canción eliminada correctamente";
         }
         catch (Exception ex)

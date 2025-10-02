@@ -21,19 +21,26 @@ public class UsuariosController : Controller
     {
         var usuarios = _repoUsuario.Obtener();
         var viewModel = new List<UsuarioViewModel>();
-
+    
         foreach (var usuario in usuarios)
         {
-            var nacionalidad = _repoNacionalidad.DetalleDe(usuario.nacionalidad.idNacionalidad);
+            // Manejo seguro de la nacionalidad
+            string pais = "Desconocida";
+            if (usuario.nacionalidad != null && usuario.nacionalidad.idNacionalidad > 0)
+            {
+                var nacionalidad = _repoNacionalidad.DetalleDe(usuario.nacionalidad.idNacionalidad);
+                pais = nacionalidad?.Pais ?? "Desconocida";
+            }
+    
             viewModel.Add(new UsuarioViewModel
             {
                 IdUsuario = usuario.idUsuario,
                 NombreUsuario = usuario.NombreUsuario,
                 Gmail = usuario.Gmail,
-                Pais = nacionalidad?.Pais ?? "Desconocido"
+                Pais = pais
             });
         }
-
+    
         return View(viewModel);
     }
 
@@ -43,13 +50,20 @@ public class UsuariosController : Controller
         if (usuario == null)
             return NotFound();
 
-        var nacionalidad = _repoNacionalidad.DetalleDe(usuario.nacionalidad.idNacionalidad);
+        // Manejo seguro de la nacionalidad
+        string pais = "Desconocida";
+        if (usuario.nacionalidad != null && usuario.nacionalidad.idNacionalidad > 0)
+        {
+            var nacionalidad = _repoNacionalidad.DetalleDe(usuario.nacionalidad.idNacionalidad);
+            pais = nacionalidad?.Pais ?? "Desconocida";
+        }
+
         var viewModel = new UsuarioViewModel
         {
             IdUsuario = usuario.idUsuario,
             NombreUsuario = usuario.NombreUsuario,
             Gmail = usuario.Gmail,
-            Pais = nacionalidad?.Pais ?? "Desconocido"
+            Pais = pais
         };
 
         return View(viewModel);

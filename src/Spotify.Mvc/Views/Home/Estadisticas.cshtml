@@ -1,0 +1,134 @@
+@model Spotify.Mvc.Models.EstadisticasViewModel
+@{
+    ViewData["Title"] = "Estadísticas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>
+        <i class="fas fa-chart-bar text-primary"></i> Estadísticas
+    </h1>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Volver al Inicio
+    </a>
+</div>
+
+<div class="row">
+    <!-- Estadísticas Generales -->
+    <div class="col-md-2 col-6 mb-3">
+        <div class="card bg-primary text-white stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-2x mb-2"></i>
+                <h4>@Model.TotalArtistas</h4>
+                <small>Artistas</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+        <div class="card bg-success text-white stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-compact-disc fa-2x mb-2"></i>
+                <h4>@Model.TotalAlbumes</h4>
+                <small>Álbumes</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+        <div class="card bg-warning text-white stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-music fa-2x mb-2"></i>
+                <h4>@Model.TotalCanciones</h4>
+                <small>Canciones</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+        <div class="card bg-info text-white stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-user fa-2x mb-2"></i>
+                <h4>@Model.TotalUsuarios</h4>
+                <small>Usuarios</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+        <div class="card bg-dark text-white stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-guitar fa-2x mb-2"></i>
+                <h4>@Model.TotalGeneros</h4>
+                <small>Géneros</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-6 mb-3">
+        <div class="card bg-secondary text-white stats-card">
+            <div class="card-body text-center">
+                <i class="fas fa-list fa-2x mb-2"></i>
+                <h4>@Model.TotalPlaylists</h4>
+                <small>Playlists</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-users"></i> Artistas Recientes</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.ArtistasRecientes.Any())
+                {
+                    <div class="list-group">
+                        @foreach (var artista in Model.ArtistasRecientes)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@artista.NombreArtistico</h6>
+                                        <small class="text-muted">@artista.Nombre @artista.Apellido</small>
+                                    </div>
+                                    <span class="badge bg-primary">ID: @artista.idArtista</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted text-center">No hay artistas registrados</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-compact-disc"></i> Álbumes Recientes</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.AlbumesRecientes.Any())
+                {
+                    <div class="list-group">
+                        @foreach (var album in Model.AlbumesRecientes)
+                        {
+                            <div class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@album.Titulo</h6>
+                                        <small class="text-muted">@album.artista?.NombreArtistico</small>
+                                    </div>
+                                    <span class="badge bg-success">ID: @album.idAlbum</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted text-center">No hay álbumes registrados</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

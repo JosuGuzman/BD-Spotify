@@ -25,10 +25,10 @@ public class AlbumesController : Controller
             IdAlbum = a.idAlbum,
             Titulo = a.Titulo,
             FechaLanzamiento = a.FechaLanzamiento,
-            NombreArtista = a.artista.NombreArtistico,
-            IdArtista = a.artista.idArtista
+            NombreArtista = a.artista?.NombreArtistico ?? "Artista Desconocido", // Manejo de nulos
+            IdArtista = a.artista?.idArtista ?? 0
         }).ToList();
-
+    
         return View(viewModel);
     }
 
@@ -37,16 +37,16 @@ public class AlbumesController : Controller
         var album = _repoAlbum.DetalleDe(id);
         if (album == null)
             return NotFound();
-
+    
         var viewModel = new AlbumViewModel
         {
             IdAlbum = album.idAlbum,
             Titulo = album.Titulo,
             FechaLanzamiento = album.FechaLanzamiento,
-            NombreArtista = album.artista.NombreArtistico,
-            IdArtista = album.artista.idArtista
+            NombreArtista = album.artista?.NombreArtistico ?? "Artista Desconocido",
+            IdArtista = album.artista?.idArtista ?? 0
         };
-
+    
         return View(viewModel);
     }
 

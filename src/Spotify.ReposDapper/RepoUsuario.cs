@@ -23,10 +23,19 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     public Usuario? DetalleDe(uint idUsuario)
     {
         string BuscarUsuario = @"SELECT * FROM Usuario WHERE idUsuario = @idUsuario";
-
-        // Ejecutar la consulta y obtener el primer resultado o 'null' si no existe.
+    
         var usuario = _conexion.QueryFirstOrDefault<Usuario>(BuscarUsuario, new { idUsuario });
-
+        
+        // Si encontramos el usuario, cargar la nacionalidad si existe
+        if (usuario != null && usuario.nacionalidad?.idNacionalidad > 0)
+        {
+            string buscarNacionalidad = @"SELECT * FROM Nacionalidad WHERE idNacionalidad = @idNacionalidad";
+            usuario.nacionalidad = _conexion.QueryFirstOrDefault<Nacionalidad>(
+                buscarNacionalidad, 
+                new { idNacionalidad = usuario.nacionalidad.idNacionalidad }
+            );
+        }
+    
         return usuario;
     }
 

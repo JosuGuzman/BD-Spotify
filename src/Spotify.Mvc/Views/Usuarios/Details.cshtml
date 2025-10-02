@@ -35,7 +35,7 @@
                             <dd>@Model.Gmail</dd>
 
                             <dt>País:</dt>
-                            <dd>@Model.Pais</dd>
+                            <dd>@(string.IsNullOrEmpty(Model.Pais) ? "Desconocida" : Model.Pais)</dd>
                         </dl>
                     </div>
                 </div>

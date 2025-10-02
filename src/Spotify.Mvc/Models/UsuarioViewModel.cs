@@ -6,7 +6,7 @@ public class UsuarioViewModel
     public uint IdUsuario { get; set; }
     public string NombreUsuario { get; set; } = string.Empty;
     public string Gmail { get; set; } = string.Empty;
-    public string Pais { get; set; } = string.Empty;
+    public string Pais { get; set; } = "Desconocida"; // Valor por defecto
 }
 
 public class UsuarioCreateViewModel

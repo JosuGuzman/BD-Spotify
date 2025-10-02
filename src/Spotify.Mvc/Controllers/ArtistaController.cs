@@ -34,7 +34,7 @@ public class ArtistasController : Controller
         var artista = _repoArtista.DetalleDe(id);
         if (artista == null)
             return NotFound();
-
+    
         var viewModel = new ArtistaViewModel
         {
             IdArtista = artista.idArtista,
@@ -42,7 +42,7 @@ public class ArtistasController : Controller
             Nombre = artista.Nombre,
             Apellido = artista.Apellido
         };
-
+    
         return View(viewModel);
     }
 
