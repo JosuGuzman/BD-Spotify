@@ -1,8 +1,7 @@
-namespace Spotify.Core
+namespace Spotify.Core;
+
+public class CancionPlaylist
 {
-    public class CancionPlaylist
-    {
-        public required Album album {get;set;}
-        public required Cancion cancion {get;set;}
-    }
+    public required PlayList playlist { get; set; } // Cambiar album por playlist
+    public required Cancion cancion { get; set; }
 }
