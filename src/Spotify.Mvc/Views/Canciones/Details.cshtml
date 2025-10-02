@@ -20,7 +20,7 @@
             <div class="card-header">
                 <h5 class="mb-0">Información de la Canción</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body text-white">
                 <div class="row">
                     <div class="col-md-6">
                         <dl>
@@ -38,10 +38,10 @@
                         <dl>
                             <dt>Álbum:</dt>
                             <dd>@(string.IsNullOrEmpty(Model.AlbumTitulo) ? "Álbum Desconocido" : Model.AlbumTitulo)</dd>
-                            
+
                             <dt>Artista:</dt>
                             <dd>@(string.IsNullOrEmpty(Model.ArtistaNombre) ? "Artista Desconocido" : Model.ArtistaNombre)</dd>
-                            
+
                             <dt>Género:</dt>
                             <dd>
                                 <span class="badge bg-info">
@@ -61,9 +61,6 @@
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <a asp-controller="Playlists" asp-action="Index" class="btn btn-spotify">
-                        <i class="fas fa-list"></i> Agregar a Playlist
-                    </a>
                     <form asp-action="Delete" method="post" class="d-grid">
                         <input type="hidden" name="id" value="@Model.IdCancion"/>
                         <button type="submit" class="btn btn-outline-danger" 
