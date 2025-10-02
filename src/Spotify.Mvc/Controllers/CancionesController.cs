@@ -83,41 +83,30 @@ public class CancionesController : Controller
                 var album = _repoAlbum.DetalleDe(viewModel.AlbumId);
                 var artista = _repoArtista.DetalleDe(viewModel.ArtistaId);
                 var genero = _repoGenero.DetalleDe(viewModel.GeneroId);
-
-                // Validaciones más robustas
-                if (album == null)
-                {
-                    ModelState.AddModelError("AlbumId", "Álbum no válido");
-                }
-                if (artista == null)
-                {
-                    ModelState.AddModelError("ArtistaId", "Artista no válido");
-                }
-                if (genero == null)
-                {
-                    ModelState.AddModelError("GeneroId", "Género no válido");
-                }
-
+    
                 if (album == null || artista == null || genero == null)
                 {
-                    // Recargar las listas para el dropdown
+                    ModelState.AddModelError("", "Datos inválidos");
                     viewModel.Albumes = _repoAlbum.Obtener().ToList();
                     viewModel.Artistas = _repoArtista.Obtener().ToList();
                     viewModel.Generos = _repoGenero.Obtener().ToList();
                     return View(viewModel);
                 }
-
+    
+                // Convertir segundos a TimeSpan
+                var duracionTimeSpan = TimeSpan.FromSeconds(viewModel.DuracionSegundos);
+    
                 var cancion = new Cancion
                 {
                     Titulo = viewModel.Titulo,
-                    Duracion = viewModel.Duracion,
+                    Duracion = duracionTimeSpan,
                     album = album,
                     artista = artista,
                     genero = genero
                 };
-
+    
                 _repoCancion.Alta(cancion);
-
+                
                 TempData["SuccessMessage"] = "Canción creada exitosamente";
                 return RedirectToAction(nameof(Index));
             }
@@ -126,8 +115,7 @@ public class CancionesController : Controller
                 ModelState.AddModelError("", $"Error al crear canción: {ex.Message}");
             }
         }
-
-        // Recargar las listas si hay error
+    
         viewModel.Albumes = _repoAlbum.Obtener().ToList();
         viewModel.Artistas = _repoArtista.Obtener().ToList();
         viewModel.Generos = _repoGenero.Obtener().ToList();

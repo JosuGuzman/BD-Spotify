@@ -61,7 +61,7 @@ END$$
 -- Tabla Cancion
 DELIMITER $$
 DROP PROCEDURE IF EXISTS altaCancion $$
-CREATE PROCEDURE altaCancion (OUT unidCancion INT UNSIGNED, unTitulo VARCHAR(45), unDuration Time, unidAlbum INT UNSIGNED, unidArtista INT UNSIGNED, unidGenero TINYINT UNSIGNED)
+CREATE PROCEDURE altaCancion (OUT unidCancion INT UNSIGNED, unTitulo VARCHAR(45), unDuration TIME, unidAlbum INT UNSIGNED, unidArtista INT UNSIGNED, unidGenero TINYINT UNSIGNED)
 BEGIN 
 	INSERT INTO Cancion(Titulo,duration,idAlbum,idArtista,idGenero)
 		VALUES(unTitulo,unDuration,unidAlbum,unidArtista,unidGenero);

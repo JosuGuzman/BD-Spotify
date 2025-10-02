@@ -16,7 +16,7 @@ public class CancionViewModel
 public class CancionCreateViewModel
 {
     public string Titulo { get; set; } = string.Empty;
-    public TimeSpan Duracion { get; set; }
+    public int DuracionSegundos { get; set; }
     public uint AlbumId { get; set; }
     public uint ArtistaId { get; set; }
     public byte GeneroId { get; set; }

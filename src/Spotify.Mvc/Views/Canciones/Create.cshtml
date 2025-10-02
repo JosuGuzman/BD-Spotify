@@ -29,10 +29,23 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Duracion" class="form-label">Duración (en segundos) *</label>
-                        <input asp-for="Duracion" type="number" class="form-control" placeholder="Ej: 180 (3 minutos)" min="1" />
-                        <span asp-validation-for="Duracion" class="text-danger"></span>
-                        <small class="form-text text-muted">Ingresa la duración en segundos. 60 segundos = 1 minuto</small>
+                        <label asp-for="DuracionSegundos" class="form-label">Duración *</label>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">Minutos</label>
+                                <input type="number" id="minutos" class="form-control" min="0" max="59" placeholder="Min" value="0" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Segundos</label>
+                                <input type="number" id="segundos" class="form-control" min="0" max="59" placeholder="Seg" value="0" />
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Total Segundos</label>
+                                <input asp-for="DuracionSegundos" type="number" id="totalSegundos" class="form-control" readonly />
+                                <span asp-validation-for="DuracionSegundos" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Usa los campos de minutos y segundos para establecer la duración</small>
                     </div>
 
                     <div class="form-group mb-3">
@@ -83,11 +96,16 @@
                     Completa todos los campos obligatorios (*) para crear una nueva canción.
                 </p>
                 <p class="text-white">
-                    La canción se asociará automáticamente con el álbum, artista y género seleccionados.
+                    Usa los campos de minutos y segundos para establecer la duración de forma intuitiva.
                 </p>
                 <p class="text-white">
-                    Asegúrate de que el artista y el álbum estén correctamente relacionados en el sistema.
+                    Ejemplos:
                 </p>
+                <ul class="text-white small">
+                    <li>3 minutos = 180 segundos</li>
+                    <li>4:30 minutos = 270 segundos</li>
+                    <li>2:15 minutos = 135 segundos</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -98,23 +116,32 @@
     
     <script>
         $(document).ready(function() {
-            // Convertir duración a formato legible en tiempo real
-            $('#Duracion').on('input', function() {
-                var seconds = parseInt($(this).val());
-                if (!isNaN(seconds) && seconds > 0) {
-                    var minutes = Math.floor(seconds / 60);
-                    var remainingSeconds = seconds % 60;
-                    var formattedTime = minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
-                    
-                    // Mostrar preview
-                    if (!$('#durationPreview').length) {
-                        $(this).after('<small id="durationPreview" class="form-text text-success"></small>');
-                    }
-                    $('#durationPreview').text('Duración: ' + formattedTime);
-                } else {
-                    $('#durationPreview').remove();
+            function actualizarTotalSegundos() {
+                var minutos = parseInt($('#minutos').val()) || 0;
+                var segundos = parseInt($('#segundos').val()) || 0;
+                
+                // Validar segundos (no más de 59)
+                if (segundos > 59) {
+                    $('#segundos').val(59);
+                    segundos = 59;
                 }
-            });
+                
+                var totalSegundos = (minutos * 60) + segundos;
+                $('#totalSegundos').val(totalSegundos);
+                
+                // Mostrar preview formateado
+                var formatoTiempo = minutos.toString().padStart(2, '0') + ':' + 
+                                    segundos.toString().padStart(2, '0');
+                if (!$('#durationPreview').length) {
+                    $('#totalSegundos').after('<small id="durationPreview" class="form-text text-success"></small>');
+                }
+                $('#durationPreview').text('Duración: ' + formatoTiempo);
+            }
+
+            $('#minutos, #segundos').on('input', actualizarTotalSegundos);
+            
+            // Inicializar
+            actualizarTotalSegundos();
         });
     </script>
 }
