@@ -7,74 +7,100 @@ namespace Spotify.Controllers;
 
 public class GenerosController : Controller
 {
-    private readonly IRepoGenero _repoGenero;
+    private readonly IRepoGeneroAsync _repoGenero;
 
-    public GenerosController(IRepoGenero repoGenero)
+    public GenerosController(IRepoGeneroAsync repoGenero)
     {
         _repoGenero = repoGenero;
     }
 
-    public IActionResult Index()
+    // GET: Generos
+    public async Task<IActionResult> Index()
     {
-        var generos = _repoGenero.Obtener();
-        var viewModel = generos.Select(g => new GeneroViewModel
+        try
         {
-            IdGenero = g.idGenero,
-            Genero = g.genero
-        }).ToList();
+            var generos = await _repoGenero.Obtener();
+            var viewModel = generos.Select(g => new GeneroViewModel
+            {
+                IdGenero = g.idGenero,
+                Genero = g.genero
+            }).ToList();
 
-        return View(viewModel);
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Error al cargar géneros: {ex.Message}";
+            return View(new List<GeneroViewModel>());
+        }
     }
 
-    public IActionResult Details(byte id)
+    // GET: Generos/Details/5
+    public async Task<IActionResult> Details(byte id)
     {
-        var genero = _repoGenero.DetalleDe(id);
-        if (genero == null)
-            return NotFound();
-
-        var viewModel = new GeneroViewModel
+        try
         {
-            IdGenero = genero.idGenero,
-            Genero = genero.genero
-        };
+            var genero = await _repoGenero.DetalleDeAsync(id);
+            if (genero == null)
+            {
+                TempData["ErrorMessage"] = "Género no encontrado";
+                return RedirectToAction(nameof(Index));
+            }
 
-        return View(viewModel);
+            var viewModel = new GeneroViewModel
+            {
+                IdGenero = genero.idGenero,
+                Genero = genero.genero
+            };
+
+            return View(viewModel);
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = $"Error al cargar detalles: {ex.Message}";
+            return RedirectToAction(nameof(Index));
+        }
     }
 
+    // GET: Generos/Create
     public IActionResult Create()
     {
         return View(new GeneroCreateViewModel());
     }
 
+    // POST: Generos/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(GeneroCreateViewModel viewModel)
+    public async Task<IActionResult> Create(GeneroCreateViewModel viewModel)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            try
-            {
-                var genero = new Genero { genero = viewModel.Genero };
-                _repoGenero.Alta(genero);
-                
-                TempData["SuccessMessage"] = "Género creado exitosamente";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", $"Error al crear género: {ex.Message}");
-            }
+            return View(viewModel);
         }
-        return View(viewModel);
+
+        try
+        {
+            var genero = new Genero { genero = viewModel.Genero };
+            var resultado = await _repoGenero.AltaAsync(genero);
+            
+            TempData["SuccessMessage"] = $"Género '{resultado.genero}' creado exitosamente";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", $"Error al crear género: {ex.Message}");
+            return View(viewModel);
+        }
     }
 
+    // POST: Generos/Delete/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Delete(byte id)
+    public async Task<IActionResult> Delete(byte id)
     {
         try
         {
-            _repoGenero.Eliminar(id);
+            await _repoGenero.EliminarAsync(id);
             TempData["SuccessMessage"] = "Género eliminado correctamente";
         }
         catch (Exception ex)

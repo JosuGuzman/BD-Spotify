@@ -7,51 +7,81 @@
     <h1 class="display-4 mb-3 ">Bienvenido a Spotify MVC</h1>
     <p class="lead ">Sistema de gestión musical completo</p>
 </div>
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="fas fa-search"></i> Búsqueda Rápida</h5>
+            </div>
+            <div class="card-body">
+                <form asp-controller="Home" asp-action="Buscar" method="post">
+                    <div class="input-group">
+                        <input type="text" name="query" class="form-control" placeholder="Buscar canciones..." required>
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Estadísticas del Dashboard -->
 <div class="row mb-5">
     <div class="col-md-2 col-6 mb-3">
         <div class="card bg-primary text-white">
             <div class="card-body text-center">
-                <i class="fas fa-users fa-2x mb-2"></i>
-                <h4>@Model.TotalArtistas</h4>
-                <small>Artistas</small>
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Artistas" ? "active" : "")" asp-controller="Artistas" asp-action="Index">
+                    <i class="fas fa-users fa-2x mb-2"></i>
+                    <h4>@Model.TotalArtistas</h4>
+                    <small>Artistas</small>
+                </a>
             </div>
         </div>
     </div>
     <div class="col-md-2 col-6 mb-3">
         <div class="card bg-success text-white">
             <div class="card-body text-center">
-                <i class="fas fa-compact-disc fa-2x mb-2"></i>
-                <h4>@Model.TotalAlbumes</h4>
-                <small>Álbumes</small>
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Albumes" ? "active" : "")" asp-controller="Albumes" asp-action="Index">
+                    <i class="fas fa-compact-disc fa-2x mb-2"></i>
+                    <h4>@Model.TotalAlbumes</h4>
+                    <small>Álbumes</small>
+                </a>
             </div>
         </div>
     </div>
     <div class="col-md-2 col-6 mb-3">
         <div class="card bg-warning text-white">
             <div class="card-body text-center">
-                <i class="fas fa-music fa-2x mb-2"></i>
-                <h4>@Model.TotalCanciones</h4>
-                <small>Canciones</small>
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Canciones" ? "active" : "")" asp-controller="Canciones" asp-action="Index">
+                    <i class="fas fa-music fa-2x mb-2"></i>
+                    <h4>@Model.TotalCanciones</h4>
+                    <small>Canciones</small>
+                </a>
+                
             </div>
         </div>
     </div>
     <div class="col-md-2 col-6 mb-3">
         <div class="card bg-info text-white">
             <div class="card-body text-center">
-                <i class="fas fa-user fa-2x mb-2"></i>
-                <h4>@Model.TotalUsuarios</h4>
-                <small>Usuarios</small>
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Usuarios" ? "active" : "")" asp-controller="Usuarios" asp-action="Index">
+                    <i class="fas fa-user fa-2x mb-2"></i>
+                    <h4>@Model.TotalUsuarios</h4>
+                    <small>Usuarios</small>
+                </a>
             </div>
         </div>
     </div>
     <div class="col-md-2 col-6 mb-3">
         <div class="card bg-dark text-white">
             <div class="card-body text-center">
-                <i class="fas fa-guitar fa-2x mb-2"></i>
-                <h4>@Model.TotalGeneros</h4>
-                <small>Géneros</small>
+                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Generos" ? "active" : "")" asp-controller="Generos" asp-action="Index">
+                    <i class="fas fa-guitar fa-2x mb-2"></i>
+                    <h4>@Model.TotalGeneros</h4>
+                    <small>Géneros</small>
+                </a>
             </div>
         </div>
     </div>
@@ -93,23 +123,6 @@
 
 <!-- Búsqueda y Enlaces Adicionales -->
 <div class="row mt-4">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-dark text-white">
-                <h5 class="mb-0"><i class="fas fa-search"></i> Búsqueda Rápida</h5>
-            </div>
-            <div class="card-body">
-                <form asp-controller="Home" asp-action="Buscar" method="post">
-                    <div class="input-group">
-                        <input type="text" name="query" class="form-control" placeholder="Buscar canciones..." required>
-                        <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-search"></i> Buscar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <div class="col-md-4">
         <div class="card">
             <div class="card-header bg-dark text-white">

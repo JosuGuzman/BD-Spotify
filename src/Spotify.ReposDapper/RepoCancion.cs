@@ -30,6 +30,30 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return Buscar;
     }
 
+    public void Eliminar(uint idCancion)
+    {
+        try
+        {
+            // Primero eliminar registros relacionados en HistorialReproduccion
+            string eliminarHistorial = @"DELETE FROM HistorialReproduccion WHERE idCancion = @idCancion";
+            _conexion.Execute(eliminarHistorial, new { idCancion });
+
+            // Luego eliminar la canción
+            var parametros = new DynamicParameters();
+            parametros.Add("@unidCancion", idCancion);
+            
+            EjecutarSPSinReturn("eliminarCancion", parametros);
+            
+            // Alternativa si no existe el SP:
+            // string eliminarCancion = @"DELETE FROM Cancion WHERE idCancion = @idCancion";
+            // _conexion.Execute(eliminarCancion, new { idCancion });
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error al eliminar la canción: {ex.Message}", ex);
+        }
+    }
+
     public List<string>? Matcheo(string Cadena)
     {
         var parametro = new DynamicParameters();

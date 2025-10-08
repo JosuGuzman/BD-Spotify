@@ -13,7 +13,6 @@ public class HomeController : Controller
     private readonly IRepoAlbum _repoAlbum;
     private readonly IRepoUsuario _repoUsuario;
     private readonly IRepoGenero _repoGenero;
-    private readonly IRepoPlaylist _repoPlaylist;
 
     public HomeController(
         ILogger<HomeController> logger,
@@ -21,8 +20,7 @@ public class HomeController : Controller
         IRepoArtista repoArtista,
         IRepoAlbum repoAlbum,
         IRepoUsuario repoUsuario,
-        IRepoGenero repoGenero,
-        IRepoPlaylist repoPlaylist)
+        IRepoGenero repoGenero)
     {
         _logger = logger;
         _repoCancion = repoCancion;
@@ -30,7 +28,6 @@ public class HomeController : Controller
         _repoAlbum = repoAlbum;
         _repoUsuario = repoUsuario;
         _repoGenero = repoGenero;
-        _repoPlaylist = repoPlaylist;
     }
 
     public IActionResult Index()
@@ -44,7 +41,6 @@ public class HomeController : Controller
                 TotalCanciones = _repoCancion.Obtener().Count,
                 TotalUsuarios = _repoUsuario.Obtener().Count,
                 TotalGeneros = _repoGenero.Obtener().Count,
-                TotalPlaylists = _repoPlaylist.Obtener().Count
             };
 
             return View(dashboardStats);
@@ -93,7 +89,6 @@ public class HomeController : Controller
                 TotalCanciones = _repoCancion.Obtener().Count,
                 TotalUsuarios = _repoUsuario.Obtener().Count,
                 TotalGeneros = _repoGenero.Obtener().Count,
-                TotalPlaylists = _repoPlaylist.Obtener().Count,
                 ArtistasRecientes = _repoArtista.Obtener().Take(5).ToList(),
                 AlbumesRecientes = _repoAlbum.Obtener().Take(5).ToList()
             };

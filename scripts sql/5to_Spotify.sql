@@ -96,7 +96,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Cancion` (
   `idCancion` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Titulo` VARCHAR(45) NOT NULL,
-  `duration` TIME NOT NULL,
+  `Duracion` TIME NOT NULL,
   `idAlbum` INT UNSIGNED NOT NULL,
   `idArtista` INT UNSIGNED NOT NULL,
   `idGenero` TINYINT UNSIGNED NOT NULL,

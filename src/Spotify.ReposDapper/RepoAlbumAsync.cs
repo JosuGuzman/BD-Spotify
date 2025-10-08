@@ -1,9 +1,8 @@
 namespace Spotify.ReposDapper;
 
-public class RepoAlbumAsync : RepoGenerico , IRepoAlbumAsync
+public class RepoAlbumAsync : RepoGenerico, IRepoAlbumAsync
 {
-    public RepoAlbumAsync(IDbConnection conexion)
-        : base(conexion) {}
+    public RepoAlbumAsync(IDbConnection conexion) : base(conexion) { }
 
     public async Task<Album> AltaAsync(Album album)
     {
@@ -20,35 +19,45 @@ public class RepoAlbumAsync : RepoGenerico , IRepoAlbumAsync
     public async Task<Album?> DetalleDeAsync(uint idAlbum)
     {
         string sql = @"
-            SELECT * FROM Album WHERE idAlbum = @idAlbum;
-            SELECT * FROM Artista WHERE idArtista = (
-                SELECT idArtista FROM Album WHERE idAlbum = @idAlbum
-            );
-        ";
-    
-        using var multi = await _conexion.QueryMultipleAsync(sql, new { idAlbum });
-    
-        var album = await multi.ReadSingleOrDefaultAsync<Album>();
-        if (album is not null)
-        {
-            album.artista = await multi.ReadSingleOrDefaultAsync<Artista>();
-        }
-    
+            SELECT a.*, ar.idArtista, ar.NombreArtistico, ar.Nombre, ar.Apellido
+            FROM Album a
+            INNER JOIN Artista ar ON a.idArtista = ar.idArtista
+            WHERE a.idAlbum = @idAlbum";
+
+        var album = (await _conexion.QueryAsync<Album, Artista, Album>(sql,
+            (album, artista) => {
+                album.artista = artista;
+                return album;
+            },
+            new { idAlbum },
+            splitOn: "idArtista"
+        )).FirstOrDefault();
+
         return album;
     }
 
     public async Task EliminarAsync(uint idAlbum)
     {
-        string eliminarCanciones = @"DELETE FROM Cancion WHERE idAlbum = @idAlbum";
-        await _conexion.ExecuteAsync(eliminarCanciones, new { idAlbum });
-
-        string eliminarAlbum = @"DELETE FROM Album WHERE idAlbum = @idAlbum";
-        await _conexion.ExecuteAsync(eliminarAlbum, new { idAlbum });
+        var parametros = new DynamicParameters();
+        parametros.Add("@unidAlbum", idAlbum);
+        await _conexion.ExecuteAsync("eliminarAlbum", parametros, commandType: CommandType.StoredProcedure);
     }
 
     public async Task<List<Album>> Obtener()
-    { 
-        var task = await EjecutarSPConReturnDeTipoListaAsync<Album>("ObtenerAlbum");
-        return task.ToList();
+    {
+        string sql = @"
+            SELECT a.*, ar.idArtista, ar.NombreArtistico, ar.Nombre, ar.Apellido
+            FROM Album a
+            INNER JOIN Artista ar ON a.idArtista = ar.idArtista";
+
+        var albums = (await _conexion.QueryAsync<Album, Artista, Album>(sql,
+            (album, artista) => {
+                album.artista = artista;
+                return album;
+            },
+            splitOn: "idArtista"
+        )).ToList();
+
+        return albums;
     }
 }

@@ -1,97 +1,140 @@
-// Controllers/UsuariosController.cs
 using Microsoft.AspNetCore.Mvc;
 using Spotify.Core;
 using Spotify.Core.Persistencia;
 using Spotify.Mvc.Models;
+using System.Diagnostics;
 
-namespace Spotify.Controllers;
-
-public class UsuariosController : Controller
+namespace Spotify.Controllers
 {
-    private readonly IRepoUsuario _repoUsuario;
-    private readonly IRepoNacionalidad _repoNacionalidad;
-
-    public UsuariosController(IRepoUsuario repoUsuario, IRepoNacionalidad repoNacionalidad)
+    public class UsuariosController : Controller
     {
-        _repoUsuario = repoUsuario;
-        _repoNacionalidad = repoNacionalidad;
-    }
+        private readonly IRepoUsuarioAsync _repoUsuario;
+        private readonly IRepoNacionalidadAsync _repoNacionalidad;
 
-    public IActionResult Index()
-    {
-        var usuarios = _repoUsuario.Obtener();
-        var viewModel = new List<UsuarioViewModel>();
-    
-        foreach (var usuario in usuarios)
+        public UsuariosController(
+            IRepoUsuarioAsync repoUsuario, 
+            IRepoNacionalidadAsync repoNacionalidad) // ✅ Este es el servicio que faltaba
         {
-            // Manejo seguro de la nacionalidad
-            string pais = "Desconocida";
-            if (usuario.nacionalidad != null && usuario.nacionalidad.idNacionalidad > 0)
-            {
-                var nacionalidad = _repoNacionalidad.DetalleDe(usuario.nacionalidad.idNacionalidad);
-                pais = nacionalidad?.Pais ?? "Desconocida";
-            }
-    
-            viewModel.Add(new UsuarioViewModel
-            {
-                IdUsuario = usuario.idUsuario,
-                NombreUsuario = usuario.NombreUsuario,
-                Gmail = usuario.Gmail,
-                Pais = pais
-            });
-        }
-    
-        return View(viewModel);
-    }
-
-    public IActionResult Details(uint id)
-    {
-        var usuario = _repoUsuario.DetalleDe(id);
-        if (usuario == null)
-            return NotFound();
-
-        // Manejo seguro de la nacionalidad
-        string pais = "Desconocida";
-        if (usuario.nacionalidad != null && usuario.nacionalidad.idNacionalidad > 0)
-        {
-            var nacionalidad = _repoNacionalidad.DetalleDe(usuario.nacionalidad.idNacionalidad);
-            pais = nacionalidad?.Pais ?? "Desconocida";
+            _repoUsuario = repoUsuario;
+            _repoNacionalidad = repoNacionalidad;
         }
 
-        var viewModel = new UsuarioViewModel
-        {
-            IdUsuario = usuario.idUsuario,
-            NombreUsuario = usuario.NombreUsuario,
-            Gmail = usuario.Gmail,
-            Pais = pais
-        };
-
-        return View(viewModel);
-    }
-
-    public IActionResult Create()
-    {
-        var nacionalidades = _repoNacionalidad.Obtener();
-        var viewModel = new UsuarioCreateViewModel
-        {
-            Nacionalidades = nacionalidades.ToList()
-        };
-        return View(viewModel);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Create(UsuarioCreateViewModel viewModel)
-    {
-        if (ModelState.IsValid)
+        // GET: Usuarios
+        public async Task<IActionResult> Index()
         {
             try
             {
-                var nacionalidad = _repoNacionalidad.DetalleDe(viewModel.NacionalidadId);
+                var usuarios = await _repoUsuario.Obtener();
+                var viewModel = new List<UsuarioViewModel>();
+            
+                foreach (var usuario in usuarios)
+                {
+                    string pais = "Desconocida";
+                    if (usuario.nacionalidad != null && usuario.nacionalidad.idNacionalidad > 0)
+                    {
+                        var nacionalidad = await _repoNacionalidad.DetalleDeAsync(usuario.nacionalidad.idNacionalidad);
+                        pais = nacionalidad?.Pais ?? "Desconocida";
+                    }
+            
+                    viewModel.Add(new UsuarioViewModel
+                    {
+                        IdUsuario = usuario.idUsuario,
+                        NombreUsuario = usuario.NombreUsuario,
+                        Gmail = usuario.Gmail,
+                        Pais = pais
+                    });
+                }
+            
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error al cargar usuarios: {ex.Message}";
+                return View(new List<UsuarioViewModel>());
+            }
+        }
+
+        // GET: Usuarios/Details/5
+        public async Task<IActionResult> Details(uint id)
+        {
+            try
+            {
+                var usuario = await _repoUsuario.DetalleDeAsync(id);
+                if (usuario == null)
+                {
+                    TempData["ErrorMessage"] = "Usuario no encontrado";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var pais = usuario.nacionalidad?.Pais ?? "Desconocida";
+                
+                if (usuario.nacionalidad?.idNacionalidad > 0 && string.IsNullOrEmpty(usuario.nacionalidad.Pais))
+                {
+                    var nacionalidad = await _repoNacionalidad.DetalleDeAsync(usuario.nacionalidad.idNacionalidad);
+                    pais = nacionalidad?.Pais ?? "Desconocida";
+                }
+
+                var viewModel = new UsuarioViewModel
+                {
+                    IdUsuario = usuario.idUsuario,
+                    NombreUsuario = usuario.NombreUsuario,
+                    Gmail = usuario.Gmail,
+                    Pais = pais
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error al cargar detalles: {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        // GET: Usuarios/Create
+        public async Task<IActionResult> Create()
+        {
+            try
+            {
+                var nacionalidades = await _repoNacionalidad.Obtener();
+                var viewModel = new UsuarioCreateViewModel
+                {
+                    Nacionalidades = nacionalidades.ToList()
+                };
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error al cargar formulario: {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        // POST: Usuarios/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(UsuarioCreateViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                try
+                {
+                    viewModel.Nacionalidades = (await _repoNacionalidad.Obtener()).ToList();
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", $"Error al recargar nacionalidades: {ex.Message}");
+                }
+                return View(viewModel);
+            }
+
+            try
+            {
+                var nacionalidad = await _repoNacionalidad.DetalleDeAsync(viewModel.NacionalidadId);
                 if (nacionalidad == null)
                 {
                     ModelState.AddModelError("NacionalidadId", "Nacionalidad no válida");
-                    viewModel.Nacionalidades = _repoNacionalidad.Obtener().ToList();
+                    viewModel.Nacionalidades = (await _repoNacionalidad.Obtener()).ToList();
                     return View(viewModel);
                 }
 
@@ -103,16 +146,25 @@ public class UsuariosController : Controller
                     nacionalidad = nacionalidad
                 };
 
-                _repoUsuario.Alta(usuario);
+                var resultado = await _repoUsuario.AltaAsync(usuario);
+                TempData["SuccessMessage"] = $"Usuario '{resultado.NombreUsuario}' creado exitosamente";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", $"Error al crear usuario: {ex.Message}");
+                
+                try
+                {
+                    viewModel.Nacionalidades = (await _repoNacionalidad.Obtener()).ToList();
+                }
+                catch (Exception reloadEx)
+                {
+                    ModelState.AddModelError("", $"Error al recargar nacionalidades: {reloadEx.Message}");
+                }
+                
+                return View(viewModel);
             }
         }
-
-        viewModel.Nacionalidades = _repoNacionalidad.Obtener().ToList();
-        return View(viewModel);
     }
 }

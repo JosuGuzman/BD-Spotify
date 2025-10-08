@@ -11,13 +11,6 @@
         <a asp-action="Index" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left"></i> Volver
         </a>
-        <form asp-action="Delete" method="post" class="d-inline">
-            <input type="hidden" name="id" value="@Model.IdGenero" />
-            <button type="submit" class="btn btn-outline-danger" 
-                    onclick="return confirm('¿Estás seguro de eliminar este género?')">
-                <i class="fas fa-trash"></i> Eliminar
-            </button>
-        </form>
     </div>
 </div>
 

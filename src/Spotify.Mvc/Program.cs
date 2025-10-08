@@ -1,8 +1,6 @@
 // Program.cs
-using Spotify.Core;
 using Spotify.Core.Persistencia;
 using Spotify.ReposDapper;
-using Spotify.DTOs;
 using Scalar.AspNetCore;
 using System.Data;
 using MySqlConnector;
@@ -13,17 +11,24 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
 builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
 
-// Repositorios
-builder.Services.AddScoped<IRepoArtista, RepoArtista>();
+// 📚 REGISTRO COMPLETO DE REPOSITORIOS (SÍNCRONOS Y ASÍNCRONOS)
 builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
-builder.Services.AddScoped<IRepoUsuario, RepoUsuario>();
-builder.Services.AddScoped<IRepoGenero, RepoGenero>();
+builder.Services.AddScoped<IRepoAlbumAsync, RepoAlbumAsync>();
+
+builder.Services.AddScoped<IRepoArtista, RepoArtista>();
+builder.Services.AddScoped<IRepoArtistaAsync, RepoArtistaAsync>();
+
 builder.Services.AddScoped<IRepoCancion, RepoCancion>();
-builder.Services.AddScoped<IRepoPlaylist, RepoPlaylist>();
+builder.Services.AddScoped<IRepoCancionAsync, RepoCancionAsync>();
+
+builder.Services.AddScoped<IRepoGenero, RepoGenero>();
+builder.Services.AddScoped<IRepoGeneroAsync, RepoGeneroAsync>();
+
+builder.Services.AddScoped<IRepoUsuario, RepoUsuario>();
+builder.Services.AddScoped<IRepoUsuarioAsync, RepoUsuarioAsync>();
+
 builder.Services.AddScoped<IRepoNacionalidad, RepoNacionalidad>();
-builder.Services.AddScoped<IRepoReproduccion, RepoReproduccion>();
-builder.Services.AddScoped<IRepoTipoSuscripcion, RepoTipoSuscripcion>();
-builder.Services.AddScoped<IRepoRegistro, RepoSuscripcion>();
+builder.Services.AddScoped<IRepoNacionalidadAsync, RepoNacionalidadAsync>();
 
 // MVC
 builder.Services.AddControllersWithViews();

@@ -48,14 +48,6 @@
                                             class="btn btn-sm btn-outline-info" title="Ver detalles">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <form asp-action="Delete" method="post" class="d-inline">
-                                            <input type="hidden" name="id" value="@genero.IdGenero" />
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" 
-                                                    title="Eliminar" 
-                                                    onclick="return confirm('¿Estás seguro de eliminar este género?')">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
                                     </div>
                                 </td>
                             </tr>
