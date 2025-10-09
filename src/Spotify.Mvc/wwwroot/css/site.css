@@ -27,6 +27,33 @@ body {
     min-height: 100vh;
 }
 
+/* Sidebar interactivo */
+.sidebar-quicklinks {
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.sidebar-quicklinks .sidebar-content {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+
+.sidebar-quicklinks:hover .sidebar-content {
+    opacity: 1;
+    max-height: 500px; /* Ajusta si hay más enlaces */
+}
+
+@media (min-width: 992px) {
+    .sidebar-quicklinks {
+        min-width: 180px;
+        max-width: 300px;
+    }
+}
+
+
+
 /* Navbar personalizada */
 .navbar-spotify {
     background: linear-gradient(90deg, var(--secondary-color) 0%, #000000 100%) !important;

@@ -7,10 +7,12 @@
     <h1 class="display-4 mb-3 ">Bienvenido a Spotify MVC</h1>
     <p class="lead ">Sistema de gestión musical completo</p>
 </div>
-<div class="row mt-4">
-    <div class="col-md-8">
+
+<!-- Barra de búsqueda centrada -->
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 col-lg-6">
         <div class="card">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header bg-dark text-white text-center">
                 <h5 class="mb-0"><i class="fas fa-search"></i> Búsqueda Rápida</h5>
             </div>
             <div class="card-body">
@@ -27,108 +29,65 @@
     </div>
 </div>
 
-<!-- Estadísticas del Dashboard -->
-<div class="row mb-5">
-    <div class="col-md-2 col-6 mb-3">
-        <div class="card bg-primary text-white">
-            <div class="card-body text-center">
-                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Artistas" ? "active" : "")" asp-controller="Artistas" asp-action="Index">
-                    <i class="fas fa-users fa-2x mb-2"></i>
-                    <h4>@Model.TotalArtistas</h4>
-                    <small>Artistas</small>
-                </a>
+<!-- Contenedor Estadísticas + Sidebar -->
+<div class="row mt-5 justify-content-center align-items-start">
+    <!-- Estadísticas a la izquierda -->
+    <div class="col-lg-5 col-md-12">
+        <div class="row g-3 d-flex justify-content-start">
+            <div class="col-md-6 col-6">
+                <div class="card bg-primary text-white text-center">
+                    <div class="card-body">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Artistas" ? "active" : "")" asp-controller="Artistas" asp-action="Index">
+                            <i class="fas fa-users fa-2x mb-2"></i>
+                            <h4>@Model.TotalArtistas</h4>
+                            <small>Artistas</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-6">
+                <div class="card bg-success text-white text-center">
+                    <div class="card-body">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Albumes" ? "active" : "")" asp-controller="Albumes" asp-action="Index">
+                            <i class="fas fa-compact-disc fa-2x mb-2"></i>
+                            <h4>@Model.TotalAlbumes</h4>
+                            <small>Álbumes</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-6">
+                <div class="card bg-warning text-white text-center">
+                    <div class="card-body">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Canciones" ? "active" : "")" asp-controller="Canciones" asp-action="Index">
+                            <i class="fas fa-music fa-2x mb-2"></i>
+                            <h4>@Model.TotalCanciones</h4>
+                            <small>Canciones</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-6">
+                <div class="card bg-dark text-white text-center">
+                    <div class="card-body">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Generos" ? "active" : "")" asp-controller="Generos" asp-action="Index">
+                            <i class="fas fa-guitar fa-2x mb-2"></i>
+                            <h4>@Model.TotalGeneros</h4>
+                            <small>Géneros</small>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-md-2 col-6 mb-3">
-        <div class="card bg-success text-white">
-            <div class="card-body text-center">
-                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Albumes" ? "active" : "")" asp-controller="Albumes" asp-action="Index">
-                    <i class="fas fa-compact-disc fa-2x mb-2"></i>
-                    <h4>@Model.TotalAlbumes</h4>
-                    <small>Álbumes</small>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2 col-6 mb-3">
-        <div class="card bg-warning text-white">
-            <div class="card-body text-center">
-                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Canciones" ? "active" : "")" asp-controller="Canciones" asp-action="Index">
-                    <i class="fas fa-music fa-2x mb-2"></i>
-                    <h4>@Model.TotalCanciones</h4>
-                    <small>Canciones</small>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2 col-6 mb-3">
-        <div class="card bg-info text-white">
-            <div class="card-body text-center">
-                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Usuarios" ? "active" : "")" asp-controller="Usuarios" asp-action="Index">
-                    <i class="fas fa-user fa-2x mb-2"></i>
-                    <h4>@Model.TotalUsuarios</h4>
-                    <small>Usuarios</small>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2 col-6 mb-3">
-        <div class="card bg-dark text-white">
-            <div class="card-body text-center">
-                <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Generos" ? "active" : "")" asp-controller="Generos" asp-action="Index">
-                    <i class="fas fa-guitar fa-2x mb-2"></i>
-                    <h4>@Model.TotalGeneros</h4>
-                    <small>Géneros</small>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Acciones Rápidas -->
-<div class="row mt-4">
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-primary">
-            <div class="card-body text-center">
-                <i class="fas fa-users fa-3x mb-3"></i>
-                <h5 class="card-title">Artistas</h5>
-                <p class="card-text">Gestiona artistas y sus álbumes</p>
-                <a asp-controller="Artistas" asp-action="Index" class="btn btn-light">Ver Artistas</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-success">
-            <div class="card-body text-center">
-                <i class="fas fa-compact-disc fa-3x mb-3"></i>
-                <h5 class="card-title">Álbumes</h5>
-                <p class="card-text">Administra discografías</p>
-                <a asp-controller="Albumes" asp-action="Index" class="btn btn-light">Ver Álbumes</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-warning">
-            <div class="card-body text-center">
-                <i class="fas fa-music fa-3x mb-3"></i>
-                <h5 class="card-title">Canciones</h5>
-                <p class="card-text">Gestiona el catálogo musical</p>
-                <a asp-controller="Canciones" asp-action="Index" class="btn btn-light">Ver Canciones</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Búsqueda y Enlaces Adicionales -->
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header bg-dark text-white">
+    <!-- Sidebar de Enlaces Rápidos a la derecha -->
+    <div class="col-lg-4 col-md-12 mt-4 mt-lg-0">
+        <div class="sidebar-quicklinks card">
+            <div class="card-header bg-dark text-white text-center">
                 <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Enlaces Rápidos</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body sidebar-content">
                 <div class="d-grid gap-2">
                     <a asp-controller="Home" asp-action="Estadisticas" class="btn btn-outline-primary">
                         <i class="fas fa-chart-pie"></i> Ver Estadísticas
