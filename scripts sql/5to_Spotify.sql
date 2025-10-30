@@ -28,7 +28,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Album`
 -- -----------------------------------------------------
@@ -37,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Album` (
   `Titulo` VARCHAR(45) NOT NULL,
   `fechaLanzamiento` DATE NOT NULL,
   `idArtista` INT UNSIGNED NOT NULL,
+  `Portada` VARCHAR(255) NOT NULL DEFAULT 'default_album.png',
   PRIMARY KEY (`idAlbum`),
   INDEX `artist_id` (`idArtista` ASC) VISIBLE,
   CONSTRAINT `Albums_ibfk_1`
@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Album` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
-
 
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Nacionalidad`
@@ -56,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Nacionalidad` (
   PRIMARY KEY (`idNacionalidad`),
   UNIQUE INDEX `idNacionalidad_UNIQUE` (`idNacionalidad` ASC) VISIBLE)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Usuario`
@@ -79,16 +77,15 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Genero`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Genero` (
   `idGenero` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Genero` VARCHAR(45) NOT NULL,
+  `Descripcion` TEXT NULL,
   PRIMARY KEY (`idGenero`))
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Cancion`
@@ -100,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Cancion` (
   `idAlbum` INT UNSIGNED NOT NULL,
   `idArtista` INT UNSIGNED NOT NULL,
   `idGenero` TINYINT UNSIGNED NOT NULL,
+  `ArchivoMP3` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`idCancion`),
   INDEX `album_id` (`idAlbum` ASC) VISIBLE,
   INDEX `artist_id` (`idArtista` ASC) VISIBLE,
@@ -119,13 +117,11 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
 -- --------------------------------------------------------------------
 -- Modificar la tabla Cancion para incluir un índice de texto completo
 -- --------------------------------------------------------------------
 ALTER TABLE `5to_Spotify`.`Cancion`
 ADD FULLTEXT INDEX `ft_index_titulo` (`Titulo`);
-
 
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`HistorialReproducción`
@@ -148,7 +144,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Playlist`
 -- -----------------------------------------------------
@@ -165,7 +160,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`TipoSuscripcion`
 -- -----------------------------------------------------
@@ -176,7 +170,6 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`TipoSuscripcion` (
   `Tipo` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idTipoSuscripcion`))
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Suscripcion_Registro`
@@ -200,7 +193,6 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Suscripcion` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `5to_Spotify`.`Cancion_Playlist`
 -- -----------------------------------------------------
@@ -223,7 +215,6 @@ CREATE TABLE IF NOT EXISTS `5to_Spotify`.`Cancion_Playlist` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
