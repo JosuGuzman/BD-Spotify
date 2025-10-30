@@ -9,35 +9,26 @@ public class RepoGeneroAsync : RepoGenerico, IRepoGeneroAsync
     {
         var parametros = new DynamicParameters();
         parametros.Add("@unGenero", genero.genero);
+        parametros.Add("@unDescripcion", genero.Descripcion);
         parametros.Add("@unidGenero", direction: ParameterDirection.Output);
 
         await _conexion.ExecuteAsync("altaGenero", parametros, commandType: CommandType.StoredProcedure);
-
         genero.idGenero = parametros.Get<byte>("@unidGenero");
         return genero;
     }
 
-    public async Task<Genero?> DetalleDeAsync(uint idGenero)
+    public async Task<Genero?> DetalleDeAsync(byte idGenero)
     {
         var BuscarGeneroPorId = @"SELECT * FROM Genero WHERE idGenero = @idGenero";
-
         var Buscar = await _conexion.QueryFirstOrDefaultAsync<Genero>(BuscarGeneroPorId, new { idGenero });
-
         return Buscar;
     }
 
-    public async Task EliminarAsync(uint idGenero)
+    public async Task EliminarAsync(byte idGenero)
     {
-        string eliminarHistorialReproducciones = @"
-            DELETE FROM HistorialReproduccion 
-            WHERE idCancion IN (SELECT idCancion FROM Cancion WHERE idGenero = @idGenero)";
-        await _conexion.ExecuteAsync(eliminarHistorialReproducciones, new { idGenero });
-
-        string eliminarCanciones = @"DELETE FROM Cancion WHERE idGenero = @idGenero";
-        await _conexion.ExecuteAsync(eliminarCanciones, new { idGenero });
-
-        string eliminarGenero = @"DELETE FROM Genero WHERE idGenero = @idGenero";
-        await _conexion.ExecuteAsync(eliminarGenero, new { idGenero });
+        var parametros = new DynamicParameters();
+        parametros.Add("@unidGenero", idGenero);
+        await _conexion.ExecuteAsync("eliminarGenero", parametros, commandType: CommandType.StoredProcedure);
     }
 
     public async Task<List<Genero>> Obtener()

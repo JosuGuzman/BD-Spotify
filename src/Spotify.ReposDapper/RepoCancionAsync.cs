@@ -13,6 +13,7 @@ public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
         parametros.Add("@unidAlbum", cancion.album.idAlbum);
         parametros.Add("@unidArtista", cancion.artista.idArtista);
         parametros.Add("@unidGenero", cancion.genero.idGenero);
+        parametros.Add("@unArchivoMP3", cancion.ArchivoMP3);
 
         await _conexion.ExecuteAsync("altaCancion", parametros, commandType: CommandType.StoredProcedure);
         cancion.idCancion = parametros.Get<uint>("@unidCancion");
@@ -23,9 +24,9 @@ public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
     {
         string sql = @"
             SELECT c.*, 
-                    a.idAlbum, a.Titulo, a.FechaLanzamiento,
+                    a.idAlbum, a.Titulo, a.FechaLanzamiento, a.Portada,
                     ar.idArtista, ar.NombreArtistico, ar.Nombre, ar.Apellido,
-                    g.idGenero, g.genero
+                    g.idGenero, g.genero, g.Descripcion
             FROM Cancion c
             INNER JOIN Album a ON c.idAlbum = a.idAlbum
             INNER JOIN Artista ar ON c.idArtista = ar.idArtista
@@ -50,9 +51,9 @@ public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
     {
         string sql = @"
             SELECT c.*, 
-                    a.idAlbum, a.Titulo, a.FechaLanzamiento,
+                    a.idAlbum, a.Titulo, a.FechaLanzamiento, a.Portada,
                     ar.idArtista, ar.NombreArtistico, ar.Nombre, ar.Apellido,
-                    g.idGenero, g.genero
+                    g.idGenero, g.genero, g.Descripcion
             FROM Cancion c
             INNER JOIN Album a ON c.idAlbum = a.idAlbum
             INNER JOIN Artista ar ON c.idArtista = ar.idArtista
@@ -80,26 +81,9 @@ public class RepoCancionAsync : RepoGenerico, IRepoCancionAsync
     }
 
     public async Task EliminarAsync(uint idCancion)
-        {
-            try
-            {
-                // Primero eliminar registros relacionados en HistorialReproduccion
-                string eliminarHistorial = @"DELETE FROM HistorialReproduccion WHERE idCancion = @idCancion";
-                await _conexion.ExecuteAsync(eliminarHistorial, new { idCancion });
-
-                // Luego eliminar la canción usando stored procedure
-                var parametros = new DynamicParameters();
-                parametros.Add("@unidCancion", idCancion);
-
-                await _conexion.ExecuteAsync("eliminarCancion", parametros, commandType: CommandType.StoredProcedure);
-
-                // Alternativa si no existe el SP:
-                // string eliminarCancion = @"DELETE FROM Cancion WHERE idCancion = @idCancion";
-                // await _conexion.ExecuteAsync(eliminarCancion, new { idCancion });
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al eliminar la canción: {ex.Message}", ex);
-            }
-        }
+    {
+        var parametros = new DynamicParameters();
+        parametros.Add("@unidCancion", idCancion);
+        await _conexion.ExecuteAsync("eliminarCancion", parametros, commandType: CommandType.StoredProcedure);
+    }
 }

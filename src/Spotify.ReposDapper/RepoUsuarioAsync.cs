@@ -1,4 +1,3 @@
-
 namespace Spotify.ReposDapper;
 
 public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsync
@@ -16,7 +15,6 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsync
         parametros.Add("@unidNacionalidad", usuario.nacionalidad.idNacionalidad);
 
         await _conexion.ExecuteAsync("altaUsuario", parametros, commandType: CommandType.StoredProcedure);
-
         usuario.idUsuario = parametros.Get<uint>("@unidUsuario");
         return usuario;
     }
@@ -24,9 +22,7 @@ public class RepoUsuarioAsync : RepoGenerico, IRepoUsuarioAsync
     public async Task<Usuario?> DetalleDeAsync(uint idUsuario)
     {
         string BuscarUsuario = @"SELECT * FROM Usuario WHERE idUsuario = @idUsuario";
-
         var usuario = await _conexion.QueryFirstOrDefaultAsync<Usuario>(BuscarUsuario, new { idUsuario });
-
         return usuario;
     }
 

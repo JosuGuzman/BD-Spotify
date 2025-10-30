@@ -1,4 +1,3 @@
-
 namespace Spotify.ReposDapper;
 
 public class RepoReproduccionAsync : RepoGenerico, IRepoReproduccionAsync
@@ -16,16 +15,13 @@ public class RepoReproduccionAsync : RepoGenerico, IRepoReproduccionAsync
         await _conexion.ExecuteAsync("altaHistorial_reproduccion", parametros, commandType: CommandType.StoredProcedure);
 
         reproduccion.IdHistorial = parametros.Get<uint>("@unidHistorial");
-
         return reproduccion;
     }
 
     public async Task<Reproduccion?> DetalleDeAsync(uint idHistorial)
     {
         var BuscarReproduccionPorId = @"SELECT * FROM HistorialReproduccion WHERE idHistorial = @idHistorial";
-
         var Buscar = await _conexion.QueryFirstOrDefaultAsync<Reproduccion>(BuscarReproduccionPorId, new {idHistorial});
-        
         return Buscar;
     }
 

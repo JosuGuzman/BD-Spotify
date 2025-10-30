@@ -14,10 +14,8 @@ public class RepoTipoSuscripcionAsync : RepoGenerico, IRepoTipoSuscripcionAsync
         parametros.Add("@UntipoSuscripcion", tipoSuscripcion.Tipo);
 
         await _conexion.ExecuteAsync("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
-
         tipoSuscripcion.IdTipoSuscripcion = parametros.Get<uint>("@unidTipoSuscripcion");
-
-        return tipoSuscripcion;;
+        return tipoSuscripcion;
     }
 
     public async Task<TipoSuscripcion?> DetalleDeAsync(uint idTipoSuscripcion)
@@ -29,7 +27,6 @@ public class RepoTipoSuscripcionAsync : RepoGenerico, IRepoTipoSuscripcionAsync
         ";
         
         var TipoSuscripcion = await _conexion.QueryFirstOrDefaultAsync<TipoSuscripcion>(BuscarTipoSuscripcionPorId, new {idTipoSuscripcion});
-
         return TipoSuscripcion;
     }
 

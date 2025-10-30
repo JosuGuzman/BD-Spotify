@@ -10,6 +10,7 @@ public class RepoAlbumAsync : RepoGenerico, IRepoAlbumAsync
         parametros.Add("@unidAlbum", direction: ParameterDirection.Output);
         parametros.Add("@unTitulo", album.Titulo);
         parametros.Add("@unidArtista", album.artista.idArtista);
+        parametros.Add("@unPortada", album.Portada);
 
         await _conexion.ExecuteAsync("altaAlbum", parametros, commandType: CommandType.StoredProcedure);
         album.idAlbum = parametros.Get<uint>("@unidAlbum");

@@ -12,18 +12,14 @@ public class RepoNacionalidadAsync : RepoGenerico, IRepoNacionalidadAsync
         parametros.Add("@unPais", nacionalidad.Pais);
 
         await _conexion.ExecuteAsync("altaNacionalidad", parametros, commandType: CommandType.StoredProcedure);
-
         nacionalidad.idNacionalidad = parametros.Get<uint>("@unidNacionalidad");
-
         return nacionalidad;
     }
 
     public async Task<Nacionalidad?> DetalleDeAsync(uint idNacionalidad)
     {
         var BuscarNacionalidadPorId = @"SELECT * FROM Nacionalidad WHERE idNacionalidad = @idNacionalidad";
-
         var Buscar = await _conexion.QueryFirstOrDefaultAsync<Nacionalidad>(BuscarNacionalidadPorId, new { idNacionalidad });
-
         return Buscar;
     }
 
