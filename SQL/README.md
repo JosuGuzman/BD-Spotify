@@ -11,5 +11,5 @@
 
 1. Ejecutar el comando:
     ```bash
-    SOURCE Install.sql
+    SOURCE install.sql
     ```
