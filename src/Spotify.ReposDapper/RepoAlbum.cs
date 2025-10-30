@@ -11,6 +11,7 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         parametros.Add("@unidAlbum", direction: ParameterDirection.Output);
         parametros.Add("@unTitulo", album.Titulo);
         parametros.Add("@unidArtista", album.artista.idArtista);
+        parametros.Add("@unPortada", album.Portada);
 
         _conexion.Execute("altaAlbum", parametros, commandType: CommandType.StoredProcedure);
         album.idAlbum = parametros.Get<uint>("@unidAlbum");
@@ -20,31 +21,45 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
     public Album? DetalleDe(uint idAlbum)
     {
         string sql = @"
-            SELECT * FROM Album WHERE idAlbum = @idAlbum;
-            SELECT * FROM Artista WHERE idArtista = (
-                SELECT idArtista FROM Album WHERE idAlbum = @idAlbum
-            );
-        ";
-    
-        using var multi = _conexion.QueryMultiple(sql, new { idAlbum });
-    
-        var album = multi.ReadSingleOrDefault<Album>();
-        if (album is not null)
-        {
-            album.artista = multi.ReadSingleOrDefault<Artista>();
-        }
-    
+            SELECT a.*, ar.idArtista, ar.NombreArtistico, ar.Nombre, ar.Apellido
+            FROM Album a
+            INNER JOIN Artista ar ON a.idArtista = ar.idArtista
+            WHERE a.idAlbum = @idAlbum";
+
+        var album = _conexion.Query<Album, Artista, Album>(sql,
+            (album, artista) => {
+                album.artista = artista;
+                return album;
+            },
+            new { idAlbum },
+            splitOn: "idArtista"
+        ).FirstOrDefault();
+
         return album;
     }
 
     public void Eliminar(uint idAlbum)
     {
-        string eliminarCanciones = @"DELETE FROM Cancion WHERE idAlbum = @idAlbum";
-        _conexion.Execute(eliminarCanciones, new { idAlbum });
-
-        string eliminarAlbum = @"DELETE FROM Album WHERE idAlbum = @idAlbum";
-        _conexion.Execute(eliminarAlbum, new { idAlbum });
+        var parametros = new DynamicParameters();
+        parametros.Add("@unidAlbum", idAlbum);
+        EjecutarSPSinReturn("eliminarAlbum", parametros);
     }
 
-    public IList<Album> Obtener() => EjecutarSPConReturnDeTipoLista<Album>("ObtenerAlbum").ToList();
+    public IList<Album> Obtener()
+    {
+        string sql = @"
+            SELECT a.*, ar.idArtista, ar.NombreArtistico, ar.Nombre, ar.Apellido
+            FROM Album a
+            INNER JOIN Artista ar ON a.idArtista = ar.idArtista";
+
+        var albums = _conexion.Query<Album, Artista, Album>(sql,
+            (album, artista) => {
+                album.artista = artista;
+                return album;
+            },
+            splitOn: "idArtista"
+        ).ToList();
+
+        return albums;
+    }
 }

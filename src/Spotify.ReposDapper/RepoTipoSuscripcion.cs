@@ -1,4 +1,3 @@
-
 namespace Spotify.ReposDapper;
 
 public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
@@ -15,9 +14,7 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         parametros.Add("@UntipoSuscripcion", tipoSuscripcion.Tipo);
 
         _conexion.Execute("altaTipoSuscripcion", parametros, commandType: CommandType.StoredProcedure);
-
         tipoSuscripcion.IdTipoSuscripcion = parametros.Get<uint>("@unidTipoSuscripcion");
-
         return tipoSuscripcion.IdTipoSuscripcion;
     }
 
@@ -30,7 +27,6 @@ public class RepoTipoSuscripcion : RepoGenerico, IRepoTipoSuscripcion
         ";
         
         var TipoSuscripcion = _conexion.QueryFirstOrDefault<TipoSuscripcion>(BuscarTipoSuscripcionPorId, new {idTipoSuscripcion});
-
         return TipoSuscripcion;
     }
 

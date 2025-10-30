@@ -1,4 +1,3 @@
-
 namespace Spotify.ReposDapper;
 
 public class RepoPlaylist : RepoGenerico, IRepoPlaylist
@@ -13,20 +12,15 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         parametros.Add("@unNombre", playlist.Nombre);
         parametros.Add("@unidUsuario", playlist.usuario.idUsuario);
 
-
         _conexion.Execute("altaPlaylist", parametros, commandType: CommandType.StoredProcedure);
-
         playlist.idPlaylist = parametros.Get<uint>("@unidPlaylist");
-
         return playlist.idPlaylist;
     }
 
     public PlayList DetalleDe(uint idPlaylist)
     {
         var BuscarPlayListPorId = @"SELECT * FROM Playlist WHERE idPlaylist = @idPlaylist";
-
         var Buscar = _conexion.QueryFirstOrDefault<PlayList>(BuscarPlayListPorId, new {idPlaylist});
-
         return Buscar; 
     }
 
@@ -49,8 +43,7 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
             WHERE cp.idPlaylist = @idPlaylist";
 
         var canciones = _conexion.Query<Cancion>(query, new { idPlaylist }).ToList();
-
         
         return canciones; 
     }
-} 
+}

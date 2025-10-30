@@ -1,4 +1,3 @@
-
 namespace Spotify.ReposDapper;
 
 public class RepoReproduccion : RepoGenerico, IRepoReproduccion
@@ -16,16 +15,13 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         _conexion.Execute("altaHistorial_reproduccion", parametros, commandType: CommandType.StoredProcedure);
 
         reproduccion.IdHistorial = parametros.Get<uint>("@unidHistorial");
-
         return reproduccion.IdHistorial;
     }
 
     public Reproduccion? DetalleDe(uint idHistorial)
     {
         var BuscarReproduccionPorId = @"SELECT * FROM HistorialReproduccion WHERE idHistorial = @idHistorial";
-
         var Buscar = _conexion.QueryFirstOrDefault<Reproduccion>(BuscarReproduccionPorId, new {idHistorial});
-        
         return Buscar;
     }
 

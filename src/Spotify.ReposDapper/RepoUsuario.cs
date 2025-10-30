@@ -15,7 +15,6 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         parametros.Add("@unidNacionalidad", usuario.nacionalidad.idNacionalidad);
 
         _conexion.Execute("altaUsuario", parametros, commandType: CommandType.StoredProcedure);
-
         usuario.idUsuario = parametros.Get<uint>("@unidUsuario");
         return usuario.idUsuario;
     }
@@ -26,7 +25,6 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     
         var usuario = _conexion.QueryFirstOrDefault<Usuario>(BuscarUsuario, new { idUsuario });
         
-        // Si encontramos el usuario, cargar la nacionalidad si existe
         if (usuario != null && usuario.nacionalidad?.idNacionalidad > 0)
         {
             string buscarNacionalidad = @"SELECT * FROM Nacionalidad WHERE idNacionalidad = @idNacionalidad";
