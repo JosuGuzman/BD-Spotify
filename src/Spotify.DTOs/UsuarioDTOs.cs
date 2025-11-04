@@ -11,7 +11,7 @@ public class UsuarioInputDTO
 
 public class UsuarioOutputDTO
 {
-    public uint idUsuario { get; set; }
+    public uint IdUsuario { get; set; }
     public required string NombreUsuario { get; set; }
     public required string Gmail { get; set; }
     public string Nacionalidad { get; set; } = "Desconocida";

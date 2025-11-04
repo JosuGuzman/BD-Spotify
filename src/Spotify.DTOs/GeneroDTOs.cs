@@ -2,11 +2,13 @@ namespace Spotify.DTOs;
 
 public class GeneroInputDTO
 {
-    public required string genero { get; set; }
+    public required string Genero { get; set; }
+    public required string Descripcion { get; set; }
 }
 
 public class GeneroOutputDTO
 {
-    public byte idGenero { get; set; }
-    public required string genero { get; set; }
+    public byte IdGenero { get; set; }
+    public required string Genero { get; set; }
+    public required string Descripcion { get; set; }
 }
