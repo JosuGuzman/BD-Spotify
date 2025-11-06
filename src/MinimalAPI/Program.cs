@@ -35,7 +35,6 @@ builder.Services.AddScoped<IRepoNacionalidadAsync, RepoNacionalidadAsync>();
 builder.Services.AddScoped<IRepoPlaylistAsync, RepoPlaylistAsync>();
 builder.Services.AddScoped<IRepoReproduccionAsync, RepoReproduccionAsync>();
 builder.Services.AddScoped<IRepoTipoSuscripcionAsync, RepoTipoSuscripcionAsync>();
-builder.Services.AddScoped<IRepoRegistroAsync, RepoSuscripcionAsync>();
 
 // FileService con IFormFile
 var uploadPath = Path.Combine(builder.Environment.WebRootPath ?? "wwwroot", "uploads");
@@ -211,7 +210,13 @@ app.MapPost("/api/albumes", async (IRepoAlbumAsync repo, FileService fileService
         var album = new Album
         {
             Titulo = form["Titulo"].ToString(),
-            artista = new Artista { idArtista = uint.Parse(form["IdArtista"].ToString()) },
+            artista = new Artista
+            {
+                idArtista = uint.Parse(form["IdArtista"].ToString()),
+                NombreArtistico = string.Empty,
+                Nombre = string.Empty,
+                Apellido = string.Empty
+            },
             Portada = nombrePortada
         };
 
@@ -322,9 +327,26 @@ app.MapPost("/api/canciones", async (IRepoCancionAsync repo, FileService fileSer
         {
             Titulo = form["Titulo"].ToString(),
             Duracion = TimeSpan.Parse(form["Duracion"].ToString()),
-            album = new Album { idAlbum = uint.Parse(form["IdAlbum"].ToString()) },
-            artista = new Artista { idArtista = uint.Parse(form["IdArtista"].ToString()) },
-            genero = new Genero { idGenero = byte.Parse(form["IdGenero"].ToString()) },
+            album = new Album
+            {
+                idAlbum = uint.Parse(form["IdAlbum"].ToString()),
+                Titulo = string.Empty,
+                artista = new Artista
+                {
+                    idArtista = uint.Parse(form["IdArtista"].ToString()),
+                    NombreArtistico = string.Empty,
+                    Nombre = string.Empty,
+                    Apellido = string.Empty
+                }
+            },
+            artista = new Artista
+            {
+                idArtista = uint.Parse(form["IdArtista"].ToString()),
+                NombreArtistico = string.Empty,
+                Nombre = string.Empty,
+                Apellido = string.Empty
+            },
+            genero = new Genero { idGenero = byte.Parse(form["IdGenero"].ToString()), genero = string.Empty },
             ArchivoMP3 = nombreMP3
         };
 
@@ -517,7 +539,7 @@ app.MapPost("/api/usuarios", async (IRepoUsuarioAsync repo, UsuarioInputDTO dto)
             NombreUsuario = dto.NombreUsuario,
             Gmail = dto.Gmail,
             Contrasenia = dto.Contrasenia,
-            nacionalidad = new Nacionalidad { idNacionalidad = dto.Nacionalidad }
+            nacionalidad = new Nacionalidad { idNacionalidad = dto.Nacionalidad, Pais = string.Empty }
         };
 
         var resultado = await repo.AltaAsync(usuario);
@@ -584,7 +606,14 @@ app.MapPost("/api/playlists", async (IRepoPlaylistAsync repo, PlaylistInputDTO d
         var playlist = new PlayList
         {
             Nombre = dto.Nombre,
-            usuario = new Usuario { idUsuario = dto.IdUsuario },
+            usuario = new Usuario
+            {
+                idUsuario = dto.IdUsuario,
+                NombreUsuario = string.Empty,
+                Gmail = string.Empty,
+                Contrasenia = string.Empty,
+                nacionalidad = new Nacionalidad { idNacionalidad = 0, Pais = string.Empty }
+            },
             Canciones = new List<Cancion>()
         };
 
@@ -631,8 +660,46 @@ app.MapPost("/api/reproducciones", async (IRepoReproduccionAsync repo, Reproducc
     {
         var reproduccion = new Reproduccion
         {
-            usuario = new Usuario { idUsuario = dto.IdUsuario },
-            cancion = new Cancion { idCancion = dto.IdCancion },
+            usuario = new Usuario
+            {
+                idUsuario = dto.IdUsuario,
+                NombreUsuario = string.Empty,
+                Gmail = string.Empty,
+                Contrasenia = string.Empty,
+                nacionalidad = new Nacionalidad { idNacionalidad = 0, Pais = string.Empty }
+            },
+            cancion = new Cancion
+            {
+                idCancion = dto.IdCancion,
+                Titulo = string.Empty,
+                Duracion = TimeSpan.Zero,
+                album = new Album
+                {
+                    idAlbum = 0u,
+                    Titulo = string.Empty,
+                    artista = new Artista
+                    {
+                        idArtista = 0u,
+                        NombreArtistico = string.Empty,
+                        Nombre = string.Empty,
+                        Apellido = string.Empty
+                    }
+                },
+                artista = new Artista
+                {
+                    idArtista = 0u,
+                    NombreArtistico = string.Empty,
+                    Nombre = string.Empty,
+                    Apellido = string.Empty
+                },
+                genero = new Genero
+                {
+                    idGenero = (byte)0,
+                    genero = string.Empty,
+                    Descripcion = string.Empty
+                },
+                ArchivoMP3 = string.Empty
+            },
             FechaReproduccion = dto.FechaReproduccion
         };
 
