@@ -17,6 +17,102 @@
 
 El proyecto BD Spotify es una base de datos diseñada para almacenar y gestionar información relacionada con la música y los usuarios de la plataforma Spotify. Esta base de datos tiene como objetivo proporcionar una estructura organizada para el almacenamiento de datos de canciones, álbumes, artistas, usuarios y sus preferencias musicales. El proyecto busca implementar una solución escalable y eficiente para el manejo de grandes cantidades de datos, permitiendo a los usuarios interactuar con la base de datos de manera sencilla y segura.
 
+<h3 align="center"> Diagrama de Clases </h3>
+
+````
+classDiagram
+    direction TB
+
+    subgraph I. Usuarios y Suscripción
+        class Artista {
+            +INT UNSIGNED idArtista
+            +VARCHAR(35) NombreArtistico
+            +VARCHAR(45) Nombre
+            +VARCHAR(45) Apellido
+        }
+        class Nacionalidad {
+            +INT UNSIGNED idNacionalidad
+            +VARCHAR(45) Pais
+        }
+        class Usuario {
+            +INT UNSIGNED idUsuario
+            +VARCHAR(45) NombreUsuario
+            +VARCHAR(45) Email
+            +VARCHAR(64) Contrasenia
+            +INT UNSIGNED idNacionalidad
+        }
+        class TipoSuscripcion {
+            +INT UNSIGNED idTipoSuscripcion
+            +TINYINT UNSIGNED Duracion
+            +TINYINT UNSIGNED Costo
+            +VARCHAR(45) Tipo
+        }
+        class Suscripcion {
+            +INT UNSIGNED idSuscripcion
+            +INT UNSIGNED idUsuario
+            +INT UNSIGNED idTipoSuscripcion
+            +DATE FechaInicio
+        }
+
+        Usuario --> Nacionalidad : tiene
+        Suscripcion --> Usuario : registra
+        Suscripcion --> TipoSuscripcion : es de tipo
+    end
+
+    subgraph II. Contenido Musical
+        class Genero {
+            +TINYINT UNSIGNED idGenero
+            +VARCHAR(45) Genero
+            +TEXT Descripcion
+        }
+        class Album {
+            +INT UNSIGNED idAlbum
+            +VARCHAR(45) Titulo
+            +DATE fechaLanzamiento
+            +INT UNSIGNED idArtista
+            +VARCHAR(255) Portada
+        }
+        class Cancion {
+            +INT UNSIGNED idCancion
+            +VARCHAR(45) Titulo
+            +TIME Duracion
+            +INT UNSIGNED idAlbum
+            +INT UNSIGNED idArtista
+            +TINYINT UNSIGNED idGenero
+            +VARCHAR(255) ArchivoMP3
+        }
+
+        Album --> Artista : pertenece a
+        Cancion --> Album : pertenece a
+        Cancion --> Artista : interpretada por
+        Cancion --> Genero : tiene
+    end
+
+    subgraph III. Playlists y Log
+        class Playlist {
+            +INT UNSIGNED idPlaylist
+            +VARCHAR(20) Nombre
+            +INT UNSIGNED idUsuario
+        }
+        class Cancion_Playlist {
+            +INT UNSIGNED idCancion
+            +INT UNSIGNED idPlaylist
+        }
+        class HistorialReproduccion {
+            +INT UNSIGNED idHistorial
+            +INT UNSIGNED idUsuario
+            +INT UNSIGNED idCancion
+            +DATETIME FechaReproduccion
+        }
+
+        Playlist --> Usuario : creada por
+        Cancion_Playlist -- Cancion
+        Cancion_Playlist -- Playlist
+        HistorialReproduccion --> Usuario : registra
+        HistorialReproduccion --> Cancion : reproduce
+    end
+````
+
 ## Comenzando 🚀
 
 Clonar el repositorio github, desde Github Desktop o ejecutar en la terminal o CMD:
