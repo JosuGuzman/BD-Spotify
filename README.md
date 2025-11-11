@@ -19,7 +19,7 @@ El proyecto BD Spotify es una base de datos diseñada para almacenar y gestionar
 
 <h3 align="center"> Diagrama de Clases </h3>
 
-````
+``` mermaid
 classDiagram
     direction TB
 
@@ -111,7 +111,7 @@ classDiagram
         HistorialReproduccion --> Usuario : registra
         HistorialReproduccion --> Cancion : reproduce
     end
-````
+```
 
 ## Comenzando 🚀
 
