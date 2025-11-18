@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
 builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
 
-// 📚 REGISTRO COMPLETO DE REPOSITORIOS (SÍNCRONOS Y ASÍNCRONOS)
+// REGISTRO COMPLETO DE REPOSITORIOS (SÍNCRONOS Y ASÍNCRONOS)
 builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
 builder.Services.AddScoped<IRepoAlbumAsync, RepoAlbumAsync>();
 
