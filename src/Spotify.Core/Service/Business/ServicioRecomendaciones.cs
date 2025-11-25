@@ -1,0 +1,182 @@
+using Microsoft.Extensions.Logging;
+using Spotify.Core.Persistencia;
+using Spotify.Core.Persistencia.Contracts;
+
+namespace Spotify.Core.Services.Business;
+
+public class ServicioRecomendaciones : IServicioRecomendaciones
+{
+    private readonly IRepoReproduccion _repoReproduccion;
+    private readonly IRepoCancion _repoCancion;
+    private readonly IRepoAlbum _repoAlbum;
+    private readonly IRepoGenero _repoGenero;
+    private readonly IRepoArtista _repoArtista;
+    private readonly ILogger<ServicioRecomendaciones> _logger;
+    private readonly ICacheService _cacheService;
+
+    public ServicioRecomendaciones(
+        IRepoReproduccion repoReproduccion,
+        IRepoCancion repoCancion,
+        IRepoAlbum repoAlbum,
+        IRepoGenero repoGenero,
+        IRepoArtista repoArtista,
+        ILogger<ServicioRecomendaciones> logger,
+        ICacheService cacheService)
+    {
+        _repoReproduccion = repoReproduccion;
+        _repoCancion = repoCancion;
+        _repoAlbum = repoAlbum;
+        _repoGenero = repoGenero;
+        _repoArtista = repoArtista;
+        _logger = logger;
+        _cacheService = cacheService;
+    }
+
+    public async Task<IEnumerable<Cancion>> ObtenerRecomendacionesPorUsuarioAsync(uint idUsuario, int limite = 10, CancellationToken cancellationToken = default)
+    {
+        var cacheKey = $"recomendaciones_usuario_{idUsuario}_{limite}";
+        
+        return await _cacheService.GetOrCreateAsync(cacheKey, async () =>
+        {
+            _logger.LogInformation("Generando recomendaciones para usuario: {UsuarioId}", idUsuario);
+
+            // Obtener historial del usuario
+            var historial = await _repoReproduccion.ObtenerHistorialUsuarioAsync(idUsuario, 100, cancellationToken);
+            var historialList = historial.ToList();
+
+            if (!historialList.Any())
+            {
+                _logger.LogDebug("Usuario {UsuarioId} sin historial, devolviendo canciones populares", idUsuario);
+                return await _repoCancion.ObtenerCancionesPopularesAsync(limite, cancellationToken);
+            }
+
+            // Analizar preferencias del usuario
+            var generosFavoritos = historialList
+                .GroupBy(r => r.Cancion.Genero.idGenero)
+                .OrderByDescending(g => g.Count())
+                .Take(3)
+                .Select(g => g.Key)
+                .ToList();
+
+            var artistasFavoritos = historialList
+                .GroupBy(r => r.Cancion.Artista.idArtista)
+                .OrderByDescending(g => g.Count())
+                .Take(3)
+                .Select(g => g.Key)
+                .ToList();
+
+            var cancionesEscuchadas = new HashSet<uint>(historialList.Select(r => r.Cancion.idCancion));
+
+            // Generar recomendaciones basadas en preferencias
+            var recomendaciones = new List<Cancion>();
+
+            // Recomendar por géneros favoritos
+            foreach (var idGenero in generosFavoritos)
+            {
+                var cancionesDelGenero = await _repoCancion.ObtenerPorGeneroAsync(idGenero, cancellationToken);
+                var cancionesNoEscuchadas = cancionesDelGenero.Where(c => !cancionesEscuchadas.Contains(c.idCancion));
+                recomendaciones.AddRange(cancionesNoEscuchadas);
+            }
+
+            // Recomendar por artistas favoritos
+            foreach (var idArtista in artistasFavoritos)
+            {
+                var cancionesDelArtista = await _repoCancion.ObtenerPorArtistaAsync(idArtista, cancellationToken);
+                var cancionesNoEscuchadas = cancionesDelArtista.Where(c => !cancionesEscuchadas.Contains(c.idCancion));
+                recomendaciones.AddRange(cancionesNoEscuchadas);
+            }
+
+            // Si no hay suficientes recomendaciones, agregar canciones populares
+            if (recomendaciones.Count < limite)
+            {
+                var cancionesPopulares = await _repoCancion.ObtenerCancionesPopularesAsync(limite, cancellationToken);
+                var cancionesAdicionales = cancionesPopulares
+                    .Where(c => !cancionesEscuchadas.Contains(c.idCancion) && !recomendaciones.Any(r => r.idCancion == c.idCancion))
+                    .Take(limite - recomendaciones.Count);
+                
+                recomendaciones.AddRange(cancionesAdicionales);
+            }
+
+            // Eliminar duplicados y limitar resultados
+            var resultado = recomendaciones
+                .GroupBy(c => c.idCancion)
+                .Select(g => g.First())
+                .Take(limite)
+                .ToList();
+
+            _logger.LogInformation("Generadas {Count} recomendaciones para usuario {UsuarioId}", resultado.Count, idUsuario);
+            return resultado;
+        }, TimeSpan.FromMinutes(15));
+    }
+
+    public async Task<IEnumerable<Cancion>> ObtenerRecomendacionesPorGeneroAsync(byte idGenero, int limite = 10, CancellationToken cancellationToken = default)
+    {
+        _logger.LogDebug("Obteniendo recomendaciones por género: {GeneroId}", idGenero);
+
+        var canciones = await _repoCancion.ObtenerPorGeneroAsync(idGenero, cancellationToken);
+        var cancionesPopulares = canciones
+            .OrderByDescending(c => c.TotalReproducciones)
+            .Take(limite)
+            .ToList();
+
+        _logger.LogDebug("Encontradas {Count} canciones para género {GeneroId}", cancionesPopulares.Count, idGenero);
+        return cancionesPopulares;
+    }
+
+    public async Task<IEnumerable<Cancion>> ObtenerRecomendacionesPorArtistaAsync(uint idArtista, int limite = 10, CancellationToken cancellationToken = default)
+    {
+        _logger.LogDebug("Obteniendo recomendaciones por artista: {ArtistaId}", idArtista);
+
+        var canciones = await _repoCancion.ObtenerPorArtistaAsync(idArtista, cancellationToken);
+        var cancionesPopulares = canciones
+            .OrderByDescending(c => c.TotalReproducciones)
+            .Take(limite)
+            .ToList();
+
+        _logger.LogDebug("Encontradas {Count} canciones para artista {ArtistaId}", cancionesPopulares.Count, idArtista);
+        return cancionesPopulares;
+    }
+
+    public async Task<IEnumerable<Album>> ObtenerAlbumesRecomendadosAsync(uint idUsuario, int limite = 5, CancellationToken cancellationToken = default)
+    {
+        var cacheKey = $"recomendaciones_albumes_{idUsuario}_{limite}";
+        
+        return await _cacheService.GetOrCreateAsync(cacheKey, async () =>
+        {
+            _logger.LogDebug("Generando recomendaciones de álbumes para usuario: {UsuarioId}", idUsuario);
+
+            // Obtener artistas favoritos del usuario
+            var historial = await _repoReproduccion.ObtenerHistorialUsuarioAsync(idUsuario, 50, cancellationToken);
+            var artistasFavoritos = historial
+                .GroupBy(r => r.Cancion.Artista.idArtista)
+                .OrderByDescending(g => g.Count())
+                .Take(3)
+                .Select(g => g.Key)
+                .ToList();
+
+            var albumesRecomendados = new List<Album>();
+
+            // Recomendar álbumes de artistas favoritos
+            foreach (var idArtista in artistasFavoritos)
+            {
+                var albumes = await _repoAlbum.ObtenerPorArtistaAsync(idArtista, cancellationToken);
+                albumesRecomendados.AddRange(albumes);
+            }
+
+            // Si no hay suficientes, agregar álbumes recientes
+            if (albumesRecomendados.Count < limite)
+            {
+                var albumesRecientes = await _repoAlbum.ObtenerAlbumesRecientesAsync(limite, cancellationToken);
+                var albumesAdicionales = albumesRecientes
+                    .Where(a => !albumesRecomendados.Any(ar => ar.idAlbum == a.idAlbum))
+                    .Take(limite - albumesRecomendados.Count);
+                
+                albumesRecomendados.AddRange(albumesAdicionales);
+            }
+
+            var resultado = albumesRecomendados.Take(limite).ToList();
+            _logger.LogDebug("Generadas {Count} recomendaciones de álbumes para usuario {UsuarioId}", resultado.Count, idUsuario);
+            return resultado;
+        }, TimeSpan.FromMinutes(20));
+    }
+}
