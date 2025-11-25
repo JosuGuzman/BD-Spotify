@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Spotify.Core.Persistencia;
 using Spotify.Core.Persistencia.Contracts;
 using Spotify.Core.Models.Busqueda;
+using Dapper;
 
 namespace Spotify.Core.Services.Business;
 
