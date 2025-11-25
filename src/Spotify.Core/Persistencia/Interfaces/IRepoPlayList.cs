@@ -1,5 +1,5 @@
 namespace Spotify.Core.Persistencia;
-public interface IRepoPlaylist : IRepoBase<PlayList>
+public interface IRepoPlaylist : IRepoBase<PlayList>, IRepoBusqueda<PlayList>
 {
         // Operaciones específicas de Playlist
     IEnumerable<PlayList> ObtenerPorUsuario(uint idUsuario);
