@@ -1,6 +1,6 @@
 namespace Spotify.Core.Persistencia;
 
-public interface IRepoGenero : IRepoBase<Genero>
+public interface IRepoGenero : IRepoBase<Genero>, IRepoBusqueda<Genero>
 {
         // Operaciones específicas de Genero
     IEnumerable<Genero> ObtenerGenerosPopulares();
