@@ -1,70 +1,69 @@
 USE 5to_Spotify;
 
--- 1
 DELIMITER $$
-DROP FUNCTION IF EXISTS estaSuscrito $$
-CREATE FUNCTION estaSuscrito (unidUsuario INT)
+
+-- 1. Función para verificar suscripción activa
+DROP FUNCTION IF EXISTS EstaSuscrito $$
+CREATE FUNCTION EstaSuscrito(unidUsuario INT UNSIGNED)
 RETURNS BOOL READS SQL DATA
 BEGIN
-	DECLARE Suscrito BOOL;
-    IF (EXISTS(SELECT * 
-			   FROM Usuario_suscripcion US
-               JOIN Suscripcion S ON US.idSuscripcion = S.idSuscripcion
-               WHERE US.idUsuario = unidUsuario
-               AND DATE_ADD(US.FechaInicio, INTERVAL S.Duracion MONTH) >= CURDATE())) THEN
-        SET Suscrito = True;
-	ELSE
-		SET Suscrito = False;
-	END IF;
+    DECLARE Suscrito BOOL DEFAULT FALSE;
+    
+    SELECT EXISTS(
+        SELECT 1 
+        FROM Suscripcion S
+        JOIN TipoSuscripcion TS ON S.idTipoSuscripcion = TS.idTipoSuscripcion
+        WHERE S.idUsuario = unidUsuario
+        AND DATE_ADD(S.FechaInicio, INTERVAL TS.Duracion MONTH) >= CURDATE()
+    ) INTO Suscrito;
+    
     RETURN Suscrito;
 END $$
 
--- 2
-DELIMITER $$
-DROP FUNCTION IF EXISTS nacionalidadArtista $$
-CREATE FUNCTION nacionalidadArtista (unidArtista INT)
+-- 2. Función para obtener nacionalidad del artista (corregida)
+DROP FUNCTION IF EXISTS ObtenerNacionalidadArtista $$
+CREATE FUNCTION ObtenerNacionalidadArtista(unidArtista INT UNSIGNED)
 RETURNS VARCHAR(45) READS SQL DATA
 BEGIN 
-	DECLARE artistaNacionalidad VARCHAR(45);
-	
-    SELECT Pais into artistaNacionalidad
-    FROM Artista
-    JOIN Nacionalidad USING (idNacionalidad)
-    WHERE idArtista = unidArtista
-    AND Nacionalidad.idNacionalidad = Artista.Nacionalidad;
-	
-    RETURN artistaNacionalidad;
+    DECLARE artistaNacionalidad VARCHAR(45);
+    
+    SELECT N.Pais INTO artistaNacionalidad
+    FROM Artista A
+    JOIN Usuario U ON A.idArtista = unidArtista  -- Relación corregida
+    JOIN Nacionalidad N ON U.idNacionalidad = N.idNacionalidad
+    WHERE A.idArtista = unidArtista;
+    
+    RETURN COALESCE(artistaNacionalidad, 'Desconocida');
 END $$
 
--- 3
-DELIMITER $$
-DROP FUNCTION IF EXISTS artistaAlbum $$
-CREATE FUNCTION artistaAlbum (unidAlbum INT)
+-- 3. Función para obtener artista del álbum
+DROP FUNCTION IF EXISTS ObtenerArtistaAlbum $$
+CREATE FUNCTION ObtenerArtistaAlbum(unidAlbum INT UNSIGNED)
 RETURNS VARCHAR(35) READS SQL DATA
 BEGIN 
-	DECLARE artista VARCHAR(35);
+    DECLARE nombreArtista VARCHAR(35);
     
-    SELECT A.NombreArtistico into artista
+    SELECT A.NombreArtistico INTO nombreArtista
     FROM Artista A
-    JOIN Album USING (idArtista)
-    WHERE A.idArtista = Album.idArtista
-    AND idAlbum = unidAlbum;
+    JOIN Album AL ON A.idArtista = AL.idArtista
+    WHERE AL.idAlbum = unidAlbum;
     
-    RETURN artista;
+    RETURN nombreArtista;
 END $$
 
--- 4
-DELIMITER $$
-DROP FUNCTION IF EXISTS ultimaSuscripcion $$
-CREATE FUNCTION ultimaSuscripcion (unidUsuario INT)
+-- 4. Función para obtener última suscripción
+DROP FUNCTION IF EXISTS ObtenerUltimaSuscripcion $$
+CREATE FUNCTION ObtenerUltimaSuscripcion(unidUsuario INT UNSIGNED)
 RETURNS DATE READS SQL DATA
 BEGIN 
-    DECLARE ultimoDia DATE;
-
-    SELECT MAX(DATE_ADD(US.FechaInicio, INTERVAL S.Duracion MONTH)) INTO ultimoDia
-    FROM Usuario_suscripcion US
-    JOIN Suscripcion S ON US.idSuscripcion = S.idSuscripcion
-    WHERE US.idUsuario = unidUsuario;
-
-    RETURN ultimoDia;
+    DECLARE ultimaFecha DATE;
+    
+    SELECT MAX(DATE_ADD(S.FechaInicio, INTERVAL TS.Duracion MONTH)) INTO ultimaFecha
+    FROM Suscripcion S
+    JOIN TipoSuscripcion TS ON S.idTipoSuscripcion = TS.idTipoSuscripcion
+    WHERE S.idUsuario = unidUsuario;
+    
+    RETURN ultimaFecha;
 END $$
+
+DELIMITER ;

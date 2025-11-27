@@ -1,45 +1,45 @@
 USE 5to_Spotify;
 
--- 1
 DELIMITER $$
-DROP TRIGGER IF EXISTS befInsertCancion $$
-CREATE TRIGGER befInsertCancion BEFORE INSERT ON Cancion
+
+-- 1. Trigger para validar canción antes de insertar
+DROP TRIGGER IF EXISTS ValidarInsercionCancion $$
+CREATE TRIGGER ValidarInsercionCancion BEFORE INSERT ON Cancion
 FOR EACH ROW 
 BEGIN 
-	IF(NEW.Titulo = '') THEN
-    SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'El titulo no puede estar vacio';
-	END IF;
+    IF (NEW.Titulo IS NULL OR TRIM(NEW.Titulo) = '') THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El título de la canción no puede estar vacío';
+    END IF;
 END $$
 
--- 2
-DELIMITER $$
-DROP TRIGGER IF EXISTS aftInsertUsuario $$
-CREATE TRIGGER aftInsertUsuario AFTER INSERT ON Usuario
+-- 2. Trigger para crear playlist "Me Gusta" automáticamente
+DROP TRIGGER IF EXISTS CrearPlaylistMeGusta $$
+CREATE TRIGGER CrearPlaylistMeGusta AFTER INSERT ON Usuario
 FOR EACH ROW
 BEGIN
-	INSERT INTO Playlist (Nombre,idUsuario)
-		VALUES('Tus Megusta',NEW.idUsuario);
+    INSERT INTO Playlist (Nombre, idUsuario, EsPublica)
+    VALUES ('Mis Me Gusta', NEW.idUsuario, FALSE);
 END $$
 
--- 3
-DELIMITER $$
-DROP TRIGGER IF EXISTS befUpdatePlaylist$$
-CREATE TRIGGER befUpdatePlaylist BEFORE UPDATE ON Playlist
+-- 3. Trigger para validar actualización de playlist
+DROP TRIGGER IF EXISTS ValidarActualizacionPlaylist $$
+CREATE TRIGGER ValidarActualizacionPlaylist BEFORE UPDATE ON Playlist
 FOR EACH ROW
 BEGIN
-	IF(NEW.Nombre = '')THEN
-	SIGNAL SQLSTATE '45000'
-    SET MESSAGE_TEXT = 'El nombre no puede estar vacio';
-	END IF;
+    IF (NEW.Nombre IS NULL OR TRIM(NEW.Nombre) = '') THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El nombre de la playlist no puede estar vacío';
+    END IF;
 END $$
 
--- 4
-DELIMITER $$
-DROP TRIGGER IF EXISTS aftDeletePlaylist $$
-CREATE TRIGGER aftDeletePlaylist AFTER DELETE ON Playlist
+-- 4. Trigger para limpiar canciones de playlist eliminada
+DROP TRIGGER IF EXISTS LimpiarPlaylistEliminada $$
+CREATE TRIGGER LimpiarPlaylistEliminada AFTER DELETE ON Playlist
 FOR EACH ROW
 BEGIN
-	DELETE FROM Playlist_Cancion
+    DELETE FROM Cancion_Playlist
     WHERE idPlaylist = OLD.idPlaylist;
 END $$
+
+DELIMITER ;

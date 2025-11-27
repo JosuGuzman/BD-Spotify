@@ -1,68 +1,142 @@
 USE 5to_Spotify;
 
--- Tabla Artista
-CALL altaArtista('TripleT', 'Miguel', 'Verduguez', @idArtistaTripleT);
-CALL altaArtista('El Chapo', 'Josu', 'Duran', @idArtistaElChapo);
-CALL altaArtista('La Maquinaria', 'Rene', 'Terrazas', @idArtistalaMaquinaria);
-CALL altaArtista('El Renacido', 'Leonardo', 'Cheng', @idArtistaElRenacido);
+-- =============================================
+-- INSERCIÓN DE DATOS BÁSICOS DEL SISTEMA
+-- =============================================
 
--- Tabla Album (CON PORTADAS)
-CALL altaAlbum (@idAlbumLuz, 'Luz y Sombra', @idArtistaTripleT, 'luz_sombra.jpg');
-CALL altaAlbum (@idAlbumCaminos, 'Caminos Cruzados', @idArtistaElChapo, 'caminos_cruzados.jpg');
-CALL altaAlbum (@idAlbumSuenios, 'Sueños de Verano', @idArtistalaMaquinaria, 'suenios_verano.jpg');
-CALL altaAlbum (@idAlbumEcos, 'Ecos del Pasado', @idArtistaElRenacido, 'default_album.png');
+-- Insertar Roles del Sistema
+INSERT INTO Rol (NombreRol, Descripcion) VALUES 
+('Administrador', 'Acceso completo al sistema de gestión'),
+('Usuario', 'Usuario estándar con permisos básicos'),
+('Artista', 'Usuario que puede publicar contenido musical');
 
--- Tabla Nacionalidad
-CALL altaNacionalidad ('Argentina', @idNacionalidadArgentina);
-CALL altaNacionalidad ('Brasil', @idNacionalidadBrasil);
-CALL altaNacionalidad ('U.R.S.S.', @idNacionalidadURSS);
-CALL altaNacionalidad ('Bolivia', @idNacionalidadBolivia);
+-- Insertar Nacionalidades
+CALL AltaNacionalidad('Argentina', @idArgentina);
+CALL AltaNacionalidad('Brasil', @idBrasil);
+CALL AltaNacionalidad('México', @idMexico);
+CALL AltaNacionalidad('España', @idEspana);
+CALL AltaNacionalidad('Estados Unidos', @idEEUU);
+CALL AltaNacionalidad('Colombia', @idColombia);
 
--- Tabla Usuario
-CALL altaUsuario ("Miguel", "miguelito@gmail.com", "Deadpool3saliomal", 1, @idUsuarioMiguel);
-CALL altaUsuario ("Josu","josu@gmail.com","OMORIoyasumi",2,@idUsuarioJosu);
-CALL altaUsuario ("Rene","rene@gmail.com","Totoro",3,@idUsuarioRene);
-CALL altaUsuario ("Cheng","chengleonardo@gmail.com","capitalismonofunciona",4,@idUsuarioCheng);
+-- Insertar Géneros Musicales
+CALL AltaGenero('Pop', 'Música popular comercial', @idPop);
+CALL AltaGenero('Rock', 'Género musical tradicional con instrumentos eléctricos', @idRock);
+CALL AltaGenero('Hip Hop', 'Género originado en comunidades urbanas', @idHipHop);
+CALL AltaGenero('Electrónica', 'Música creada con instrumentos electrónicos', @idElectronica);
+CALL AltaGenero('Reggaetón', 'Género originario de Puerto Rico', @idReggaeton);
+CALL AltaGenero('Jazz', 'Género con improvisación y ritmos complejos', @idJazz);
 
--- Tabla Genero (CON DESCRIPCIONES)
-CALL altaGenero('Hip-hop/Rap', 'Género musical que incorpora rima, habla rítmica y lenguaje callejero', @idGeneroHipHop);
-CALL altaGenero('Jazz', 'Género musical que se originó en comunidades afroamericanas con raíces en el blues y ragtime', @idGeneroJazz);
-CALL altaGenero('Reggae', 'Género musical originario de Jamaica con ritmos característicos y mensajes sociales', @idGeneroReggae);
-CALL altaGenero('Ranchera', 'Género de la música popular mexicana con letras que hablan del amor y la patria', @idGeneroRanchera);
+-- =============================================
+-- INSERCIÓN DE ARTISTAS
+-- =============================================
 
--- Tabla Cancion (CON ARCHIVOS MP3)
-CALL altaCancion(@idCancionOver, 'Its Over, Isnt It', '00:02:17', @idAlbumSuenios, @idArtistaElRenacido, @idGeneroHipHop, 'over_isnt_it.mp3');
-CALL altaCancion(@idCancionRene, 'René', '00:07:41', @idAlbumCaminos, @idArtistaElChapo, @idGeneroJazz, 'rene_cancion.mp3');
-CALL altaCancion(@idCancionEstrella, 'Como Estrella', '00:03:40', @idAlbumLuz, @idArtistalaMaquinaria, @idGeneroReggae, 'como_estrella.mp3');
-CALL altaCancion(@idCancionCelos, 'Estos Celos', '00:03:10', @idAlbumEcos, @idArtistaTripleT, @idGeneroRanchera, 'estos_celos.mp3');
+CALL AltaArtista('Bad Bunny', 'Benito', 'Martínez', @idBadBunny);
+CALL AltaArtista('Taylor Swift', 'Taylor', 'Swift', @idTaylorSwift);
+CALL AltaArtista('The Weeknd', 'Abel', 'Tesfaye', @idTheWeeknd);
+CALL AltaArtista('Dua Lipa', 'Dua', 'Lipa', @idDuaLipa);
+CALL AltaArtista('Ed Sheeran', 'Edward', 'Sheeran', @idEdSheeran);
+CALL AltaArtista('Billie Eilish', 'Billie', 'Eilish', @idBillieEilish);
 
--- Tabla Historial Reproduccion
-CALL altaHistorial_reproduccion(@idHistorialMiguel, @idUsuarioMiguel, @idCancionOver, '2024-07-01 10:00:00');
-CALL altaHistorial_reproduccion(@idHistorialJosu, @idUsuarioJosu, @idCancionRene, '2024-07-01 11:00:00');
-CALL altaHistorial_reproduccion(@idHistorialRene, @idUsuarioRene, @idCancionEstrella, '2024-07-01 12:00:00');
-CALL altaHistorial_reproduccion(@idHistorialCheng, @idUsuarioCheng, @idCancionCelos, '2024-07-01 13:00:00');
+-- =============================================
+-- INSERCIÓN DE ÁLBUMES
+-- =============================================
 
--- Tabla Playlist
-CALL altaPlaylist('Éxitos de Rock', @idUsuarioMiguel, @idPlaylistRock);
-CALL altaPlaylist('Clásicos del Pop', @idUsuarioJosu, @idPlaylistPop);
-CALL altaPlaylist('Vibras de Jazz', @idUsuarioRene, @idPlaylistJazz);
-CALL altaPlaylist('Ritmos Chill', @idUsuarioCheng, @idPlaylistChill);
+CALL AltaAlbum(@idAlbumUnVerano, 'Un Verano Sin Ti', @idBadBunny, 'un_verano_sin_ti.jpg');
+CALL AltaAlbum(@idAlbumMidnights, 'Midnights', @idTaylorSwift, 'midnights.jpg');
+CALL AltaAlbum(@idAlbumAfterHours, 'After Hours', @idTheWeeknd, 'after_hours.jpg');
+CALL AltaAlbum(@idAlbumFutureNostalgia, 'Future Nostalgia', @idDuaLipa, 'future_nostalgia.jpg');
+CALL AltaAlbum(@idAlbumDivide, '÷ (Divide)', @idEdSheeran, 'divide.jpg');
+CALL AltaAlbum(@idAlbumHappierThanEver, 'Happier Than Ever', @idBillieEilish, 'happier_than_ever.jpg');
 
--- Tabla TipoSuscripcion
-CALL altaTipoSuscripcion(@idSuscripcionMensual,1,8,"Mensual");
-CALL altaTipoSuscripcion(@idSuscripcionBimestral,2,12,"Bimestral");
-CALL altaTipoSuscripcion(@idSuscripcionTrimestral,3,15,"Trimestral");
-CALL altaTipoSuscripcion(@idSuscripcionCuatrimestral,4,20,"Cuatrimestral");
+-- =============================================
+-- INSERCIÓN DE USUARIOS
+-- =============================================
 
--- Tabla Cancion_Playlist
-CALL altaPlaylistCancion(@idCancionOver, @idPlaylistRock);
-CALL altaPlaylistCancion(@idCancionRene, @idPlaylistPop);
-CALL altaPlaylistCancion(@idCancionEstrella, @idPlaylistJazz);
-CALL altaPlaylistCancion(@idCancionCelos, @idPlaylistChill);
+-- Usuario Administrador
+CALL AltaUsuario('admin', 'admin@spotify.com', 'Admin123!', @idArgentina, @idAdmin);
+UPDATE Usuario SET idRol = 1 WHERE idUsuario = @idAdmin;
 
--- Tabla Suscripcion_Usuario
-INSERT INTO Suscripcion (idUsuario, idSuscripcion, idTipoSuscripcion, FechaInicio)
-VALUES
-       (1,1,@idSuscripcionMensual,"2024-5-3"),
-       (2,2,@idSuscripcionBimestral,"2024-7-23"),
-       (3,3,@idSuscripcionTrimestral,"2024-7-23");
+-- Usuarios Regulares
+CALL AltaUsuario('maria_garcia', 'maria@email.com', 'Maria123!', @idArgentina, @idMaria);
+CALL AltaUsuario('carlos_lopez', 'carlos@email.com', 'Carlos123!', @idMexico, @idCarlos);
+CALL AltaUsuario('ana_silva', 'ana@email.com', 'Ana123!', @idBrasil, @idAna);
+CALL AltaUsuario('david_lee', 'david@email.com', 'David123!', @idEEUU, @idDavid);
+
+-- =============================================
+-- INSERCIÓN DE CANCIONES
+-- =============================================
+
+-- Canciones de Bad Bunny
+CALL AltaCancion(@idCancion1, 'Tití Me Preguntó', '00:04:03', @idAlbumUnVerano, @idBadBunny, @idReggaeton, 'titi_me_pregunto.mp3');
+CALL AltaCancion(@idCancion2, 'Me Porto Bonito', '00:02:58', @idAlbumUnVerano, @idBadBunny, @idReggaeton, 'me_porto_bonito.mp3');
+
+-- Canciones de Taylor Swift
+CALL AltaCancion(@idCancion3, 'Anti-Hero', '00:03:20', @idAlbumMidnights, @idTaylorSwift, @idPop, 'anti_hero.mp3');
+CALL AltaCancion(@idCancion4, 'Lavender Haze', '00:03:22', @idAlbumMidnights, @idTaylorSwift, @idPop, 'lavender_haze.mp3');
+
+-- Canciones de The Weeknd
+CALL AltaCancion(@idCancion5, 'Blinding Lights', '00:03:20', @idAlbumAfterHours, @idTheWeeknd, @idPop, 'blinding_lights.mp3');
+CALL AltaCancion(@idCancion6, 'Save Your Tears', '00:03:35', @idAlbumAfterHours, @idTheWeeknd, @idPop, 'save_your_tears.mp3');
+
+-- =============================================
+-- INSERCIÓN DE PLAYISTS
+-- =============================================
+
+-- Playlists públicas
+CALL AltaPlaylist('Éxitos 2024', @idAdmin, @idPlaylistExitos);
+UPDATE Playlist SET EsPublica = TRUE WHERE idPlaylist = @idPlaylistExitos;
+
+CALL AltaPlaylist('Rock Clásico', @idMaria, @idPlaylistRock);
+UPDATE Playlist SET EsPublica = TRUE WHERE idPlaylist = @idPlaylistRock;
+
+-- Playlists personales
+CALL AltaPlaylist('Mis Favoritas', @idMaria, @idPlaylistFavoritasMaria);
+CALL AltaPlaylist('Para Estudiar', @idCarlos, @idPlaylistEstudiarCarlos);
+CALL AltaPlaylist('Fiesta', @idAna, @idPlaylistFiestaAna);
+
+-- =============================================
+-- INSERCIÓN DE SUSCRIPCIONES
+-- =============================================
+
+-- Tipos de Suscripción
+CALL AltaTipoSuscripcion(@idSuscripcionGratuita, 0, 0, 'Gratuita');
+CALL AltaTipoSuscripcion(@idSuscripcionPremium, 1, 8, 'Premium Individual');
+CALL AltaTipoSuscripcion(@idSuscripcionDuo, 1, 12, 'Premium Duo');
+CALL AltaTipoSuscripcion(@idSuscripcionFamiliar, 1, 15, 'Premium Familiar');
+
+-- Suscripciones de usuarios
+CALL AltaRegistroSuscripcion(@idSuscripcion1, @idMaria, @idSuscripcionPremium);
+CALL AltaRegistroSuscripcion(@idSuscripcion2, @idCarlos, @idSuscripcionDuo);
+CALL AltaRegistroSuscripcion(@idSuscripcion3, @idAna, @idSuscripcionPremium);
+
+-- =============================================
+-- RELACIONES ENTRE TABLAS
+-- =============================================
+
+-- Agregar canciones a playlists
+CALL AltaPlaylistCancion(@idCancion1, @idPlaylistExitos);
+CALL AltaPlaylistCancion(@idCancion3, @idPlaylistExitos);
+CALL AltaPlaylistCancion(@idCancion5, @idPlaylistExitos);
+CALL AltaPlaylistCancion(@idCancion1, @idPlaylistFavoritasMaria);
+CALL AltaPlaylistCancion(@idCancion2, @idPlaylistFiestaAna);
+
+-- Historial de reproducción
+CALL AltaHistorialReproduccion(@idHistorial1, @idMaria, @idCancion1, NOW() - INTERVAL 1 HOUR);
+CALL AltaHistorialReproduccion(@idHistorial2, @idMaria, @idCancion3, NOW() - INTERVAL 30 MINUTE);
+CALL AltaHistorialReproduccion(@idHistorial3, @idCarlos, @idCancion5, NOW() - INTERVAL 15 MINUTE);
+
+-- Me Gusta
+INSERT INTO MeGusta (idUsuario, idCancion) VALUES
+(@idMaria, @idCancion1),
+(@idMaria, @idCancion3),
+(@idCarlos, @idCancion5),
+(@idAna, @idCancion2);
+
+-- =============================================
+-- VERIFICACIÓN DE DATOS INSERTADOS
+-- =============================================
+
+SELECT '✅ Datos insertados correctamente' AS Estado;
+SELECT COUNT(*) AS TotalUsuarios FROM Usuario;
+SELECT COUNT(*) AS TotalCanciones FROM Cancion;
+SELECT COUNT(*) AS TotalArtistas FROM Artista;
