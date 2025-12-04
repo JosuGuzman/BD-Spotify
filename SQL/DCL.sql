@@ -1,25 +1,45 @@
--- Creación de usuarios
-CREATE USER IF NOT EXISTS 'Admin'@'localhost' IDENTIFIED BY '7wQ0EgQ6$';
-CREATE USER IF NOT EXISTS 'Admin'@'%' IDENTIFIED BY 'h7G7I4&qI';
-CREATE USER IF NOT EXISTS 'Usuario'@'10.120.2.%' IDENTIFIED BY 'B8d1(3@RU';
-CREATE USER IF NOT EXISTS 'UsuarioLocal'@'localhost' IDENTIFIED BY 'J2Qz29+Tj';
+USE 5to_Spotify;
 
--- Asignación de permisos para Admin
-GRANT ALL PRIVILEGES ON 5to_Spotify.* TO 'Admin'@'localhost';
-GRANT ALL PRIVILEGES ON 5to_Spotify.* TO 'Admin'@'%';
+-- Creación de usuarios con permisos específicos
+DROP USER IF EXISTS 'AdminSpotify'@'localhost';
+DROP USER IF EXISTS 'UsuarioApp'@'localhost';
+DROP USER IF EXISTS 'GestorContenido'@'localhost';
+DROP USER IF EXISTS 'Reportes'@'localhost';
 
--- Asignación de permisos para Usuario
-GRANT SELECT, INSERT, UPDATE ON 5to_Spotify.Usuario TO 'Usuario'@'10.120.2.%';
-GRANT SELECT ON 5to_Spotify.Cancion TO 'Usuario'@'10.120.2.%';
+-- 1. Usuario Administrador (acceso completo)
+CREATE USER 'AdminSpotify'@'localhost' IDENTIFIED BY 'AdminSecure123!';
+GRANT ALL PRIVILEGES ON 5to_Spotify.* TO 'AdminSpotify'@'localhost';
+GRANT EXECUTE ON PROCEDURE 5to_Spotify.* TO 'AdminSpotify'@'localhost';
 
--- Asignacion de permisos para UsuarioLocal
-GRANT SELECT ON 5to_Spotify.* TO 'UsuarioLocal'@'localhost';
+-- 2. Usuario de la Aplicación (para conexión ASP.NET)
+CREATE USER 'UsuarioApp'@'localhost' IDENTIFIED BY 'AppSecure456!';
+GRANT SELECT, INSERT, UPDATE, DELETE ON 5to_Spotify.* TO 'UsuarioApp'@'localhost';
+GRANT EXECUTE ON PROCEDURE 5to_Spotify.* TO 'UsuarioApp'@'localhost';
 
--- Creación de un nuevo usuario con permisos específicos
-CREATE USER 'Gestor'@'localhost' IDENTIFIED BY 'G3st0rP@ss';
-GRANT SELECT, INSERT, UPDATE, DELETE ON 5to_Spotify.Playlist TO 'Gestor'@'localhost';
-GRANT SELECT ON 5to_Spotify.Album TO 'Gestor'@'localhost';
+-- 3. Usuario Gestor de Contenido (solo CRUD de contenido)
+CREATE USER 'GestorContenido'@'localhost' IDENTIFIED BY 'GestorSecure789!';
+GRANT SELECT, INSERT, UPDATE ON 5to_Spotify.Artista TO 'GestorContenido'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON 5to_Spotify.Album TO 'GestorContenido'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON 5to_Spotify.Cancion TO 'GestorContenido'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON 5to_Spotify.Genero TO 'GestorContenido'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON 5to_Spotify.Nacionalidad TO 'GestorContenido'@'localhost';
+GRANT SELECT ON 5to_Spotify.* TO 'GestorContenido'@'localhost';
 
--- Aplicar los cambios
+-- 4. Usuario de Reportes (solo lecturas)
+CREATE USER 'Reportes'@'localhost' IDENTIFIED BY 'ReportSecure321!';
+GRANT SELECT ON 5to_Spotify.VistaDashboardAdmin TO 'Reportes'@'localhost';
+GRANT SELECT ON 5to_Spotify.VistaEstadisticasDiarias TO 'Reportes'@'localhost';
+GRANT SELECT ON 5to_Spotify.VistaUsuariosSuscripciones TO 'Reportes'@'localhost';
+GRANT SELECT ON 5to_Spotify.VistaCancionesDetalladas TO 'Reportes'@'localhost';
+GRANT EXECUTE ON PROCEDURE 5to_Spotify.ObtenerEstadisticasSistema TO 'Reportes'@'localhost';
+
+-- Revocar permisos peligrosos de usuarios no admin
+REVOKE DROP, CREATE USER, GRANT OPTION FROM 'UsuarioApp'@'localhost';
+REVOKE DROP, CREATE USER, GRANT OPTION FROM 'GestorContenido'@'localhost';
+REVOKE DROP, CREATE USER, GRANT OPTION FROM 'Reportes'@'localhost';
+
+-- Aplicar cambios
 FLUSH PRIVILEGES;
-Asignación
+
+-- Verificación de permisos
+SELECT '✅ Usuarios y permisos configurados correctamente' AS Mensaje;

@@ -1,609 +1,462 @@
 USE 5to_Spotify;
 
 -- -----------------------------------------------------
--- Stored Procedure de Altas de las Tablas
+-- Procedimientos Almacenados de Altas
 -- -----------------------------------------------------
 
--- 1 AltaArtista
+-- 1. AltaArtista
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaArtista $$
-CREATE PROCEDURE altaArtista (
-    IN unNombreArtistico VARCHAR(35), 
-    IN unNombreReal VARCHAR(45), 
-    IN unApellidoReal VARCHAR(45), 
-    OUT unidArtista INT UNSIGNED
+DROP PROCEDURE IF EXISTS AltaArtista $$
+CREATE PROCEDURE AltaArtista(
+    IN pNombreArtistico VARCHAR(35),
+    IN pNombreReal VARCHAR(45),
+    IN pApellidoReal VARCHAR(45),
+    IN pIdNacionalidad INT UNSIGNED,
+    OUT pIdArtista INT UNSIGNED
 )
 BEGIN
-    DECLARE existe INT;
+    DECLARE vExiste INT;
 
-    IF unNombreArtistico IS NULL OR TRIM(unNombreArtistico) = '' THEN
+    IF pNombreArtistico IS NULL OR TRIM(pNombreArtistico) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El Nombre Artístico es obligatorio.';
     END IF;
 
-    SELECT idArtista INTO existe
+    SELECT IdArtista INTO vExiste
     FROM Artista
-    WHERE NombreArtistico = unNombreArtistico LIMIT 1;
+    WHERE NombreArtistico = pNombreArtistico 
+    AND EstaActivo = 1 
+    LIMIT 1;
 
-    IF existe IS NOT NULL THEN
-        SET unidArtista = existe;
+    IF vExiste IS NOT NULL THEN
+        SET pIdArtista = vExiste;
     ELSE
-        INSERT INTO Artista (NombreArtistico, NombreReal, ApellidoReal)
-        VALUES (unNombreArtistico, unNombreReal, unApellidoReal);
-        SET unidArtista = LAST_INSERT_ID();
+        INSERT INTO Artista (NombreArtistico, NombreReal, ApellidoReal, IdNacionalidad)
+        VALUES (pNombreArtistico, pNombreReal, pApellidoReal, pIdNacionalidad);
+        SET pIdArtista = LAST_INSERT_ID();
     END IF;
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 2 altaAlbum
+-- 2. AltaAlbum
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaAlbum $$
-CREATE PROCEDURE altaAlbum (
-    OUT unidAlbum INT UNSIGNED,
-    IN unTitulo VARCHAR(45),
-    IN unidArtista INT UNSIGNED,
-    IN unPortada VARCHAR(255)
+DROP PROCEDURE IF EXISTS AltaAlbum $$
+CREATE PROCEDURE AltaAlbum(
+    IN pTitulo VARCHAR(45),
+    IN pIdArtista INT UNSIGNED,
+    IN pPortada VARCHAR(255),
+    OUT pIdAlbum INT UNSIGNED
 )
 BEGIN
-    IF unTitulo IS NULL OR TRIM(unTitulo) = '' THEN
+    IF pTitulo IS NULL OR TRIM(pTitulo) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El título del álbum es obligatorio.';
     END IF;
 
-    IF unPortada IS NULL OR unPortada = '' THEN
-        SET unPortada = 'default_album.png';
+    IF pPortada IS NULL OR pPortada = '' THEN
+        SET pPortada = 'album_default.png';
     END IF;
 
-    INSERT INTO Album (Titulo, fechaLanzamiento, idArtista, Portada)
-    VALUES(unTitulo, CURDATE(), unidArtista, unPortada);
+    INSERT INTO Album (Titulo, FechaLanzamiento, IdArtista, Portada)
+    VALUES(pTitulo, CURDATE(), pIdArtista, pPortada);
 
-    SET unidAlbum = LAST_INSERT_ID();
+    SET pIdAlbum = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 3 altaNacionalidad
+-- 3. AltaNacionalidad
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaNacionalidad $$
-CREATE PROCEDURE altaNacionalidad (
-    IN unPais VARCHAR(45), 
-    OUT unidNacionalidad INT UNSIGNED
+DROP PROCEDURE IF EXISTS AltaNacionalidad $$
+CREATE PROCEDURE AltaNacionalidad(
+    IN pPais VARCHAR(45),
+    OUT pIdNacionalidad INT UNSIGNED
 )
 BEGIN
-    IF unPais IS NULL OR TRIM(unPais) = '' THEN
+    IF pPais IS NULL OR TRIM(pPais) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El nombre del país es obligatorio.';
     END IF;
 
     INSERT INTO Nacionalidad (Pais)
-    VALUES(unPais);
+    VALUES(pPais);
     
-    SET unidNacionalidad = LAST_INSERT_ID();
+    SET pIdNacionalidad = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 4 altaUsuario
+-- 4. AltaUsuario
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaUsuario $$
-CREATE PROCEDURE altaUsuario (
-    IN unNombreUsuario VARCHAR(45), 
-    IN unEmail VARCHAR(45), 
-    IN unaContrasenia VARCHAR(64), 
-    IN unidNacionalidad INT UNSIGNED, 
-    OUT unidUsuario INT UNSIGNED
+DROP PROCEDURE IF EXISTS AltaUsuario $$
+CREATE PROCEDURE AltaUsuario(
+    IN pNombreUsuario VARCHAR(45),
+    IN pEmail VARCHAR(45),
+    IN pContrasenia VARCHAR(255),
+    IN pIdNacionalidad INT UNSIGNED,
+    IN pIdRol TINYINT UNSIGNED,
+    OUT pIdUsuario INT UNSIGNED
 )
 BEGIN
-    IF unEmail IS NULL OR TRIM(unEmail) = '' THEN
+    DECLARE vEmailExistente INT;
+
+    IF pEmail IS NULL OR TRIM(pEmail) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El email es obligatorio.';
     END IF;
 
-    IF unNombreUsuario IS NULL OR TRIM(unNombreUsuario) = '' THEN
+    IF pNombreUsuario IS NULL OR TRIM(pNombreUsuario) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El nombre de usuario es obligatorio.';
     END IF;
 
-    INSERT INTO Usuario (NombreUsuario, Email, Contrasenia, idNacionalidad)
-    VALUES(unNombreUsuario, unEmail, SHA2(unaContrasenia, 256), unidNacionalidad);
+    -- Verificar si el email ya existe
+    SELECT COUNT(*) INTO vEmailExistente 
+    FROM Usuario 
+    WHERE Email = pEmail 
+    AND EstaActivo = 1;
+
+    IF vEmailExistente > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El email ya está registrado.';
+    END IF;
+
+    INSERT INTO Usuario (NombreUsuario, Email, Contrasenia, IdNacionalidad, IdRol)
+    VALUES(pNombreUsuario, pEmail, pContrasenia, pIdNacionalidad, pIdRol);
     
-    SET unidUsuario = LAST_INSERT_ID();
+    SET pIdUsuario = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 5 altaGenero
+-- 5. AltaGenero
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaGenero $$
-CREATE PROCEDURE altaGenero (
-    IN unGenero VARCHAR(45),
-    IN unDescripcion TEXT,
-    OUT unidGenero TINYINT UNSIGNED
+DROP PROCEDURE IF EXISTS AltaGenero $$
+CREATE PROCEDURE AltaGenero(
+    IN pNombre VARCHAR(45),
+    IN pDescripcion TEXT,
+    OUT pIdGenero TINYINT UNSIGNED
 )
 BEGIN
-    IF unGenero IS NULL OR TRIM(unGenero) = '' THEN
+    IF pNombre IS NULL OR TRIM(pNombre) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El nombre del género es obligatorio.';
     END IF;
     
-    INSERT INTO Genero (Genero, Descripcion)
-    VALUES(unGenero, unDescripcion);
+    INSERT INTO Genero (Nombre, Descripcion)
+    VALUES(pNombre, pDescripcion);
     
-    SET unidGenero = LAST_INSERT_ID();
+    SET pIdGenero = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 6 altaCancion
+-- 6. AltaCancion
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaCancion $$
-CREATE PROCEDURE altaCancion (
-    OUT unidCancion INT UNSIGNED, 
-    IN unTitulo VARCHAR(45), 
-    IN unDuration TIME, 
-    IN unidAlbum INT UNSIGNED, 
-    IN unidArtista INT UNSIGNED, 
-    IN unidGenero TINYINT UNSIGNED,
-    IN unArchivoMP3 VARCHAR(255)
+DROP PROCEDURE IF EXISTS AltaCancion $$
+CREATE PROCEDURE AltaCancion(
+    IN pTitulo VARCHAR(45),
+    IN pDuracionSegundos INT UNSIGNED,
+    IN pIdAlbum INT UNSIGNED,
+    IN pIdArtista INT UNSIGNED,
+    IN pIdGenero TINYINT UNSIGNED,
+    IN pArchivoMP3 VARCHAR(500),
+    OUT pIdCancion INT UNSIGNED
 )
 BEGIN
-    IF unTitulo IS NULL OR TRIM(unTitulo) = '' THEN
+    IF pTitulo IS NULL OR TRIM(pTitulo) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El título de la canción es obligatorio.';
     END IF;
 
-    INSERT INTO Cancion(Titulo, Duracion, idAlbum, idArtista, idGenero, ArchivoMP3)
-    VALUES(unTitulo, unDuration, unidAlbum, unidArtista, unidGenero, unArchivoMP3);
+    IF pDuracionSegundos <= 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La duración debe ser mayor a 0 segundos.';
+    END IF;
+
+    INSERT INTO Cancion(Titulo, DuracionSegundos, IdAlbum, IdArtista, IdGenero, ArchivoMP3)
+    VALUES(pTitulo, pDuracionSegundos, pIdAlbum, pIdArtista, pIdGenero, pArchivoMP3);
     
-    SET unidCancion = LAST_INSERT_ID();
+    SET pIdCancion = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 7 altaHistorial_reproduccion
+-- 7. AltaHistorialReproduccion
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaHistorial_reproduccion $$
-CREATE PROCEDURE altaHistorial_reproduccion (
-    OUT unidHistorial INT UNSIGNED, 
-    IN unidUsuario INT UNSIGNED, 
-    IN unidCancion INT UNSIGNED, 
-    IN unFechaReproduccion DATETIME
+DROP PROCEDURE IF EXISTS AltaHistorialReproduccion $$
+CREATE PROCEDURE AltaHistorialReproduccion(
+    IN pIdUsuario INT UNSIGNED,
+    IN pIdCancion INT UNSIGNED,
+    IN pDuracionReproducida INT UNSIGNED,
+    OUT pIdHistorial BIGINT UNSIGNED
 )
 BEGIN 
-    INSERT INTO HistorialReproduccion (idUsuario, idCancion, FechaReproduccion)
-    VALUES(unidUsuario, unidCancion, COALESCE(unFechaReproduccion, NOW()));
+    -- Incrementar contador de reproducciones de la canción
+    UPDATE Cancion 
+    SET ContadorReproducciones = ContadorReproducciones + 1 
+    WHERE IdCancion = pIdCancion;
     
-    SET unidHistorial = LAST_INSERT_ID();
+    INSERT INTO HistorialReproduccion (IdUsuario, IdCancion, DuracionReproducida)
+    VALUES(pIdUsuario, pIdCancion, pDuracionReproducida);
+    
+    SET pIdHistorial = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 8 altaPlaylist
+-- 8. AltaPlaylist
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaPlaylist $$
-CREATE PROCEDURE altaPlaylist (
-    IN unNombre VARCHAR(20), 
-    IN unidUsuario INT UNSIGNED, 
-    OUT unidPlaylist INT UNSIGNED
+DROP PROCEDURE IF EXISTS AltaPlaylist $$
+CREATE PROCEDURE AltaPlaylist(
+    IN pNombre VARCHAR(100),
+    IN pIdUsuario INT UNSIGNED,
+    IN pDescripcion TEXT,
+    IN pEsPublica BOOLEAN,
+    OUT pIdPlaylist INT UNSIGNED
 )
 BEGIN
-    IF unNombre IS NULL OR TRIM(unNombre) = '' THEN
+    IF pNombre IS NULL OR TRIM(pNombre) = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'El nombre de la playlist es obligatorio.';
     END IF;
 
-    INSERT INTO Playlist(Nombre, idUsuario)
-    VALUES(unNombre, unidUsuario);
+    INSERT INTO Playlist(Nombre, IdUsuario, Descripcion, EsPublica)
+    VALUES(pNombre, pIdUsuario, pDescripcion, pEsPublica);
     
-    SET unidPlaylist = LAST_INSERT_ID();
+    SET pIdPlaylist = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 9 altaTipoSuscripcion
+-- 9. AltaTipoSuscripcion
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaTipoSuscripcion $$
-CREATE PROCEDURE altaTipoSuscripcion (
-    OUT unidTipoSuscripcion INT UNSIGNED, 
-    IN unaDuracion TINYINT UNSIGNED, 
-    IN unCosto TINYINT UNSIGNED, 
-    IN unTipoSuscripcion VARCHAR(45)
+DROP PROCEDURE IF EXISTS AltaTipoSuscripcion $$
+CREATE PROCEDURE AltaTipoSuscripcion(
+    IN pDuracionMeses INT UNSIGNED,
+    IN pCosto DECIMAL(10,2),
+    IN pTipo VARCHAR(45),
+    OUT pIdTipoSuscripcion INT UNSIGNED
 )
 BEGIN
-    INSERT INTO TipoSuscripcion (Duracion, Costo, Tipo)
-    VALUES(unaDuracion, unCosto, unTipoSuscripcion);
+    INSERT INTO TipoSuscripcion (DuracionMeses, Costo, Tipo)
+    VALUES(pDuracionMeses, pCosto, pTipo);
     
-    SET unidTipoSuscripcion = LAST_INSERT_ID();
+    SET pIdTipoSuscripcion = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 10 altaRegistroSuscripcion
+-- 10. AltaSuscripcionUsuario
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaRegistroSuscripcion $$
-CREATE PROCEDURE altaRegistroSuscripcion (
-    OUT unidSuscripcion INT UNSIGNED,
-    IN unIdUsuario INT UNSIGNED,
-    IN unidTipoSuscripcion INT UNSIGNED
+DROP PROCEDURE IF EXISTS AltaSuscripcionUsuario $$
+CREATE PROCEDURE AltaSuscripcionUsuario(
+    IN pIdUsuario INT UNSIGNED,
+    IN pIdTipoSuscripcion INT UNSIGNED,
+    OUT pIdSuscripcion INT UNSIGNED
 )
 BEGIN
-    INSERT INTO Suscripcion (idUsuario, idTipoSuscripcion, FechaInicio)
-    VALUES (unIdUsuario, unidTipoSuscripcion, CURDATE());
-
-    SET unidSuscripcion = LAST_INSERT_ID();
+    DECLARE vDuracion INT;
+    DECLARE vFechaFin DATE;
+    
+    -- Obtener duración del tipo de suscripción
+    SELECT DuracionMeses INTO vDuracion 
+    FROM TipoSuscripcion 
+    WHERE IdTipoSuscripcion = pIdTipoSuscripcion;
+    
+    -- Calcular fecha de fin
+    SET vFechaFin = DATE_ADD(CURDATE(), INTERVAL vDuracion MONTH);
+    
+    -- Desactivar suscripciones anteriores
+    UPDATE Suscripcion 
+    SET Activo = 0 
+    WHERE IdUsuario = pIdUsuario AND Activo = 1;
+    
+    -- Crear nueva suscripción
+    INSERT INTO Suscripcion (IdUsuario, IdTipoSuscripcion, FechaInicio, FechaFin, Activo)
+    VALUES (pIdUsuario, pIdTipoSuscripcion, CURDATE(), vFechaFin, 1);
+    
+    SET pIdSuscripcion = LAST_INSERT_ID();
 END $$
+DELIMITER ;
 
-DELIMITER;
-
--- 11 altaPlaylistCancion
+-- 11. AgregarCancionPlaylist
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS altaPlaylistCancion $$
-CREATE PROCEDURE altaPlaylistCancion (
-    IN unidCancion INT UNSIGNED,
-    IN unidPlaylist INT UNSIGNED
+DROP PROCEDURE IF EXISTS AgregarCancionPlaylist $$
+CREATE PROCEDURE AgregarCancionPlaylist(
+    IN pIdCancion INT UNSIGNED,
+    IN pIdPlaylist INT UNSIGNED
 )
 BEGIN 
-    INSERT INTO Cancion_Playlist(idCancion, idPlaylist)
-    VALUES (unidCancion, unidPlaylist);
+    DECLARE vMaxOrden INT;
+    
+    -- Obtener el máximo orden actual
+    SELECT COALESCE(MAX(Orden), 0) INTO vMaxOrden
+    FROM Cancion_Playlist
+    WHERE IdPlaylist = pIdPlaylist;
+    
+    INSERT INTO Cancion_Playlist(IdCancion, IdPlaylist, Orden)
+    VALUES (pIdCancion, pIdPlaylist, vMaxOrden + 1);
 END $$
-
-DELIMITER;
-
--- 12 MatcheoCancion
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS MatcheoCancion $$
-CREATE PROCEDURE MatcheoCancion(IN InputCancion VARCHAR(45))
-BEGIN
-    SELECT idCancion, Titulo
-    FROM Cancion
-    WHERE MATCH(Titulo) AGAINST(CONCAT(InputCancion, '*') IN BOOLEAN MODE);
-END $$
-
 DELIMITER ;
 
--- -----------------------------------------------------
--- Stored Procedure de Eliminaciones de las Tablas
--- -----------------------------------------------------
-
--- eliminarArtista
-
+-- 12. BuscarCanciones
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS eliminarArtista $$
-CREATE PROCEDURE eliminarArtista(IN unidArtista INT UNSIGNED)
-BEGIN
-    -- Eliminar historial de reproducción de canciones del artista
-    DELETE HR
-    FROM HistorialReproduccion HR
-    INNER JOIN Cancion C ON HR.idCancion = C.idCancion
-    WHERE C.idArtista = unidArtista;
-
-    -- Eliminar likes
-    DELETE MG
-    FROM MeGusta MG
-    INNER JOIN Cancion C ON MG.idCancion = C.idCancion
-    WHERE C.idArtista = unidArtista;
-
-    -- Eliminar canciones del artista
-    DELETE FROM Cancion WHERE idArtista = unidArtista;
-
-    -- Eliminar álbumes del artista
-    DELETE FROM Album WHERE idArtista = unidArtista;
-
-    -- Finalmente eliminar artista
-    DELETE FROM Artista WHERE idArtista = unidArtista;
-
-    SELECT ROW_COUNT() AS FilasEliminadas;
-END $$
-
-DELIMITER ;
-
--- eliminarAlbum
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS eliminarAlbum $$
-CREATE PROCEDURE eliminarAlbum(IN unidAlbum INT UNSIGNED)
-BEGIN
-    -- Eliminar historial y likes de todas las canciones del álbum
-    DELETE HR
-    FROM HistorialReproduccion HR
-    INNER JOIN Cancion C ON HR.idCancion = C.idCancion
-    WHERE C.idAlbum = unidAlbum;
-
-    DELETE MG
-    FROM MeGusta MG
-    INNER JOIN Cancion C ON MG.idCancion = C.idCancion
-    WHERE C.idAlbum = unidAlbum;
-
-    -- Eliminar canciones del álbum
-    DELETE FROM Cancion WHERE idAlbum = unidAlbum;
-
-    -- Eliminar álbum
-    DELETE FROM Album WHERE idAlbum = unidAlbum;
-
-    SELECT ROW_COUNT() AS FilasEliminadas;
-END $$
-
-DELIMITER ;
-
--- eliminarCancion
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS eliminarCancion $$
-CREATE PROCEDURE eliminarCancion(IN unidCancion INT UNSIGNED)
-BEGIN
-    DELETE FROM HistorialReproduccion WHERE idCancion = unidCancion;
-    DELETE FROM MeGusta WHERE idCancion = unidCancion;
-    DELETE FROM Cancion_Playlist WHERE idCancion = unidCancion;
-    DELETE FROM Cancion WHERE idCancion = unidCancion;
-
-    SELECT ROW_COUNT() AS FilasEliminadas;
-END $$
-
-DELIMITER ;
-
--- eliminarUsuario
-
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS eliminarUsuario $$
-CREATE PROCEDURE eliminarUsuario(IN unidUsuario INT UNSIGNED)
-BEGIN
-    DELETE FROM HistorialReproduccion WHERE idUsuario = unidUsuario;
-    DELETE FROM MeGusta WHERE idUsuario = unidUsuario;
-    DELETE FROM Suscripcion WHERE idUsuario = unidUsuario;
-    DELETE FROM Playlist WHERE idUsuario = unidUsuario;
-    DELETE FROM Usuario WHERE idUsuario = unidUsuario;
-
-    SELECT ROW_COUNT() AS FilasEliminadas;
-END $$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- Stored Procedure de Búsquedas de las Tablas
--- -----------------------------------------------------
-DELIMITER $$
-
-CREATE PROCEDURE `BuscarContenido`(
+DROP PROCEDURE IF EXISTS BuscarCanciones $$
+CREATE PROCEDURE BuscarCanciones(
     IN pTerminoBusqueda VARCHAR(100),
-    IN pTipoBusqueda ENUM('canciones', 'artistas', 'albumes', 'playlists')
+    IN pIdGenero INT UNSIGNED,
+    IN pIdArtista INT UNSIGNED,
+    IN pAnio INT UNSIGNED,
+    IN pLimite INT
 )
 BEGIN
-    IF pTipoBusqueda = 'canciones' THEN
-        SELECT c.idCancion, c.Titulo, a.NombreArtistico, al.Titulo AS Album
+    SET @sql = '
+        SELECT 
+            c.IdCancion, 
+            c.Titulo, 
+            c.DuracionSegundos,
+            a.NombreArtistico AS Artista,
+            al.Titulo AS Album,
+            g.Nombre AS Genero,
+            al.FechaLanzamiento,
+            c.ContadorReproducciones
         FROM Cancion c
-        JOIN Artista a ON c.idArtista = a.idArtista
-        JOIN Album al ON c.idAlbum = al.idAlbum
-        WHERE MATCH(c.Titulo) AGAINST (pTerminoBusqueda IN NATURAL LANGUAGE MODE)
-        AND c.EstaActiva = TRUE
-        LIMIT 50;
-
-    ELSEIF pTipoBusqueda = 'artistas' THEN
-        SELECT idArtista, NombreArtistico, FotoArtista
-        FROM Artista
-        WHERE MATCH(NombreArtistico) AGAINST (pTerminoBusqueda IN NATURAL LANGUAGE MODE)
-        AND EstaActivo = TRUE
-        LIMIT 50;
-
-    ELSEIF pTipoBusqueda = 'albumes' THEN
-        SELECT idAlbum, Titulo, idArtista
-        FROM Album
-        WHERE MATCH(Titulo) AGAINST (pTerminoBusqueda IN NATURAL LANGUAGE MODE)
-        LIMIT 50;
-
-    ELSEIF pTipoBusqueda = 'playlists' THEN
-        SELECT idPlaylist, Nombre, idUsuario
-        FROM Playlist
-        WHERE Nombre LIKE CONCAT('%', pTerminoBusqueda, '%')
-        LIMIT 50;
+        JOIN Artista a ON c.IdArtista = a.IdArtista
+        JOIN Album al ON c.IdAlbum = al.IdAlbum
+        JOIN Genero g ON c.IdGenero = g.IdGenero
+        WHERE c.EstaActiva = 1
+          AND a.EstaActivo = 1
+          AND al.EstaActivo = 1
+          AND g.EstaActivo = 1';
+    
+    IF pTerminoBusqueda IS NOT NULL AND pTerminoBusqueda != '' THEN
+        SET @sql = CONCAT(@sql, ' AND MATCH(c.Titulo) AGAINST(? IN BOOLEAN MODE)');
     END IF;
+    
+    IF pIdGenero IS NOT NULL THEN
+        SET @sql = CONCAT(@sql, ' AND c.IdGenero = ?');
+    END IF;
+    
+    IF pIdArtista IS NOT NULL THEN
+        SET @sql = CONCAT(@sql, ' AND c.IdArtista = ?');
+    END IF;
+    
+    IF pAnio IS NOT NULL THEN
+        SET @sql = CONCAT(@sql, ' AND YEAR(al.FechaLanzamiento) = ?');
+    END IF;
+    
+    SET @sql = CONCAT(@sql, ' ORDER BY c.ContadorReproducciones DESC LIMIT ?');
+    
+    -- Preparar parámetros
+    SET @param1 = pTerminoBusqueda;
+    SET @param2 = pIdGenero;
+    SET @param3 = pIdArtista;
+    SET @param4 = pAnio;
+    SET @param5 = pLimite;
+    
+    PREPARE stmt FROM @sql;
+    
+    IF pTerminoBusqueda IS NOT NULL AND pIdGenero IS NOT NULL AND pIdArtista IS NOT NULL AND pAnio IS NOT NULL THEN
+        EXECUTE stmt USING @param1, @param2, @param3, @param4, @param5;
+    ELSEIF pTerminoBusqueda IS NOT NULL AND pIdGenero IS NOT NULL AND pIdArtista IS NOT NULL THEN
+        EXECUTE stmt USING @param1, @param2, @param3, @param5;
+    ELSEIF pTerminoBusqueda IS NOT NULL AND pIdGenero IS NOT NULL THEN
+        EXECUTE stmt USING @param1, @param2, @param5;
+    ELSEIF pTerminoBusqueda IS NOT NULL THEN
+        EXECUTE stmt USING @param1, @param5;
+    ELSEIF pIdGenero IS NOT NULL THEN
+        EXECUTE stmt USING @param2, @param5;
+    ELSE
+        EXECUTE stmt USING @param5;
+    END IF;
+    
+    DEALLOCATE PREPARE stmt;
 END $$
-
 DELIMITER ;
 
--- -----------------------------------------------------
--- Stored Procedure de Registro de Usuarios Nuevos
--- -----------------------------------------------------
+-- 13. RegistrarUsuarioCompleto
 DELIMITER $$
-
-CREATE PROCEDURE `RegistrarUsuario`(
+DROP PROCEDURE IF EXISTS RegistrarUsuarioCompleto $$
+CREATE PROCEDURE RegistrarUsuarioCompleto(
     IN pNombreUsuario VARCHAR(45),
     IN pEmail VARCHAR(45),
-    IN pContrasenia VARCHAR(64),
+    IN pContrasenia VARCHAR(255),
     IN pIdNacionalidad INT UNSIGNED,
-    OUT pIdUsuario INT UNSIGNED
+    OUT pIdUsuario INT UNSIGNED,
+    OUT pIdPlaylistMeGusta INT UNSIGNED
 )
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+    
     START TRANSACTION;
     
-    -- Insertar usuario con hash SHA2
-    INSERT INTO Usuario(NombreUsuario, Email, Contrasenia, idNacionalidad, idRol)
-    VALUES(pNombreUsuario, pEmail, SHA2(pContrasenia, 256), pIdNacionalidad, 2);
+    -- Insertar usuario (rol 2 = Usuario Registrado)
+    CALL AltaUsuario(pNombreUsuario, pEmail, pContrasenia, pIdNacionalidad, 2, pIdUsuario);
     
-    SET pIdUsuario = LAST_INSERT_ID();
-    
-    -- Crear playlist "Me Gusta" por defecto
-    INSERT INTO Playlist(Nombre, idUsuario, EsPublica)
-    VALUES('Mis Me Gusta', pIdUsuario, FALSE);
+    -- Crear playlist "Me gusta" por defecto (privada)
+    CALL AltaPlaylist('Me gusta', pIdUsuario, 'Tus canciones favoritas', FALSE, pIdPlaylistMeGusta);
     
     COMMIT;
 END $$
-
 DELIMITER ;
 
--- -----------------------------------------------------
--- Stored Procedure de Obtención de Datos de las Tablas
--- -----------------------------------------------------
+-- 14. ObtenerEstadisticasSistema
 DELIMITER $$
-
-CREATE PROCEDURE `ObtenerEstadisticasSistema`()
+DROP PROCEDURE IF EXISTS ObtenerEstadisticasSistema $$
+CREATE PROCEDURE ObtenerEstadisticasSistema()
 BEGIN
-    -- Total de usuarios activos
-    SELECT COUNT(*) AS TotalUsuarios
-    FROM Usuario
-    WHERE EstaActivo = TRUE;
-
-    -- Total de canciones activas
-    SELECT COUNT(*) AS TotalCanciones
-    FROM Cancion
-    WHERE EstaActiva = TRUE;
-
-    -- Total de artistas activos
-    SELECT COUNT(*) AS TotalArtistas
-    FROM Artista
-    WHERE EstaActivo = TRUE;
-
-    -- Reproducciones del día (usando rango de fecha para índice)
-    SELECT COUNT(*) AS ReproduccionesHoy
-    FROM HistorialReproduccion
-    WHERE FechaReproduccion >= CURDATE()
-      AND FechaReproduccion < CURDATE() + INTERVAL 1 DAY;
+    -- Totales generales
+    SELECT 
+        (SELECT COUNT(*) FROM Usuario WHERE EstaActivo = 1 AND IdRol = 2) AS TotalUsuariosRegistrados,
+        (SELECT COUNT(*) FROM Usuario WHERE EstaActivo = 1 AND IdRol = 3) AS TotalAdministradores,
+        (SELECT COUNT(*) FROM Usuario WHERE DATE(FechaRegistro) = CURDATE()) AS NuevosUsuariosHoy,
+        (SELECT COUNT(*) FROM Cancion WHERE EstaActiva = 1) AS TotalCanciones,
+        (SELECT COUNT(*) FROM Artista WHERE EstaActivo = 1) AS TotalArtistas,
+        (SELECT COUNT(*) FROM Album WHERE EstaActivo = 1) AS TotalAlbumes,
+        (SELECT COUNT(*) FROM Playlist WHERE EstaActiva = 1) AS TotalPlaylists,
+        (SELECT SUM(ContadorReproducciones) FROM Cancion) AS TotalReproducciones,
+        (SELECT COUNT(*) FROM HistorialReproduccion WHERE DATE(FechaReproduccion) = CURDATE()) AS ReproduccionesHoy,
+        (SELECT COUNT(*) FROM Suscripcion WHERE Activo = 1) AS SuscripcionesActivas
+    FROM dual;
 END $$
-
 DELIMITER ;
 
--- -----------------------------------------------------
--- Stored Procedure de Obterner Tablas
--- -----------------------------------------------------
-USE 5to_Spotify;
-
--- Obtener Artistas
-DROP PROCEDURE IF EXISTS ObtenerArtistas $$
-CREATE PROCEDURE ObtenerArtistas(IN pLimit INT)
-BEGIN
-    SELECT idArtista, NombreArtistico, NombreReal, ApellidoReal, FotoArtista, EstaActivo
-    FROM Artista
-    WHERE EstaActivo = TRUE
-    ORDER BY NombreArtistico ASC
-    LIMIT pLimit;
-END $$
-
--- Obtener Canciones
-DROP PROCEDURE IF EXISTS ObtenerCanciones $$
-CREATE PROCEDURE ObtenerCanciones(IN pLimit INT)
-BEGIN
-    SELECT idCancion, Titulo, Duracion, idAlbum, idArtista, idGenero
-    FROM Cancion
-    WHERE EstaActiva = TRUE
-    ORDER BY Titulo ASC
-    LIMIT pLimit;
-END $$
-
--- Obtener Albumes
-DROP PROCEDURE IF EXISTS ObtenerAlbum $$
-CREATE PROCEDURE ObtenerAlbum(IN pLimit INT)
-BEGIN
-    SELECT idAlbum, Titulo, fechaLanzamiento, idArtista
-    FROM Album
-    ORDER BY Titulo ASC
-    LIMIT pLimit;
-END $$
-
--- Obtener Generos
-DROP PROCEDURE IF EXISTS ObtenerGeneros $$
-CREATE PROCEDURE ObtenerGeneros(IN pLimit INT)
-BEGIN
-    SELECT idGenero, Genero, Descripcion
-    FROM Genero
-    ORDER BY Genero ASC
-    LIMIT pLimit;
-END $$
-
--- Obtener Nacionalidades
-DROP PROCEDURE IF EXISTS ObtenerNacionalidades $$
-CREATE PROCEDURE ObtenerNacionalidades(IN pLimit INT)
-BEGIN
-    SELECT idNacionalidad, Pais
-    FROM Nacionalidad
-    ORDER BY Pais ASC
-    LIMIT pLimit;
-END $$
-
--- Obtener PlayLists
-DROP PROCEDURE IF EXISTS ObtenerPlayLists $$
-CREATE PROCEDURE ObtenerPlayLists(IN pLimit INT)
-BEGIN
-    SELECT idPlaylist, Nombre, idUsuario, EsPublica
-    FROM Playlist
-    ORDER BY Nombre ASC
-    LIMIT pLimit;
-END $$
-
--- Obtener HistorialReproduccion
-DROP PROCEDURE IF EXISTS ObtenerHistorialReproduccion $$
-CREATE PROCEDURE ObtenerHistorialReproduccion(IN pLimit INT)
-BEGIN
-    SELECT idHistorial, idUsuario, idCancion, FechaReproduccion
-    FROM HistorialReproduccion
-    ORDER BY FechaReproduccion DESC
-    LIMIT pLimit;
-END $$
-
--- Obtener Suscripciones
-DROP PROCEDURE IF EXISTS ObtenerSuscripciones $$
-CREATE PROCEDURE ObtenerSuscripciones(IN pLimit INT)
-BEGIN
-    SELECT idSuscripcion, idUsuario, idTipoSuscripcion, FechaInicio
-    FROM Suscripcion
-    ORDER BY FechaInicio DESC
-    LIMIT pLimit;
-END $$
-
--- Obtener TipoSuscripciones
-DROP PROCEDURE IF EXISTS ObtenerTipoSuscripciones $$
-CREATE PROCEDURE ObtenerTipoSuscripciones(IN pLimit INT)
-BEGIN
-    SELECT idTipoSuscripcion, Duracion, Costo, Tipo
-    FROM TipoSuscripcion
-    ORDER BY Tipo ASC
-    LIMIT pLimit;
-END $$
-
--- Obtener Usuarios
+-- 15. VerificarCredenciales
 DELIMITER $$
-
-DROP PROCEDURE IF EXISTS ObtenerUsuarios $$
-CREATE PROCEDURE ObtenerUsuarios(IN pLimit INT)
-BEGIN
-    SELECT idUsuario, NombreUsuario, Email, idNacionalidad, idRol, FechaRegistro
-    FROM Usuario
-    WHERE EstaActivo = TRUE
-    ORDER BY NombreUsuario ASC
-    LIMIT pLimit;
-END $$
-
--- Buscar Canciones por Titulo
-DROP PROCEDURE IF EXISTS BuscarCancionesPorTitulo $$
-CREATE PROCEDURE BuscarCancionesPorTitulo(
-    IN unTitulo VARCHAR(100),
-    IN pLimit INT
+DROP PROCEDURE IF EXISTS VerificarCredenciales $$
+CREATE PROCEDURE VerificarCredenciales(
+    IN pEmail VARCHAR(150),
+    IN pContrasenia VARCHAR(255),
+    OUT pIdUsuario INT UNSIGNED,
+    OUT pNombreUsuario VARCHAR(60),
+    OUT pIdRol TINYINT UNSIGNED,
+    OUT pFotoPerfil VARCHAR(255),
+    OUT pValido BOOLEAN
 )
 BEGIN
-    SELECT idCancion, Titulo, Duracion, idAlbum, idArtista, idGenero
-    FROM Cancion
-    WHERE EstaActiva = TRUE
-      AND MATCH(Titulo) AGAINST(unTitulo IN NATURAL LANGUAGE MODE)
-    LIMIT pLimit;
+    DECLARE vHashAlmacenado VARCHAR(255);
+    
+    SELECT 
+        IdUsuario, 
+        NombreUsuario, 
+        IdRol, 
+        FotoPerfil,
+        Contrasenia INTO pIdUsuario, pNombreUsuario, pIdRol, pFotoPerfil, vHashAlmacenado
+    FROM Usuario
+    WHERE Email = pEmail AND EstaActivo = 1
+    LIMIT 1;
+    
+    -- Comparar contraseñas (en producción usar bcrypt.compare)
+    IF vHashAlmacenado = pContrasenia THEN
+        SET pValido = TRUE;
+        
+        -- Actualizar último acceso
+        UPDATE Usuario 
+        SET UltimoAcceso = NOW() 
+        WHERE IdUsuario = pIdUsuario;
+    ELSE
+        SET pValido = FALSE;
+        SET pIdUsuario = NULL;
+        SET pNombreUsuario = NULL;
+        SET pIdRol = NULL;
+        SET pFotoPerfil = NULL;
+    END IF;
 END $$
-
 DELIMITER ;
-
--- -----------------------------------------------------
--- Stored Procedure Adicionales
--- -----------------------------------------------------
