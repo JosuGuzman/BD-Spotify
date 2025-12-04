@@ -4,6 +4,7 @@ using Spotify.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Connections;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,3 +89,18 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+internal class DbConnectionFactory : IConnectionFactory
+{
+    public DbConnectionFactory(string connectionString)
+    {
+        ConnectionString = connectionString;
+    }
+
+    public string ConnectionString { get; }
+
+    public ValueTask<ConnectionContext> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -16,4 +16,6 @@ public interface IRepoRegistro : IRepoBase<Suscripcion>
         
     Task<bool> RenovarSuscripcionAsync(uint idSuscripcion, CancellationToken cancellationToken = default);
     Task<bool> CancelarSuscripcionAsync(uint idSuscripcion, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Suscripcion>> ObtenerSuscripcionesActivasAsync(int page, int pageSize);
+    Task<int> ObtenerTotalSuscripcionesActivasAsync();
 }

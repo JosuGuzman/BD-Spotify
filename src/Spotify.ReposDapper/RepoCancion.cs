@@ -776,4 +776,24 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         LogExecutionTime("IncrementarReproduccionesAsync", stopwatch.Elapsed);
         return result;
     }
+
+    public Task<string?> ObtenerRecomendacionesAsync(int userId, int v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<Cancion>> BuscarAvanzadoAsync(string query, int? generoId, int? artistaId, int? anio, int? duracionMin, int? duracionMax)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> ObtenerTotalAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ObtenerTotalReproduccionesAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

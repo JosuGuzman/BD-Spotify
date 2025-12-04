@@ -1,6 +1,3 @@
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-
 namespace Spotify.Mvc.Controllers;
 
 public class ArtistController : Controller
@@ -51,7 +48,7 @@ public class ArtistController : Controller
     }
 
     [AllowAnonymous]
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> Details(uint id)
     {
         try
         {
@@ -60,7 +57,7 @@ public class ArtistController : Controller
                 return NotFound();
 
             var albumes = await _repoAlbum.ObtenerPorArtistaAsync(id);
-            var canciones = await _repoCancion.ObtenerPorArtistaAsync(id, 10);
+            var canciones = await _repoCancion.ObtenerPorArtistaAsync(id);
 
             var model = new ArtistDetailModel
             {
@@ -148,7 +145,7 @@ public class ArtistController : Controller
 
             var model = new ArtistModel
             {
-                IdArtista = artista.IdArtista,
+                IdArtista = (int)artista.IdArtista,
                 NombreArtistico = artista.NombreArtistico,
                 NombreReal = artista.NombreReal,
                 ApellidoReal = artista.ApellidoReal,
@@ -254,28 +251,4 @@ public class ArtistController : Controller
 
         return $"/uploads/{subcarpeta}/{uniqueFileName}";
     }
-}
-
-public class ArtistModel
-{
-    public int IdArtista { get; set; }
-
-    [Required(ErrorMessage = "El nombre artístico es requerido")]
-    [StringLength(150, ErrorMessage = "El nombre artístico no puede exceder 150 caracteres")]
-    public string NombreArtistico { get; set; } = string.Empty;
-
-    [StringLength(100, ErrorMessage = "El nombre real no puede exceder 100 caracteres")]
-    public string? NombreReal { get; set; }
-
-    [StringLength(100, ErrorMessage = "El apellido real no puede exceder 100 caracteres")]
-    public string? ApellidoReal { get; set; }
-
-    public string? Biografia { get; set; }
-
-    [Display(Name = "Foto del artista")]
-    public IFormFile? FotoArtista { get; set; }
-
-    [Required(ErrorMessage = "La nacionalidad es requerida")]
-    [Range(1, int.MaxValue, ErrorMessage = "Seleccione una nacionalidad válida")]
-    public int IdNacionalidad { get; set; }
 }

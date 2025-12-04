@@ -587,4 +587,14 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         LogExecutionTime("CancelarSuscripcionAsync", stopwatch.Elapsed);
         return result > 0;
     }
+
+    public Task<IEnumerable<Suscripcion>> ObtenerSuscripcionesActivasAsync(int page, int pageSize)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int> ObtenerTotalSuscripcionesActivasAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

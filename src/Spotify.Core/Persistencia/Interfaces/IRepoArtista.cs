@@ -11,4 +11,5 @@ public interface IRepoArtista : IRepoBase<Artista>, IRepoBusqueda<Artista>
         
     Artista? ObtenerPorNombreArtistico(string nombreArtistico);
     Task<Artista?> ObtenerPorNombreArtisticoAsync(string nombreArtistico, CancellationToken cancellationToken = default);
+    Task<int> ObtenerTotalAsync();
 }

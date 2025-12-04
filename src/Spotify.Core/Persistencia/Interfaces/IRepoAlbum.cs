@@ -14,4 +14,5 @@ public interface IRepoAlbum : IRepoBase<Album>, IRepoBusqueda<Album>
         
     Album? ObtenerConArtistaYCanciones(uint idAlbum);
     Task<Album?> ObtenerConArtistaYCancionesAsync(uint idAlbum, CancellationToken cancellationToken = default);
+    Task ObtenerTotalAsync();
 }

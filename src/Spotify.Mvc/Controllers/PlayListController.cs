@@ -1,6 +1,3 @@
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-
 namespace Spotify.Mvc.Controllers;
 
 [Authorize]
@@ -24,7 +21,7 @@ public class PlaylistController : Controller
     {
         try
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var userId = uint.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var playlists = await _repoPlaylist.ObtenerPorUsuarioAsync(userId);
             
             return View(playlists);
@@ -36,7 +33,7 @@ public class PlaylistController : Controller
         }
     }
 
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> Details(uint id)
     {
         try
         {
@@ -79,7 +76,7 @@ public class PlaylistController : Controller
             {
                 Nombre = model.Nombre,
                 Descripcion = model.Descripcion,
-                IdUsuario = userId,
+                IdUsuario = (uint)userId,
                 EsPublica = model.EsPublica,
                 EsSistema = false,
                 EstaActiva = true,
@@ -116,7 +113,7 @@ public class PlaylistController : Controller
 
             var model = new PlaylistModel
             {
-                IdPlaylist = playlist.IdPlaylist,
+                IdPlaylist = (int)playlist.IdPlaylist,
                 Nombre = playlist.Nombre,
                 Descripcion = playlist.Descripcion,
                 EsPublica = playlist.EsPublica
@@ -171,11 +168,11 @@ public class PlaylistController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddSong(int playlistId, int songId)
+    public async Task<IActionResult> AddSong(uint playlistId, uint songId)
     {
         try
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var userId = uint.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var playlist = await _repoPlaylist.ObtenerPorIdAsync(playlistId);
             
             if (playlist == null || playlist.IdUsuario != userId)
@@ -196,11 +193,11 @@ public class PlaylistController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> RemoveSong(int playlistId, int songId)
+    public async Task<IActionResult> RemoveSong(uint playlistId, uint songId)
     {
         try
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var userId = uint.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var playlist = await _repoPlaylist.ObtenerPorIdAsync(playlistId);
             
             if (playlist == null || playlist.IdUsuario != userId)
@@ -269,28 +266,6 @@ public class PlaylistController : Controller
             _logger.LogError(ex, $"Error al eliminar playlist {id}");
             TempData["ErrorMessage"] = "Error al eliminar playlist";
             return RedirectToAction("Index");
-        }
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetSongsForPlaylist(int playlistId)
-    {
-        try
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var playlist = await _repoPlaylist.ObtenerPorIdAsync(playlistId);
-            
-            if (playlist == null || playlist.IdUsuario != userId)
-                return Json(new { success = false, message = "No autorizado" });
-
-            var songs = await _repoPlaylist.ObtenerCancionesPorPlaylistAsync(playlistId);
-            
-            return Json(new { success = true, songs = songs });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error al obtener canciones de playlist {playlistId}");
-            return Json(new { success = false, message = "Error interno" });
         }
     }
 }

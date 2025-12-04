@@ -611,4 +611,19 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         LogExecutionTime("CambiarContraseñaAsync", stopwatch.Elapsed);
         return result > 0;
     }
+
+    public Task ObtenerNuevosHoyAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ObtenerTotalAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object?> ObtenerReporteUsuariosAsync(DateTime fechaInicio, DateTime fechaFin)
+    {
+        throw new NotImplementedException();
+    }
 }

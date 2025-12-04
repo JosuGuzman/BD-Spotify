@@ -1,3 +1,4 @@
+
 namespace Spotify.Core.Persistencia;
 
 public interface IRepoUsuario : IRepoBase<Usuario>
@@ -19,4 +20,7 @@ public interface IRepoUsuario : IRepoBase<Usuario>
     Task<bool> VerificarCredencialesAsync(string email, string contraseña, CancellationToken cancellationToken = default);
 
     Task<bool> CambiarContraseñaAsync(uint idUsuario, string nuevaContraseña, CancellationToken cancellationToken = default);
+    Task ObtenerNuevosHoyAsync();
+    Task ObtenerTotalAsync();
+    Task<object?> ObtenerReporteUsuariosAsync(DateTime fechaInicio, DateTime fechaFin);
 }

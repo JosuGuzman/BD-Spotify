@@ -44,6 +44,7 @@ public class SongListModel : PaginatedModel<Cancion>
 {
     public IEnumerable<Genero> Generos { get; set; } = new List<Genero>();
     public IEnumerable<Artista> Artistas { get; set; } = new List<Artista>();
+    public IEnumerable<Cancion> Canciones { get; internal set; }
 }
 
 public class SongDetailModel

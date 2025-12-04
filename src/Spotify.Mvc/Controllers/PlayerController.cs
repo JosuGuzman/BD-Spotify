@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Spotify.ReposDapper;
-using Spotify.Core.Entidades;
-using System.Security.Claims;
-
 namespace Spotify.Mvc.Controllers;
 
 [Authorize]
@@ -24,18 +18,18 @@ public class PlayerController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Play(int songId)
+    public async Task<IActionResult> Play(uint songId)
     {
         try
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var userId = uint.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             
             // Registrar reproducción
             await _repoCancion.IncrementarReproduccionesAsync(songId);
             await _repoReproduccion.RegistrarReproduccionAsync(new Reproduccion
             {
-                IdUsuario = userId,
-                IdCancion = songId,
+                IdUsuario = (uint)userId,
+                IdCancion = (uint)songId,
                 FechaReproduccion = DateTime.Now,
                 DuracionReproducida = 0
             });
@@ -84,25 +78,6 @@ public class PlayerController : Controller
         {
             _logger.LogError(ex, $"Error al registrar progreso canción {songId}");
             return Json(new { success = false });
-        }
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Queue()
-    {
-        try
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            
-            // Obtener cola de reproducción del usuario
-            var historial = await _repoReproduccion.ObtenerHistorialRecienteAsync(userId, 20);
-            
-            return Json(new { success = true, queue = historial });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error al obtener cola de reproducción");
-            return Json(new { success = false, message = "Error interno" });
         }
     }
 

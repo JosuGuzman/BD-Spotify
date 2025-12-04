@@ -1,6 +1,3 @@
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-
 namespace Spotify.Mvc.Controllers;
 
 public class AccountController : Controller
@@ -37,7 +34,7 @@ public class AccountController : Controller
         {
             var usuario = await _repoUsuario.ObtenerPorEmailAsync(model.Email);
             
-            if (usuario == null || !BCrypt.Verify(model.Contrasenia, usuario.Contrasenia))
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(model.Contrasenia, usuario.Contrasenia))
             {
                 ModelState.AddModelError(string.Empty, "Credenciales inválidas");
                 return View(model);
@@ -74,7 +71,7 @@ public class AccountController : Controller
         var nacionalidades = await _repoNacionalidad.ObtenerTodosAsync();
         var model = new RegisterModel
         {
-            Nacionalidades = nacionalidades
+            Nacionalidades = (List<Nacionalidad>)nacionalidades
         };
         return View(model);
     }
@@ -85,7 +82,7 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.Nacionalidades = await _repoNacionalidad.ObtenerTodosAsync();
+            model.Nacionalidades = (List<Nacionalidad>)await _repoNacionalidad.ObtenerTodosAsync();
             return View(model);
         }
 
@@ -96,7 +93,7 @@ public class AccountController : Controller
             if (existeUsuario != null)
             {
                 ModelState.AddModelError("Email", "El email ya está registrado");
-                model.Nacionalidades = await _repoNacionalidad.ObtenerTodosAsync();
+                model.Nacionalidades = (List<Nacionalidad>)await _repoNacionalidad.ObtenerTodosAsync();
                 return View(model);
             }
 
@@ -104,8 +101,8 @@ public class AccountController : Controller
             {
                 NombreUsuario = model.NombreUsuario,
                 Email = model.Email,
-                Contrasenia = BCrypt.HashPassword(model.Contrasenia),
-                IdNacionalidad = model.IdNacionalidad,
+                Contrasenia = BCrypt.Net.BCrypt.HashPassword(model.Contrasenia),
+                IdNacionalidad = (uint)model.IdNacionalidad,
                 IdRol = 2, // Usuario registrado
                 EstaActivo = true,
                 FechaRegistro = DateTime.Now
@@ -124,7 +121,7 @@ public class AccountController : Controller
         {
             _logger.LogError(ex, "Error en Register");
             ModelState.AddModelError(string.Empty, "Error al registrar usuario");
-            model.Nacionalidades = await _repoNacionalidad.ObtenerTodosAsync();
+            model.Nacionalidades = (List<Nacionalidad>)await _repoNacionalidad.ObtenerTodosAsync();
             return View(model);
         }
     }
@@ -150,12 +147,11 @@ public class AccountController : Controller
         
         var model = new ProfileModel
         {
-            IdUsuario = usuario.IdUsuario,
+            IdUsuario = (int)usuario.IdUsuario,
             NombreUsuario = usuario.NombreUsuario,
             Email = usuario.Email,
-            IdNacionalidad = usuario.IdNacionalidad,
-            FotoPerfil = usuario.FotoPerfil,
-            Nacionalidades = nacionalidades
+            IdNacionalidad = (int)usuario.IdNacionalidad,
+            Nacionalidades = (List<Nacionalidad>)nacionalidades
         };
 
         return View(model);
@@ -168,7 +164,7 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid)
         {
-            model.Nacionalidades = await _repoNacionalidad.ObtenerTodosAsync();
+            model.Nacionalidades = (List<Nacionalidad>)await _repoNacionalidad.ObtenerTodosAsync();
             return View("Profile", model);
         }
 
@@ -181,7 +177,7 @@ public class AccountController : Controller
                 return NotFound();
 
             usuario.NombreUsuario = model.NombreUsuario;
-            usuario.IdNacionalidad = model.IdNacionalidad;
+            usuario.IdNacionalidad = (uint)model.IdNacionalidad;
             
             // Manejar subida de foto de perfil
             if (model.FotoPerfil != null)
@@ -199,7 +195,7 @@ public class AccountController : Controller
         {
             _logger.LogError(ex, "Error al actualizar perfil");
             TempData["ErrorMessage"] = "Error al actualizar perfil";
-            model.Nacionalidades = await _repoNacionalidad.ObtenerTodosAsync();
+            model.Nacionalidades = (List<Nacionalidad>)await _repoNacionalidad.ObtenerTodosAsync();
             return View("Profile", model);
         }
     }

@@ -1,6 +1,3 @@
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-
 namespace Spotify.Mvc.Controllers;
 
 public class AlbumController : Controller
@@ -48,7 +45,7 @@ public class AlbumController : Controller
     }
 
     [AllowAnonymous]
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> Details(uint id)
     {
         try
         {
@@ -56,7 +53,7 @@ public class AlbumController : Controller
             if (album == null)
                 return NotFound();
 
-            var canciones = await _repoCancion.ObtenerPorAlbumAsync(id);
+            var canciones = await _repoCancion.ObtenerPorAlbumAsync( id);
             var artista = await _repoArtista.ObtenerPorIdAsync(album.IdArtista);
 
             var model = new AlbumDetailModel
@@ -100,7 +97,7 @@ public class AlbumController : Controller
             var album = new Album
             {
                 Titulo = model.Titulo,
-                IdArtista = model.IdArtista,
+                IdArtista = (uint)model.IdArtista,
                 FechaLanzamiento = model.FechaLanzamiento,
                 EstaActivo = true,
                 FechaCreacion = DateTime.Now,
@@ -143,9 +140,9 @@ public class AlbumController : Controller
 
             var model = new AlbumModel
             {
-                IdAlbum = album.IdAlbum,
+                IdAlbum = (int)album.IdAlbum,
                 Titulo = album.Titulo,
-                IdArtista = album.IdArtista,
+                IdArtista = (int)album.IdArtista,
                 FechaLanzamiento = album.FechaLanzamiento
             };
 
@@ -180,7 +177,7 @@ public class AlbumController : Controller
                 return NotFound();
 
             album.Titulo = model.Titulo;
-            album.IdArtista = model.IdArtista;
+            album.IdArtista = (uint)model.IdArtista;
             album.FechaLanzamiento = model.FechaLanzamiento;
             album.FechaActualizacion = DateTime.Now;
 

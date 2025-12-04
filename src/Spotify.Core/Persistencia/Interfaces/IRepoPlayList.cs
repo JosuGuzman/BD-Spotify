@@ -14,4 +14,5 @@ public interface IRepoPlaylist : IRepoBase<Playlist>, IRepoBusqueda<Playlist>
         
     Task<int> ObtenerTotalCancionesAsync(uint idPlaylist, CancellationToken cancellationToken = default);
     Task<TimeSpan> ObtenerDuracionTotalAsync(uint idPlaylist, CancellationToken cancellationToken = default);
+    Task ObtenerCancionesPorPlaylistAsync(int playlistId);
 }

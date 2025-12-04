@@ -1,10 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Spotify.ReposDapper;
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-using System.Security.Claims;
-
 namespace Spotify.Mvc.Controllers;
 
 [Authorize(Roles = "3")]
@@ -56,7 +49,7 @@ public class SubscriptionController : Controller
             var tipoSuscripcion = new TipoSuscripcion
             {
                 Tipo = model.Tipo,
-                DuracionMeses = model.DuracionMeses,
+                DuracionMeses = (uint)model.DuracionMeses,
                 Costo = model.Costo,
                 EstaActivo = true
             };
@@ -85,9 +78,9 @@ public class SubscriptionController : Controller
 
             var model = new TipoSuscripcionModel
             {
-                IdTipoSuscripcion = tipoSuscripcion.IdTipoSuscripcion,
+                IdTipoSuscripcion = (int)tipoSuscripcion.IdTipoSuscripcion,
                 Tipo = tipoSuscripcion.Tipo,
-                DuracionMeses = tipoSuscripcion.DuracionMeses,
+                DuracionMeses = (int)tipoSuscripcion.DuracionMeses,
                 Costo = tipoSuscripcion.Costo
             };
 
@@ -117,7 +110,7 @@ public class SubscriptionController : Controller
                 return NotFound();
 
             tipoSuscripcion.Tipo = model.Tipo;
-            tipoSuscripcion.DuracionMeses = model.DuracionMeses;
+            tipoSuscripcion.DuracionMeses = (uint)model.DuracionMeses;
             tipoSuscripcion.Costo = model.Costo;
 
             await _repoTipoSuscripcion.ActualizarAsync(tipoSuscripcion);
@@ -198,7 +191,7 @@ public class SubscriptionController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> UserSubscriptions(int userId)
+    public async Task<IActionResult> UserSubscriptions(uint userId)
     {
         try
         {

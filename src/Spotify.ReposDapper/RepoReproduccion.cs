@@ -563,4 +563,54 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         LogExecutionTime("ObtenerTiempoTotalEscuchadoAsync", stopwatch.Elapsed);
         return result;
     }
+
+    public Task<string?> ObtenerTopCancionesUsuarioAsync(int userId, DateTime fechaDesde, int v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string?> ObtenerTopArtistasUsuarioAsync(int userId, DateTime fechaDesde, int v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<string?> ObtenerTiempoEscuchaPorDiaAsync(int userId, int v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<dynamic> ObtenerTiempoEscuchaTotalAsync(int userId, DateTime dateTime, DateTime now)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task LimpiarHistorialUsuarioAsync(int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ObtenerReproduccionesPorDiaAsync(int userId, int days)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task RegistrarReproduccionAsync(Reproduccion reproduccion)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ObtenerHistorialRecienteAsync(uint userId, int v)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task ObtenerReproduccionesHoyAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<object?> ObtenerReporteReproduccionesAsync(DateTime fechaInicio, DateTime fechaFin)
+    {
+        throw new NotImplementedException();
+    }
 }

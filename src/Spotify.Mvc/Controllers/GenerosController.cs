@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Spotify.ReposDapper;
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-
 namespace Spotify.Mvc.Controllers;
 
 [Authorize(Roles = "3")]

@@ -1,0 +1,12 @@
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Authentication;
+global using Microsoft.AspNetCore.Authentication.Cookies;
+global using System.Security.Claims;
+global using Spotify.ReposDapper;
+global using Spotify.Core.Entidades;
+global using Spotify.Mvc.Models;
+global using BCrypt.Net;
+global using Spotify.Core.Persistencia;
+global using Microsoft.AspNetCore.Authorization;
+global using System.ComponentModel.DataAnnotations;
+global using System.Diagnostics;

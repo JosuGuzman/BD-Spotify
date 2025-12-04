@@ -22,4 +22,8 @@ public interface IRepoCancion : IRepoBase<Cancion>, IRepoBusqueda<Cancion>
     Task<Cancion?> ObtenerConAlbumYArtistaAsync(uint idCancion, CancellationToken cancellationToken = default);
         
     Task<int> IncrementarReproduccionesAsync(uint idCancion, CancellationToken cancellationToken = default);
+    Task<string?> ObtenerRecomendacionesAsync(int userId, int v);
+    Task<IEnumerable<Cancion>> BuscarAvanzadoAsync(string query, int? generoId, int? artistaId, int? anio, int? duracionMin, int? duracionMax);
+    Task<int> ObtenerTotalAsync();
+    Task ObtenerTotalReproduccionesAsync();
 }

@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Spotify.ReposDapper;
-using System.Security.Claims;
-
 namespace Spotify.Mvc.Controllers;
 
 [Authorize]
@@ -27,8 +22,8 @@ public class StatisticsController : Controller
     {
         try
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var historial = await _repoReproduccion.ObtenerHistorialUsuarioAsync(userId, 50);
+            var userId = uint.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var historial = await _repoReproduccion.ObtenerHistorialUsuarioAsync(userId);
             
             return View(historial);
         }
@@ -154,7 +149,6 @@ public class StatisticsController : Controller
                 topSongs = await _repoReproduccion.ObtenerTopCancionesUsuarioAsync(userId, DateTime.Now.AddDays(-days), 10),
                 topArtists = await _repoReproduccion.ObtenerTopArtistasUsuarioAsync(userId, DateTime.Now.AddDays(-days), 5),
                 totalTime = await _repoReproduccion.ObtenerTiempoEscuchaTotalAsync(userId, DateTime.Now.AddDays(-days), DateTime.Now),
-                playsByDay = await _repoReproduccion.ObtenerReproduccionesPorDiaAsync(userId, days)
             };
 
             return Json(new { success = true, data = stats });

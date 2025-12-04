@@ -31,7 +31,7 @@
                     <div class="form-group mb-3">
                         <label asp-for="ArtistaId" class="form-label">Artista *</label>
                         <select asp-for="ArtistaId" class="form-select" 
-                                asp-items="@(new SelectList(Model.Artistas ?? new List<Spotify.Core.Artista>(), "idArtista", "NombreArtistico"))">
+                                asp-items="@(new SelectList(Model.Artistas ?? new List<Spotify.Core.Entidades.Artista>(), "idArtista", "NombreArtistico"))">
                             <option value="">-- Seleccionar Artista --</option>
                         </select>
                         <span asp-validation-for="ArtistaId" class="text-danger"></span>

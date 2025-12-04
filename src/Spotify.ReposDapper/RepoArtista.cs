@@ -477,4 +477,9 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         LogExecutionTime("ObtenerPorNombreArtisticoAsync", stopwatch.Elapsed);
         return result;
     }
+
+    public Task<int> ObtenerTotalAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

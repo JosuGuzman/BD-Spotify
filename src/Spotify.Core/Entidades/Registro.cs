@@ -1,5 +1,3 @@
-using System;
-
 namespace Spotify.Core.Entidades;
 
 public class Suscripcion
@@ -10,6 +8,8 @@ public class Suscripcion
     public DateTime FechaInicio { get; set; }
     public DateTime? FechaFin { get; set; }
     public bool Activo { get; set; }
+    public DateTime? FechaRenovacion { get; set; }
+    public bool AutoRenovacion { get; set; }
 
     // Propiedades de navegación
     public virtual Usuario Usuario { get; set; }

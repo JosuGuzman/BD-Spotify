@@ -9,6 +9,7 @@ public class TipoSuscripcion
     public uint DuracionMeses { get; set; }
     public decimal Costo { get; set; }
     public bool EstaActivo { get; set; }
+    public uint Duracion => DuracionMeses;
 
     // Propiedades de navegación
     public virtual ICollection<Suscripcion> Suscripciones { get; set; } = new List<Suscripcion>();

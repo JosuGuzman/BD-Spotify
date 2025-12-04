@@ -16,4 +16,14 @@ public interface IRepoReproduccion : IRepoBase<Reproduccion>
         
     Task<int> ObtenerTotalReproduccionesAsync(uint idUsuario, CancellationToken cancellationToken = default);
     Task<TimeSpan> ObtenerTiempoTotalEscuchadoAsync(uint idUsuario, CancellationToken cancellationToken = default);
+    Task<string?> ObtenerTopCancionesUsuarioAsync(int userId, DateTime fechaDesde, int v);
+    Task<string?> ObtenerTopArtistasUsuarioAsync(int userId, DateTime fechaDesde, int v);
+    Task<string?> ObtenerTiempoEscuchaPorDiaAsync(int userId, int v);
+    Task<dynamic> ObtenerTiempoEscuchaTotalAsync(int userId, DateTime dateTime, DateTime now);
+    Task LimpiarHistorialUsuarioAsync(int userId);
+    Task ObtenerReproduccionesPorDiaAsync(int userId, int days);
+    Task RegistrarReproduccionAsync(Reproduccion reproduccion);
+    Task ObtenerHistorialRecienteAsync(uint userId, int v);
+    Task ObtenerReproduccionesHoyAsync();
+    Task<object?> ObtenerReporteReproduccionesAsync(DateTime fechaInicio, DateTime fechaFin);
 }

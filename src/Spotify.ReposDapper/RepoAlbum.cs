@@ -624,4 +624,9 @@ public class RepoAlbum : RepoGenerico, IRepoAlbum
         
         return albumes.Values.FirstOrDefault();
     }
+
+    public Task ObtenerTotalAsync()
+    {
+        throw new NotImplementedException();
+    }
 }

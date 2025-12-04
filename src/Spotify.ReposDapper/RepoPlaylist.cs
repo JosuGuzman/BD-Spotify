@@ -717,4 +717,8 @@ public class RepoPlaylist : RepoGenerico, IRepoPlaylist
         return dict.Values;
     }
 
+    public Task ObtenerCancionesPorPlaylistAsync(int playlistId)
+    {
+        throw new NotImplementedException();
+    }
 }

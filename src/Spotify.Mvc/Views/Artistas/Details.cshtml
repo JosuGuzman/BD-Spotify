@@ -1,4 +1,4 @@
-@model Spotify.Mvc.Models.ArtistaViewModel
+@model Spotify.Mvc.Models.ArtistModel
 @{
     ViewData["Title"] = "Detalles del Artista";
 }
@@ -34,10 +34,10 @@
                     <div class="col-md-6">
                         <dl>
                             <dt>Nombre:</dt>
-                            <dd>@Model.Nombre</dd>
+                            <dd>@Model.NombreReal</dd>
 
                             <dt>Apellido:</dt>
-                            <dd>@Model.Apellido</dd>
+                            <dd>@Model.ApellidoReal</dd>
                         </dl>
                     </div>
                 </div>

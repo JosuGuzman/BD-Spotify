@@ -1,4 +1,4 @@
-@model List<Spotify.Mvc.Models.CancionViewModel>
+@model List<Spotify.Mvc.Models.SongModel>
 @{
     ViewData["Title"] = "Canciones";
 }
@@ -46,11 +46,11 @@
                                 <td>
                                     <strong>@cancion.Titulo</strong>
                                 </td>
-                                <td>@cancion.Duracion.ToString( @"hh\:mm\:ss")</td>
-                                <td>@cancion.AlbumTitulo</td>
-                                <td>@cancion.ArtistaNombre</td>
+                                <td>@cancion.DuracionSegundos.ToString( @"hh\:mm\:ss")</td>
+                                <td>@cancion.Titulo</td>
+                                <td>@cancion.IdArtista</td>
                                 <td>
-                                    <span class="badge bg-info">@cancion.Genero</span>
+                                    <span class="badge bg-info">@cancion.IdGenero</span>
                                 </td>
                                 <td class="text-end">
                                     <div class="btn-group" role="group">

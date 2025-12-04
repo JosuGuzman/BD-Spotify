@@ -1,6 +1,3 @@
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-
 namespace Spotify.Mvc.Controllers;
 
 public class SongController : Controller
@@ -29,7 +26,7 @@ public class SongController : Controller
     }
 
     [AllowAnonymous]
-    public async Task<IActionResult> Index(int page = 1, int pageSize = 20, int? generoId = null, int? artistaId = null)
+    public async Task<IActionResult> Index(int page = 1, int pageSize = 20, byte? generoId = null, uint? artistaId = null)
     {
         try
         {
@@ -93,7 +90,7 @@ public class SongController : Controller
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Play(int id)
+    public async Task<IActionResult> Play(uint id)
     {
         try
         {
@@ -105,7 +102,7 @@ public class SongController : Controller
             // Registrar en historial
             await _repoReproduccion.RegistrarReproduccionAsync(new Reproduccion
             {
-                IdUsuario = userId,
+                IdUsuario = (uint)userId,
                 IdCancion = id,
                 FechaReproduccion = DateTime.Now,
                 DuracionReproducida = 0
@@ -130,14 +127,14 @@ public class SongController : Controller
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> ToggleLike(int id)
+    public async Task<IActionResult> ToggleLike(uint id)
     {
         try
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var meGusta = new MeGusta
             {
-                IdUsuario = userId,
+                IdUsuario = (uint)userId,
                 IdCancion = id,
                 FechaMeGusta = DateTime.Now
             };
@@ -192,9 +189,9 @@ public class SongController : Controller
             var cancion = new Cancion
             {
                 Titulo = model.Titulo,
-                DuracionSegundos = model.DuracionSegundos,
-                IdAlbum = model.IdAlbum,
-                IdArtista = model.IdArtista,
+                DuracionSegundos = (uint)model.DuracionSegundos,
+                IdAlbum = (uint)model.IdAlbum,
+                IdArtista = (uint)model.IdArtista,
                 IdGenero = model.IdGenero,
                 EstaActiva = true,
                 FechaCreacion = DateTime.Now,
@@ -251,11 +248,11 @@ public class SongController : Controller
 
             var model = new SongModel
             {
-                IdCancion = cancion.IdCancion,
+                IdCancion = (int)cancion.IdCancion,
                 Titulo = cancion.Titulo,
-                DuracionSegundos = cancion.DuracionSegundos,
-                IdAlbum = cancion.IdAlbum,
-                IdArtista = cancion.IdArtista,
+                DuracionSegundos = (int)cancion.DuracionSegundos,
+                IdAlbum = (int)cancion.IdAlbum,
+                IdArtista = (int)cancion.IdArtista,
                 IdGenero = cancion.IdGenero
             };
 
@@ -295,9 +292,9 @@ public class SongController : Controller
                 return NotFound();
 
             cancion.Titulo = model.Titulo;
-            cancion.DuracionSegundos = model.DuracionSegundos;
-            cancion.IdAlbum = model.IdAlbum;
-            cancion.IdArtista = model.IdArtista;
+            cancion.DuracionSegundos = (uint)model.DuracionSegundos;
+            cancion.IdAlbum = (uint)model.IdAlbum;
+            cancion.IdArtista = (uint)model.IdArtista;
             cancion.IdGenero = model.IdGenero;
             cancion.FechaActualizacion = DateTime.Now;
 

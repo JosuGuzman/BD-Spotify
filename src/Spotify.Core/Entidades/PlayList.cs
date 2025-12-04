@@ -15,4 +15,5 @@ public class Playlist
     // Propiedades de navegación
     public virtual Usuario Usuario { get; set; }
     public virtual ICollection<CancionPlaylist> CancionPlaylists { get; set; } = new List<CancionPlaylist>();
+    public virtual ICollection<Cancion> Canciones { get; set; } = new List<Cancion>();
 }

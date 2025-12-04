@@ -1,7 +1,7 @@
 using Spotify.Core;
 namespace Spotify.Mvc.Models;
 
-public class AlbumVModel
+public class AlbumModel
 {
     public int IdAlbum { get; set; }
 

@@ -1,6 +1,3 @@
-using Spotify.Core.Entidades;
-using Spotify.Mvc.Models;
-
 namespace Spotify.Mvc.Controllers;
 
 public class SearchController : Controller
@@ -106,7 +103,7 @@ public class SearchController : Controller
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> ByGenre(int id)
+    public async Task<IActionResult> ByGenre(byte id)
     {
         try
         {
@@ -133,7 +130,7 @@ public class SearchController : Controller
 
     [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult> ByArtist(int id)
+    public async Task<IActionResult> ByArtist(uint id)
     {
         try
         {

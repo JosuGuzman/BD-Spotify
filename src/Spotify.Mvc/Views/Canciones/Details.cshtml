@@ -1,4 +1,4 @@
-@model Spotify.Mvc.Models.CancionViewModel
+@model Spotify.Mvc.Models.SongModel
 @{
     ViewData["Title"] = "Detalles de la Canción";
 }
@@ -31,13 +31,13 @@
                             <dd class="h5 text-warning">@Model.Titulo</dd>
 
                             <dt>Duración:</dt>
-                            <dd>@Model.Duracion.ToString(@"mm\:ss")</dd>
+                            <dd>@Model.DuracionSegundos.ToString(@"mm\:ss")</dd>
                         </dl>
                     </div>
                     <div class="col-md-6">
                         <dl>
                             <dt>Álbum:</dt>
-                            <dd>@(string.IsNullOrEmpty(Model.AlbumTitulo) ? "Álbum Desconocido" : Model.AlbumTitulo)</dd>
+                            <dd>@(string.IsNullOrEmpty(Model.Titulo) ? "Álbum Desconocido" : Model.Titulo)</dd>
 
                             <dt>Artista:</dt>
                             <dd>@(string.IsNullOrEmpty(Model.ArtistaNombre) ? "Artista Desconocido" : Model.ArtistaNombre)</dd>

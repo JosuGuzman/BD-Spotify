@@ -1,4 +1,4 @@
-@model List<Spotify.Mvc.Models.GeneroViewModel>
+@model List<Spotify.Mvc.Models.GeneroModel>
 @{
     ViewData["Title"] = "Géneros Musicales";
 }
@@ -40,7 +40,7 @@
                             <tr>
                                 <td>@genero.IdGenero</td>
                                 <td>
-                                    <strong>@genero.Genero</strong>
+                                    <strong>@genero.Nombre</strong>
                                 </td>
                                 <td class="text-end">
                                     <div class="btn-group" role="group">

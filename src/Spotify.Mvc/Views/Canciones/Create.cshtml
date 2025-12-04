@@ -1,4 +1,4 @@
-@model Spotify.Mvc.Models.CancionCreateViewModel
+@model Spotify.Mvc.Models.SongModel
 @{
     ViewData["Title"] = "Crear Canción";
 }
@@ -49,30 +49,30 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="AlbumId" class="form-label">Álbum *</label>
-                        <select asp-for="AlbumId" class="form-select" 
-                                asp-items="@(new SelectList(Model.Albumes ?? new List<Spotify.Core.Album>(), "idAlbum", "Titulo"))">
+                        <label asp-for="IdAlbum" class="form-label">Álbum *</label>
+                        <select asp-for="IdAlbum" class="form-select" 
+                                asp-items="@(new SelectList(Model.Albumes ?? new List<Spotify.Core.Entidades.Album>(), "idAlbum", "Titulo"))">
                             <option value="">-- Seleccionar Álbum --</option>
                         </select>
-                        <span asp-validation-for="AlbumId" class="text-danger"></span>
+                        <span asp-validation-for="IdAlbum" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="ArtistaId" class="form-label">Artista *</label>
-                        <select asp-for="ArtistaId" class="form-select" 
-                                asp-items="@(new SelectList(Model.Artistas ?? new List<Spotify.Core.Artista>(), "idArtista", "NombreArtistico"))">
+                        <label asp-for="IdArtista" class="form-label">Artista *</label>
+                        <select asp-for="IdArtista" class="form-select" 
+                                asp-items="@(new SelectList(Model.Artistas ?? new List<Spotify.Core.Entidades.Artista>(), "idArtista", "NombreArtistico"))">
                             <option value="">-- Seleccionar Artista --</option>
                         </select>
-                        <span asp-validation-for="ArtistaId" class="text-danger"></span>
+                        <span asp-validation-for="IdArtista" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="GeneroId" class="form-label">Género *</label>
-                        <select asp-for="GeneroId" class="form-select" 
-                                asp-items="@(new SelectList(Model.Generos ?? new List<Spotify.Core.Genero>(), "idGenero", "genero"))">
+                        <label asp-for="IdGenero" class="form-label">Género *</label>
+                        <select asp-for="IdGenero" class="form-select" 
+                                asp-items="@(new SelectList(Model.Generos ?? new List<Spotify.Core.Entidades.Genero>(), "idGenero", "genero"))">
                             <option value="">-- Seleccionar Género --</option>
                         </select>
-                        <span asp-validation-for="GeneroId" class="text-danger"></span>
+                        <span asp-validation-for="IdGenero" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">

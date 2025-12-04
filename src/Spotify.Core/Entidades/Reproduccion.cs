@@ -9,6 +9,9 @@ public class Reproduccion
     public uint IdCancion { get; set; }
     public DateTime FechaReproduccion { get; set; }
     public uint? DuracionReproducida { get; set; }
+    public TimeSpan? ProgresoReproduccion { get; set; }
+    public bool ReproduccionCompleta { get; set; }
+    public string? Dispositivo { get; set; }
 
     // Propiedades de navegación
     public virtual Usuario Usuario { get; set; }

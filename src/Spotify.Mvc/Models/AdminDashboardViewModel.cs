@@ -1,3 +1,5 @@
+using Spotify.Core.Entidades;
+
 namespace Spotify.Mvc.Models;
 
 public class AdminDashboardModel
