@@ -1,8 +1,4 @@
 using Spotify.ReposDapper;
-using Spotify.Core;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Connections;
 using Spotify.Core.Persistencia;
 
 var builder = WebApplication.CreateBuilder(args);

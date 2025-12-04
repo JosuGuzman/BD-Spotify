@@ -1,38 +1,17 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+using System;
 
-namespace Spotify.Core;
+namespace Spotify.Core.Entidades;
 
-public class Registro
+public class Suscripcion
 {
-    [Key]
-    public uint IdSuscripcion { get; set; }
+    public int IdSuscripcion { get; set; }
+    public int IdUsuario { get; set; }
+    public int IdTipoSuscripcion { get; set; }
+    public DateTime FechaInicio { get; set; }
+    public DateTime? FechaFin { get; set; }
+    public bool Activo { get; set; }
 
-    [Required(ErrorMessage = "El usuario es requerido")]
-    public required Usuario Usuario { get; set; }
-
-    [Required(ErrorMessage = "El tipo de suscripción es requerido")]
-    public required TipoSuscripcion TipoSuscripcion { get; set; }
-
-    [DataType(DataType.Date)]
-    public DateTime FechaInicio { get; set; } = DateTime.Now;
-
-    // Propiedades adicionales
-    public DateTime? FechaRenovacion { get; set; }
-    
-    public bool AutoRenovacion { get; set; } = true;
-    
-    public string? MetodoPago { get; set; }
-
-    // Propiedades calculadas
-    public DateTime FechaExpiracion => FechaInicio.AddMonths((int)TipoSuscripcion.Duracion);
-    
-    public bool EstaActiva => FechaExpiracion >= DateTime.Now;
-    
-    public bool ExpiraProximamente => FechaExpiracion <= DateTime.Now.AddDays(7) && FechaExpiracion > DateTime.Now;
-    
-    public int DiasRestantes => (FechaExpiracion - DateTime.Now).Days;
-    
-    public string Estado => EstaActiva ? 
-        (ExpiraProximamente ? "Por expirar" : "Activa") : "Expirada";
+    // Propiedades de navegación
+    public virtual Usuario Usuario { get; set; }
+    public virtual TipoSuscripcion TipoSuscripcion { get; set; }
 }

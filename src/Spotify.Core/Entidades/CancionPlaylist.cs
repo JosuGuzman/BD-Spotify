@@ -1,24 +1,15 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+using System;
 
-namespace Spotify.Core;
+namespace Spotify.Core.Entidades;
 
 public class CancionPlaylist
 {
-    [Required(ErrorMessage = "La playlist es requerida")]
-    public required PlayList Playlist { get; set; }
+    public int IdCancion { get; set; }
+    public int IdPlaylist { get; set; }
+    public int Orden { get; set; }
+    public DateTime FechaAgregado { get; set; }
 
-    [Required(ErrorMessage = "La canción es requerida")]
-    public required Cancion Cancion { get; set; }
-
-    // Propiedades adicionales para la relación
-    public DateTime FechaAgregada { get; set; } = DateTime.Now;
-    
-    public uint Orden { get; set; }
-
-    // Propiedades calculadas
-    [JsonIgnore]
-    public string Info => $"{Cancion.Titulo} en {Playlist.Nombre}";
-    
-    public bool EsReciente => FechaAgregada >= DateTime.Now.AddDays(-7);
+    // Propiedades de navegación
+    public virtual Cancion Cancion { get; set; }
+    public virtual Playlist Playlist { get; set; }
 }

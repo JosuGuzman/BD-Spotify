@@ -1,34 +1,20 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-
-namespace Spotify.Core;
+namespace Spotify.Core.Entidades;
 
 public class Artista
 {
-    [Key]
-    public uint idArtista { get; set; }
-
-    [StringLength(35, ErrorMessage = "El nombre artístico no puede exceder 35 caracteres")]
-    public string? NombreArtistico { get; set; }
-
-    [Required(ErrorMessage = "El nombre es requerido")]
-    [StringLength(45, ErrorMessage = "El nombre no puede exceder 45 caracteres")]
-    public required string Nombre { get; set; }
-
-    [Required(ErrorMessage = "El apellido es requerido")]
-    [StringLength(45, ErrorMessage = "El apellido no puede exceder 45 caracteres")]
-    public required string Apellido { get; set; }
+    public int IdArtista { get; set; }
+    public string NombreArtistico { get; set; }
+    public string? NombreReal { get; set; }
+    public string? ApellidoReal { get; set; }
+    public string? Biografia { get; set; }
+    public string? FotoArtista { get; set; }
+    public bool EstaActivo { get; set; }
+    public DateTime FechaCreacion { get; set; }
+    public DateTime FechaActualizacion { get; set; }
+    public int? IdNacionalidad { get; set; }
 
     // Propiedades de navegación
-    [JsonIgnore]
-    public virtual ICollection<Album>? Albumes { get; set; }
-        
-    [JsonIgnore]
-    public virtual ICollection<Cancion>? Canciones { get; set; }
-
-    // Propiedad calculada
-    public string NombreCompleto => $"{Nombre} {Apellido}";
-        
-    public string DisplayName => NombreArtistico ?? NombreCompleto;
+    public virtual Nacionalidad Nacionalidad { get; set; }
+    public virtual ICollection<Album> Albumes { get; set; } = new List<Album>();
+    public virtual ICollection<Cancion> Canciones { get; set; } = new List<Cancion>();
 }

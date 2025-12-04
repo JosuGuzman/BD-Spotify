@@ -2,13 +2,11 @@ using System;
 
 namespace Spotify.Core.Entidades;
 
-public class Reproduccion
+public class MeGusta
 {
-    public long IdHistorial { get; set; }
     public int IdUsuario { get; set; }
     public int IdCancion { get; set; }
-    public DateTime FechaReproduccion { get; set; }
-    public int? DuracionReproducida { get; set; }
+    public DateTime FechaMeGusta { get; set; }
 
     // Propiedades de navegación
     public virtual Usuario Usuario { get; set; }

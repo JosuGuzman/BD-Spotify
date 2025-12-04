@@ -1,18 +1,13 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace Spotify.Core;
+namespace Spotify.Core.Entidades;
 
 public class Nacionalidad
 {
-    [Key]
-    public uint idNacionalidad { get; set; }
+    public int IdNacionalidad { get; set; }
+    public string Pais { get; set; }
 
-    [Required(ErrorMessage = "El país es requerido")]
-    [StringLength(45, ErrorMessage = "El país no puede exceder 45 caracteres")]
-    public required string Pais { get; set; }
-    
-    [JsonIgnore]
-    public virtual ICollection<Usuario>? Usuarios { get; set; }
+    // Propiedades de navegación
+    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+    public virtual ICollection<Artista> Artistas { get; set; } = new List<Artista>();
 }
