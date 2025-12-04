@@ -42,7 +42,7 @@
                             </dd>
 
                             <dt>Fecha de Lanzamiento:</dt>
-                            <dd>@Model.FechaLanzamiento.ToString("dd/MM/yyyy")</dd>
+                            <dd>@(Model.FechaLanzamiento.HasValue ? Model.FechaLanzamiento.Value.ToString("dd/MM/yyyy") : "N/A")</dd>
                         </dl>
                     </div>
                 </div>

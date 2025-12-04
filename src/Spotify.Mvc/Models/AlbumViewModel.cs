@@ -19,6 +19,8 @@ public class AlbumModel
 
     [Display(Name = "Portada del álbum")]
     public IFormFile? Portada { get; set; }
+
+    public string? NombreArtista { get; set; }
 }
 
 public class AlbumCreateViewModel

@@ -1,7 +1,4 @@
-using Spotify.ReposDapper;
-using Spotify.Core.Persistencia;
 using Spotify.Core;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Connections;
 using System.Net;

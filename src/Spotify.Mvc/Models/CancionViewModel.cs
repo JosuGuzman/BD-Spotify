@@ -31,6 +31,14 @@ public class SongModel
     [Required(ErrorMessage = "El archivo MP3 es requerido")]
     [Display(Name = "Archivo MP3")]
     public IFormFile? ArchivoMP3 { get; set; }
+
+    // New properties
+    public string? ArtistaNombre { get; set; }
+    public string? Genero { get; set; }
+
+    public IEnumerable<Album>? Albumes { get; set; }
+    public IEnumerable<Artista>? Artistas { get; set; }
+    public IEnumerable<Genero>? Generos { get; set; }
 }
 
 public class SongCreateModel

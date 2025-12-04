@@ -25,17 +25,22 @@ public class AlbumController : Controller
         try
         {
             var albumes = await _repoAlbum.ObtenerPaginadoAsync(page, pageSize);
-            var totalAlbumes = await _repoAlbum.ObtenerTotalAsync();
+            var albumesModels = new List<AlbumModel>();
             
-            var model = new PaginatedModel<Album>
+            foreach(var album in albumes)
             {
-                Items = albumes,
-                PageNumber = page,
-                PageSize = pageSize,
-                TotalItems = totalAlbumes
-            };
+                var artista = await _repoArtista.ObtenerPorIdAsync(album.IdArtista);
+                albumesModels.Add(new AlbumModel
+                {
+                    IdAlbum = (int)album.IdAlbum,
+                    Titulo = album.Titulo,
+                    IdArtista = (int)album.IdArtista,
+                    FechaLanzamiento = album.FechaLanzamiento,
+                    NombreArtista = artista?.NombreArtistico ?? "Desconocido"
+                });
+            }
 
-            return View(model);
+            return View(albumesModels);
         }
         catch (Exception ex)
         {
@@ -53,14 +58,15 @@ public class AlbumController : Controller
             if (album == null)
                 return NotFound();
 
-            var canciones = await _repoCancion.ObtenerPorAlbumAsync( id);
             var artista = await _repoArtista.ObtenerPorIdAsync(album.IdArtista);
 
-            var model = new AlbumDetailModel
+            var model = new AlbumModel
             {
-                Album = album,
-                Canciones = canciones,
-                Artista = artista
+                IdAlbum = (int)album.IdAlbum,
+                Titulo = album.Titulo,
+                IdArtista = (int)album.IdArtista,
+                FechaLanzamiento = album.FechaLanzamiento,
+                NombreArtista = artista?.NombreArtistico ?? "Desconocido"
             };
 
             return View(model);

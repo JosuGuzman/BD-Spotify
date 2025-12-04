@@ -71,12 +71,17 @@ public class SongController : Controller
             var artista = await _repoArtista.ObtenerPorIdAsync(cancion.IdArtista);
             var genero = await _repoGenero.ObtenerPorIdAsync(cancion.IdGenero);
 
-            var model = new SongDetailModel
+            var model = new SongModel
             {
-                Cancion = cancion,
-                Album = album,
-                Artista = artista,
-                Genero = genero
+                IdCancion = (int)cancion.IdCancion,
+                Titulo = cancion.Titulo,
+                DuracionSegundos = (int)cancion.DuracionSegundos,
+                IdAlbum = (int)cancion.IdAlbum,
+                IdArtista = (int)cancion.IdArtista,
+                IdGenero = cancion.IdGenero,
+                ArchivoMP3 = null,
+                ArtistaNombre = artista?.NombreArtistico ?? "Desconocido",
+                Genero = genero?.genero ?? "Desconocido"
             };
 
             return View(model);
@@ -158,7 +163,7 @@ public class SongController : Controller
     [Authorize(Roles = "3")]
     public async Task<IActionResult> Create()
     {
-        var model = new SongCreateModel
+        var model = new SongModel
         {
             Albumes = await _repoAlbum.ObtenerPaginadoAsync(1, 1000),
             Artistas = await _repoArtista.ObtenerPaginadoAsync(1, 1000),
@@ -175,13 +180,10 @@ public class SongController : Controller
     {
         if (!ModelState.IsValid)
         {
-            var createModel = new SongCreateModel
-            {
-                Albumes = await _repoAlbum.ObtenerPaginadoAsync(1, 1000),
-                Artistas = await _repoArtista.ObtenerPaginadoAsync(1, 1000),
-                Generos = await _repoGenero.ObtenerTodosAsync()
-            };
-            return View("Create", createModel);
+            model.Albumes = await _repoAlbum.ObtenerPaginadoAsync(1, 1000);
+            model.Artistas = await _repoArtista.ObtenerPaginadoAsync(1, 1000);
+            model.Generos = await _repoGenero.ObtenerTodosAsync();
+            return View(model);
         }
 
         try
@@ -207,13 +209,10 @@ public class SongController : Controller
             else
             {
                 TempData["ErrorMessage"] = "El archivo MP3 es requerido";
-                var createModel = new SongCreateModel
-                {
-                    Albumes = await _repoAlbum.ObtenerPaginadoAsync(1, 1000),
-                    Artistas = await _repoArtista.ObtenerPaginadoAsync(1, 1000),
-                    Generos = await _repoGenero.ObtenerTodosAsync()
-                };
-                return View("Create", createModel);
+                model.Albumes = await _repoAlbum.ObtenerPaginadoAsync(1, 1000);
+                model.Artistas = await _repoArtista.ObtenerPaginadoAsync(1, 1000);
+                model.Generos = await _repoGenero.ObtenerTodosAsync();
+                return View(model);
             }
 
             await _repoCancion.InsertarAsync(cancion);
@@ -226,14 +225,11 @@ public class SongController : Controller
             _logger.LogError(ex, "Error al crear canción");
             TempData["ErrorMessage"] = "Error al crear canción";
             
-            var createModel = new SongCreateModel
-            {
-                Albumes = await _repoAlbum.ObtenerPaginadoAsync(1, 1000),
-                Artistas = await _repoArtista.ObtenerPaginadoAsync(1, 1000),
-                Generos = await _repoGenero.ObtenerTodosAsync()
-            };
+            model.Albumes = await _repoAlbum.ObtenerPaginadoAsync(1, 1000);
+            model.Artistas = await _repoArtista.ObtenerPaginadoAsync(1, 1000);
+            model.Generos = await _repoGenero.ObtenerTodosAsync();
             
-            return View("Create", createModel);
+            return View(model);
         }
     }
 

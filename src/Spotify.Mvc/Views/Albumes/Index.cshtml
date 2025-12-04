@@ -45,7 +45,7 @@
                                     <strong>@album.Titulo</strong>
                                 </td>
                                 <td>@album.NombreArtista</td>
-                                <td>@album.FechaLanzamiento.ToString("dd/MM/yyyy")</td>
+                                <td>@(album.FechaLanzamiento.HasValue ? album.FechaLanzamiento.Value.ToString("dd/MM/yyyy") : "N/A")</td>
                                 <td class="text-end">
                                     <div class="btn-group" role="group">
                                         <a asp-action="Details" asp-route-id="@album.IdAlbum" 

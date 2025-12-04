@@ -4,6 +4,8 @@ namespace Spotify.Core.Entidades;
 
 public class Genero
 {
+    public string? genero;
+
     public byte IdGenero { get; set; }
     public string Nombre { get; set; }
     public string? Descripcion { get; set; }
