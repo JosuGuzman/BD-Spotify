@@ -4,8 +4,8 @@ namespace Spotify.Core.Entidades;
 
 public class MeGusta
 {
-    public int IdUsuario { get; set; }
-    public int IdCancion { get; set; }
+    public uint IdUsuario { get; set; }
+    public uint IdCancion { get; set; }
     public DateTime FechaMeGusta { get; set; }
 
     // Propiedades de navegación

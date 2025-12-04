@@ -11,7 +11,7 @@ SET time_zone = '+00:00';
 -- -----------------------------------------------------
 -- Schema Spotify
 -- -----------------------------------------------------
-DROP DATABASE IF EXISTS `Sto_potify`;
+DROP DATABASE IF EXISTS `5to_Spotify`;
 CREATE DATABASE `5to_Spotify` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `5to_Spotify`;
 

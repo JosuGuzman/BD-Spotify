@@ -5,39 +5,39 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
     public RepoSuscripcion(string connectionString, ILogger<RepoSuscripcion> logger) 
         : base(connectionString, logger) { }
 
-    public Registro? ObtenerPorId(object id)
+    public Suscripcion? ObtenerPorId(object id)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
             WHERE r.idSuscripcion = @id";
 
         LogQuery("ObtenerPorId", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Query<Registro, Usuario, TipoSuscripcion, Registro>(sql,
+        var result = connection.Query<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(sql,
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, new { id }, splitOn: "idUsuario,idTipoSuscripcion").FirstOrDefault();
+            }, new { id }, splitOn: "IdUsuario,idTipoSuscripcion").FirstOrDefault();
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerPorId", stopwatch.Elapsed);
         return result;
     }
 
-    public IEnumerable<Registro> ObtenerTodos()
+    public IEnumerable<Suscripcion> ObtenerTodos()
     {
         using var connection = CreateConnection();
         LogQuery("ObtenerTodos", "ObtenerSuscripciones");
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Query<Registro>("ObtenerSuscripciones", 
+        var result = connection.Query<Suscripcion>("ObtenerSuscripciones", 
             commandType: CommandType.StoredProcedure);
         stopwatch.Stop();
         
@@ -45,16 +45,16 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return result;
     }
 
-    public IEnumerable<Registro> Buscar(Expression<Func<Registro, bool>> predicado)
+    public IEnumerable<Suscripcion> Buscar(Expression<Func<Suscripcion, bool>> predicado)
     {
         throw new NotImplementedException("Búsqueda por expresión requiere implementación específica");
     }
 
-    public void Insertar(Registro entidad)
+    public void Insertar(Suscripcion entidad)
     {
         using var connection = CreateConnection();
         var parameters = CreateParameters();
-        parameters.Add("unIdUsuario", entidad.Usuario.idUsuario);
+        parameters.Add("unIdUsuario", entidad.Usuario.IdUsuario);
         parameters.Add("unidTipoSuscripcion", entidad.TipoSuscripcion.IdTipoSuscripcion);
         parameters.Add("unidSuscripcion", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
@@ -68,16 +68,15 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         LogExecutionTime("Insertar", stopwatch.Elapsed);
     }
 
-    public void Actualizar(Registro entidad)
+    public void Actualizar(Suscripcion entidad)
     {
         using var connection = CreateConnection();
         var sql = @"UPDATE Suscripcion 
-                   SET idUsuario = @idUsuario,
+                   SET IdUsuario = @IdUsuario,
                        idTipoSuscripcion = @idTipoSuscripcion,
                        FechaInicio = @FechaInicio,
                        FechaRenovacion = @FechaRenovacion,
                        AutoRenovacion = @AutoRenovacion,
-                       MetodoPago = @MetodoPago
                    WHERE idSuscripcion = @IdSuscripcion";
         
         LogQuery("Actualizar", sql, entidad);
@@ -85,12 +84,11 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         connection.Execute(sql, new 
         {
-            idUsuario = entidad.Usuario.idUsuario,
+            IdUsuario = entidad.Usuario.IdUsuario,
             idTipoSuscripcion = entidad.TipoSuscripcion.IdTipoSuscripcion,
             entidad.FechaInicio,
             entidad.FechaRenovacion,
             entidad.AutoRenovacion,
-            entidad.MetodoPago,
             entidad.IdSuscripcion
         });
         stopwatch.Stop();
@@ -112,7 +110,7 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         LogExecutionTime("Eliminar", stopwatch.Elapsed);
     }
 
-    public void Eliminar(Registro entidad)
+    public void Eliminar(Suscripcion entidad)
     {
         Eliminar(entidad.IdSuscripcion);
     }
@@ -147,95 +145,95 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return result;
     }
 
-    public Registro? ObtenerSuscripcionActiva(uint idUsuario)
+    public Suscripcion? ObtenerSuscripcionActiva(uint IdUsuario)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
-            WHERE r.idUsuario = @idUsuario
+            WHERE r.IdUsuario = @IdUsuario
             AND DATE_ADD(r.FechaInicio, INTERVAL ts.Duracion MONTH) >= CURDATE()
             ORDER BY r.FechaInicio DESC
             LIMIT 1";
 
-        LogQuery("ObtenerSuscripcionActiva", sql, new { idUsuario });
+        LogQuery("ObtenerSuscripcionActiva", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Query<Registro, Usuario, TipoSuscripcion, Registro>(sql,
+        var result = connection.Query<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(sql,
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, new { idUsuario }, splitOn: "idUsuario,idTipoSuscripcion").FirstOrDefault();
+            }, new { IdUsuario }, splitOn: "IdUsuario,idTipoSuscripcion").FirstOrDefault();
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerSuscripcionActiva", stopwatch.Elapsed);
         return result;
     }
 
-    public IEnumerable<Registro> ObtenerSuscripcionesPorUsuario(uint idUsuario)
+    public IEnumerable<Suscripcion> ObtenerSuscripcionesPorUsuario(uint IdUsuario)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
-            WHERE r.idUsuario = @idUsuario
+            WHERE r.IdUsuario = @IdUsuario
             ORDER BY r.FechaInicio DESC";
 
-        LogQuery("ObtenerSuscripcionesPorUsuario", sql, new { idUsuario });
+        LogQuery("ObtenerSuscripcionesPorUsuario", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Query<Registro, Usuario, TipoSuscripcion, Registro>(sql,
+        var result = connection.Query<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(sql,
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, new { idUsuario }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, new { IdUsuario }, splitOn: "IdUsuario,idTipoSuscripcion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerSuscripcionesPorUsuario", stopwatch.Elapsed);
         return result;
     }
 
-    public IEnumerable<Registro> ObtenerSuscripcionesExpiradas()
+    public IEnumerable<Suscripcion> ObtenerSuscripcionesExpiradas()
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
             WHERE DATE_ADD(r.FechaInicio, INTERVAL ts.Duracion MONTH) < CURDATE()";
 
         LogQuery("ObtenerSuscripcionesExpiradas", sql);
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Query<Registro, Usuario, TipoSuscripcion, Registro>(sql,
+        var result = connection.Query<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(sql,
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, splitOn: "IdUsuario,idTipoSuscripcion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerSuscripcionesExpiradas", stopwatch.Elapsed);
         return result;
     }
 
-    public IEnumerable<Registro> ObtenerSuscripcionesPorExpirar(int dias = 7)
+    public IEnumerable<Suscripcion> ObtenerSuscripcionesPorExpirar(int dias = 7)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
             WHERE DATE_ADD(r.FechaInicio, INTERVAL ts.Duracion MONTH) 
                   BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL @dias DAY)";
@@ -243,13 +241,13 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         LogQuery("ObtenerSuscripcionesPorExpirar", sql, new { dias });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Query<Registro, Usuario, TipoSuscripcion, Registro>(sql,
+        var result = connection.Query<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(sql,
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, new { dias }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, new { dias }, splitOn: "IdUsuario,idTipoSuscripcion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerSuscripcionesPorExpirar", stopwatch.Elapsed);
@@ -293,27 +291,27 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return result > 0;
     }
     
-    public async Task<Registro?> ObtenerPorIdAsync(object id, CancellationToken cancellationToken = default)
+    public async Task<Suscripcion?> ObtenerPorIdAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
             WHERE r.idSuscripcion = @id";
 
         LogQuery("ObtenerPorIdAsync", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = await connection.QueryAsync<Registro, Usuario, TipoSuscripcion, Registro>(
+        var result = await connection.QueryAsync<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(
             new CommandDefinition(sql, new { id }, cancellationToken: cancellationToken),
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, splitOn: "IdUsuario,idTipoSuscripcion");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorIdAsync", stopwatch.Elapsed);
@@ -321,13 +319,13 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return result.FirstOrDefault();
     }
 
-    public async Task<IEnumerable<Registro>> ObtenerTodosAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Suscripcion>> ObtenerTodosAsync(CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         LogQuery("ObtenerTodosAsync", "ObtenerSuscripciones");
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = await connection.QueryAsync<Registro>(
+        var result = await connection.QueryAsync<Suscripcion>(
             new CommandDefinition("ObtenerSuscripciones", commandType: CommandType.StoredProcedure, 
                 cancellationToken: cancellationToken));
         stopwatch.Stop();
@@ -336,16 +334,16 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return result;
     }
 
-    public async Task<IEnumerable<Registro>> BuscarAsync(Expression<Func<Registro, bool>> predicado, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Suscripcion>> BuscarAsync(Expression<Func<Suscripcion, bool>> predicado, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException("Búsqueda por expresión requiere implementación específica");
     }
 
-    public async Task InsertarAsync(Registro entidad, CancellationToken cancellationToken = default)
+    public async Task InsertarAsync(Suscripcion entidad, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         var parameters = CreateParameters();
-        parameters.Add("unIdUsuario", entidad.Usuario.idUsuario);
+        parameters.Add("unIdUsuario", entidad.Usuario.IdUsuario);
         parameters.Add("unidTipoSuscripcion", entidad.TipoSuscripcion.IdTipoSuscripcion);
         parameters.Add("unidSuscripcion", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
@@ -361,16 +359,15 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         LogExecutionTime("InsertarAsync", stopwatch.Elapsed);
     }
 
-    public async Task ActualizarAsync(Registro entidad, CancellationToken cancellationToken = default)
+    public async Task ActualizarAsync(Suscripcion entidad, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         var sql = @"UPDATE Suscripcion 
-                   SET idUsuario = @idUsuario,
+                   SET IdUsuario = @IdUsuario,
                        idTipoSuscripcion = @idTipoSuscripcion,
                        FechaInicio = @FechaInicio,
                        FechaRenovacion = @FechaRenovacion,
                        AutoRenovacion = @AutoRenovacion,
-                       MetodoPago = @MetodoPago
                    WHERE idSuscripcion = @IdSuscripcion";
         
         LogQuery("ActualizarAsync", sql, entidad);
@@ -379,12 +376,11 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         await connection.ExecuteAsync(
             new CommandDefinition(sql, new 
             {
-                idUsuario = entidad.Usuario.idUsuario,
+                IdUsuario = entidad.Usuario.IdUsuario,
                 idTipoSuscripcion = entidad.TipoSuscripcion.IdTipoSuscripcion,
                 entidad.FechaInicio,
                 entidad.FechaRenovacion,
                 entidad.AutoRenovacion,
-                entidad.MetodoPago,
                 entidad.IdSuscripcion
             }, cancellationToken: cancellationToken));
         stopwatch.Stop();
@@ -439,30 +435,30 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return result;
     }
 
-    public async Task<Registro?> ObtenerSuscripcionActivaAsync(uint idUsuario, CancellationToken cancellationToken = default)
+    public async Task<Suscripcion?> ObtenerSuscripcionActivaAsync(uint IdUsuario, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
-            WHERE r.idUsuario = @idUsuario
+            WHERE r.IdUsuario = @IdUsuario
             AND DATE_ADD(r.FechaInicio, INTERVAL ts.Duracion MONTH) >= CURDATE()
             ORDER BY r.FechaInicio DESC
             LIMIT 1";
     
-        LogQuery("ObtenerSuscripcionActivaAsync", sql, new { idUsuario });
+        LogQuery("ObtenerSuscripcionActivaAsync", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = await connection.QueryAsync<Registro, Usuario, TipoSuscripcion, Registro>(
-            new CommandDefinition(sql, new { idUsuario }, cancellationToken: cancellationToken),
+        var result = await connection.QueryAsync<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(
+            new CommandDefinition(sql, new { IdUsuario }, cancellationToken: cancellationToken),
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, splitOn: "IdUsuario,idTipoSuscripcion");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerSuscripcionActivaAsync", stopwatch.Elapsed);
@@ -470,68 +466,68 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         return result.FirstOrDefault();
     }
 
-    public async Task<IEnumerable<Registro>> ObtenerSuscripcionesPorUsuarioAsync(uint idUsuario, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Suscripcion>> ObtenerSuscripcionesPorUsuarioAsync(uint IdUsuario, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
-            WHERE r.idUsuario = @idUsuario
+            WHERE r.IdUsuario = @IdUsuario
             ORDER BY r.FechaInicio DESC";
 
-        LogQuery("ObtenerSuscripcionesPorUsuarioAsync", sql, new { idUsuario });
+        LogQuery("ObtenerSuscripcionesPorUsuarioAsync", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = await connection.QueryAsync<Registro, Usuario, TipoSuscripcion, Registro>(
-            new CommandDefinition(sql, new { idUsuario }, cancellationToken: cancellationToken),
+        var result = await connection.QueryAsync<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(
+            new CommandDefinition(sql, new { IdUsuario }, cancellationToken: cancellationToken),
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, splitOn: "IdUsuario,idTipoSuscripcion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerSuscripcionesPorUsuarioAsync", stopwatch.Elapsed);
         return result;
     }
 
-    public async Task<IEnumerable<Registro>> ObtenerSuscripcionesExpiradasAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Suscripcion>> ObtenerSuscripcionesExpiradasAsync(CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
             WHERE DATE_ADD(r.FechaInicio, INTERVAL ts.Duracion MONTH) < CURDATE()";
 
         LogQuery("ObtenerSuscripcionesExpiradasAsync", sql);
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = await connection.QueryAsync<Registro, Usuario, TipoSuscripcion, Registro>(
+        var result = await connection.QueryAsync<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(
             new CommandDefinition(sql, cancellationToken: cancellationToken),
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, splitOn: "IdUsuario,idTipoSuscripcion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerSuscripcionesExpiradasAsync", stopwatch.Elapsed);
         return result;
     }
     
-    public async Task<IEnumerable<Registro>> ObtenerSuscripcionesPorExpirarAsync(int dias = 7, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Suscripcion>> ObtenerSuscripcionesPorExpirarAsync(int dias = 7, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, ts.*
             FROM Suscripcion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
             JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
             WHERE DATE_ADD(r.FechaInicio, INTERVAL ts.Duracion MONTH) 
                   BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL @dias DAY)";
@@ -539,14 +535,14 @@ public class RepoSuscripcion : RepoGenerico, IRepoRegistro
         LogQuery("ObtenerSuscripcionesPorExpirarAsync", sql, new { dias });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = await connection.QueryAsync<Registro, Usuario, TipoSuscripcion, Registro>(
+        var result = await connection.QueryAsync<Suscripcion, Usuario, TipoSuscripcion, Suscripcion>(
             new CommandDefinition(sql, new { dias }, cancellationToken: cancellationToken),
             (registro, usuario, tipoSuscripcion) =>
             {
                 registro.Usuario = usuario;
                 registro.TipoSuscripcion = tipoSuscripcion;
                 return registro;
-            }, splitOn: "idUsuario,idTipoSuscripcion");
+            }, splitOn: "IdUsuario,idTipoSuscripcion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerSuscripcionesPorExpirarAsync", stopwatch.Elapsed);

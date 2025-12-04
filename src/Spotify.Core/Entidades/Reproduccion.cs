@@ -5,10 +5,10 @@ namespace Spotify.Core.Entidades;
 public class Reproduccion
 {
     public long IdHistorial { get; set; }
-    public int IdUsuario { get; set; }
-    public int IdCancion { get; set; }
+    public uint IdUsuario { get; set; }
+    public uint IdCancion { get; set; }
     public DateTime FechaReproduccion { get; set; }
-    public int? DuracionReproducida { get; set; }
+    public uint? DuracionReproducida { get; set; }
 
     // Propiedades de navegación
     public virtual Usuario Usuario { get; set; }

@@ -2,10 +2,10 @@ namespace Spotify.Core.Entidades;
 
 public class Album
 {
-    public int IdAlbum { get; set; }
+    public uint IdAlbum { get; set; }
     public string Titulo { get; set; }
     public DateTime? FechaLanzamiento { get; set; }
-    public int IdArtista { get; set; }
+    public uint IdArtista { get; set; }
     public string? Portada { get; set; }
     public DateTime FechaCreacion { get; set; }
     public DateTime FechaActualizacion { get; set; }

@@ -2,8 +2,8 @@ namespace Spotify.Core.Entidades;
 
 public class Playlist
 {
-    public int IdPlaylist { get; set; }
-    public int IdUsuario { get; set; }
+    public uint IdPlaylist { get; set; }
+    public uint IdUsuario { get; set; }
     public string Nombre { get; set; }
     public string? Descripcion { get; set; }
     public bool EsPublica { get; set; }

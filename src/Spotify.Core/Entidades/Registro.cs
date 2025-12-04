@@ -4,9 +4,9 @@ namespace Spotify.Core.Entidades;
 
 public class Suscripcion
 {
-    public int IdSuscripcion { get; set; }
-    public int IdUsuario { get; set; }
-    public int IdTipoSuscripcion { get; set; }
+    public uint IdSuscripcion { get; set; }
+    public uint IdUsuario { get; set; }
+    public uint IdTipoSuscripcion { get; set; }
     public DateTime FechaInicio { get; set; }
     public DateTime? FechaFin { get; set; }
     public bool Activo { get; set; }

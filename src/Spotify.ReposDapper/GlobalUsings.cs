@@ -1,9 +1,9 @@
 global using System.Data;
-global using Spotify.Core;
 global using Dapper;
-global using Spotify.Core.Persistencia;
 global using Microsoft.Extensions.Logging;
 global using System.Threading;
 global using MySql.Data.MySqlClient;
 global using Microsoft.Extensions.Logging;
 global using System.Linq.Expressions;
+global using Spotify.Core.Entidades;
+global using Spotify.Core.Persistencia;

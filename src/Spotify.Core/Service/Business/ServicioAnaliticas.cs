@@ -59,9 +59,10 @@ public class ServicioAnaliticas : IServicioAnaliticas
 
             // Cálculos de estadísticas
             var totalReproducciones = reproduccionesList.Count;
-            var tiempoTotal = TimeSpan.FromSeconds(reproduccionesList.Sum(r => r.Cancion.Duracion.TotalSeconds));
-            var artistasUnicos = reproduccionesList.Select(r => r.Cancion.Artista.idArtista).Distinct().Count();
-            var generosUnicos = reproduccionesList.Select(r => r.Cancion.Genero.idGenero).Distinct().Count();
+            var tiempoTotalSegundos = reproduccionesList.Sum(r => (int)r.Cancion.DuracionSegundos);
+            var tiempoTotal = TimeSpan.FromSeconds(tiempoTotalSegundos);
+            var artistasUnicos = reproduccionesList.Select(r => r.Cancion.Artista.IdArtista).Distinct().Count();
+            var generosUnicos = reproduccionesList.Select(r => r.Cancion.Genero.IdGenero).Distinct().Count();
 
             // Top canciones
             var topCanciones = reproduccionesList

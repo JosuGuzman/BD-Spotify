@@ -11,8 +11,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         const string sql = @"
             SELECT r.*, u.*, c.*
             FROM HistorialReproduccion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
-            JOIN Cancion c ON r.idCancion = c.idCancion
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
+            JOIN Cancion c ON r.IdCancion = c.IdCancion
             WHERE r.idHistorial = @id";
         LogQuery("ObtenerPorId", sql, new { id });
         
@@ -23,7 +23,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
                 reproduccion.Usuario = usuario;
                 reproduccion.Cancion = cancion;
                 return reproduccion;
-            }, new { id }, splitOn: "idUsuario,idCancion").FirstOrDefault();
+            }, new { id }, splitOn: "IdUsuario,IdCancion").FirstOrDefault();
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerPorId", stopwatch.Elapsed);
@@ -53,8 +53,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
     {
         using var connection = CreateConnection();
         var parameters = CreateParameters();
-        parameters.Add("unidUsuario", entidad.Usuario.idUsuario);
-        parameters.Add("unidCancion", entidad.Cancion.idCancion);
+        parameters.Add("unidUsuario", entidad.Usuario.IdUsuario);
+        parameters.Add("unidCancion", entidad.Cancion.IdCancion);
         parameters.Add("unFechaReproduccion", entidad.FechaReproduccion);
         parameters.Add("unidHistorial", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
@@ -72,8 +72,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
     {
         using var connection = CreateConnection();
         var sql = @"UPDATE HistorialReproduccion 
-                   SET idUsuario = @idUsuario,
-                       idCancion = @idCancion,
+                   SET IdUsuario = @IdUsuario,
+                       IdCancion = @IdCancion,
                        FechaReproduccion = @FechaReproduccion,
                        ProgresoReproduccion = @ProgresoReproduccion,
                        ReproduccionCompleta = @ReproduccionCompleta,
@@ -85,8 +85,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         connection.Execute(sql, new 
         {
-            idUsuario = entidad.Usuario.idUsuario,
-            idCancion = entidad.Cancion.idCancion,
+            IdUsuario = entidad.Usuario.IdUsuario,
+            IdCancion = entidad.Cancion.IdCancion,
             entidad.FechaReproduccion,
             entidad.ProgresoReproduccion,
             entidad.ReproduccionCompleta,
@@ -147,19 +147,19 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         return result;
     }
 
-    public IEnumerable<Reproduccion> ObtenerHistorialUsuario(uint idUsuario, int limite = 50)
+    public IEnumerable<Reproduccion> ObtenerHistorialUsuario(uint IdUsuario, int limite = 50)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, c.*
             FROM HistorialReproduccion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
-            JOIN Cancion c ON r.idCancion = c.idCancion
-            WHERE r.idUsuario = @idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
+            JOIN Cancion c ON r.IdCancion = c.IdCancion
+            WHERE r.IdUsuario = @IdUsuario
             ORDER BY r.FechaReproduccion DESC
             LIMIT @limite";
         
-        LogQuery("ObtenerHistorialUsuario", sql, new { idUsuario, limite });
+        LogQuery("ObtenerHistorialUsuario", sql, new { IdUsuario, limite });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = connection.Query<Reproduccion, Usuario, Cancion, Reproduccion>(sql,
@@ -168,7 +168,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
                 reproduccion.Usuario = usuario;
                 reproduccion.Cancion = cancion;
                 return reproduccion;
-            }, new { idUsuario, limite }, splitOn: "idUsuario,idCancion");
+            }, new { IdUsuario, limite }, splitOn: "IdUsuario,IdCancion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerHistorialUsuario", stopwatch.Elapsed);
@@ -181,8 +181,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         const string sql = @"
             SELECT r.*, u.*, c.*
             FROM HistorialReproduccion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
-            JOIN Cancion c ON r.idCancion = c.idCancion
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
+            JOIN Cancion c ON r.IdCancion = c.IdCancion
             WHERE r.FechaReproduccion >= @desde
             ORDER BY r.FechaReproduccion DESC";
 
@@ -195,26 +195,26 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
                 reproduccion.Usuario = usuario;
                 reproduccion.Cancion = cancion;
                 return reproduccion;
-            }, new { desde }, splitOn: "idUsuario,idCancion");
+            }, new { desde }, splitOn: "IdUsuario,IdCancion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerRecientes", stopwatch.Elapsed);
         return result;
     }
 
-    public bool RegistrarReproduccion(uint idUsuario, uint idCancion, TimeSpan progreso, bool completa, string? dispositivo)
+    public bool RegistrarReproduccion(uint IdUsuario, uint IdCancion, TimeSpan progreso, bool completa, string? dispositivo)
     {
         using var connection = CreateConnection();
-        var sql = @"INSERT INTO HistorialReproduccion (idUsuario, idCancion, FechaReproduccion, ProgresoReproduccion, ReproduccionCompleta, Dispositivo)
-                   VALUES (@idUsuario, @idCancion, NOW(), @progreso, @completa, @dispositivo)";
+        var sql = @"INSERT INTO HistorialReproduccion (IdUsuario, IdCancion, FechaReproduccion, ProgresoReproduccion, ReproduccionCompleta, Dispositivo)
+                   VALUES (@IdUsuario, @IdCancion, NOW(), @progreso, @completa, @dispositivo)";
         
-        LogQuery("RegistrarReproduccion", sql, new { idUsuario, idCancion, progreso, completa, dispositivo });
+        LogQuery("RegistrarReproduccion", sql, new { IdUsuario, IdCancion, progreso, completa, dispositivo });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = connection.Execute(sql, new 
         { 
-            idUsuario, 
-            idCancion, 
+            IdUsuario, 
+            IdCancion, 
             progreso, 
             completa, 
             dispositivo 
@@ -225,54 +225,54 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         return result > 0;
     }
 
-    public IEnumerable<Cancion> ObtenerCancionesMasEscuchadas(uint idUsuario, int limite = 10)
+    public IEnumerable<Cancion> ObtenerCancionesMasEscuchadas(uint IdUsuario, int limite = 10)
     {
         using var connection = CreateConnection();
         var sql = @"SELECT c.*, COUNT(r.idHistorial) as TotalReproducciones
                    FROM Cancion c
-                   JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                   WHERE r.idUsuario = @idUsuario
-                   GROUP BY c.idCancion
+                   JOIN HistorialReproduccion r ON c.IdCancion = r.IdCancion
+                   WHERE r.IdUsuario = @IdUsuario
+                   GROUP BY c.IdCancion
                    ORDER BY TotalReproducciones DESC
                    LIMIT @limite";
         
-        LogQuery("ObtenerCancionesMasEscuchadas", sql, new { idUsuario, limite });
+        LogQuery("ObtenerCancionesMasEscuchadas", sql, new { IdUsuario, limite });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Query<Cancion>(sql, new { idUsuario, limite });
+        var result = connection.Query<Cancion>(sql, new { IdUsuario, limite });
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerCancionesMasEscuchadas", stopwatch.Elapsed);
         return result;
     }
 
-    public int ObtenerTotalReproducciones(uint idUsuario)
+    public int ObtenerTotalReproducciones(uint IdUsuario)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(*) FROM HistorialReproduccion WHERE idUsuario = @idUsuario";
+        var sql = "SELECT COUNT(*) FROM HistorialReproduccion WHERE IdUsuario = @IdUsuario";
         
-        LogQuery("ObtenerTotalReproducciones", sql, new { idUsuario });
+        LogQuery("ObtenerTotalReproducciones", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.ExecuteScalar<int>(sql, new { idUsuario });
+        var result = connection.ExecuteScalar<int>(sql, new { IdUsuario });
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerTotalReproducciones", stopwatch.Elapsed);
         return result;
     }
 
-    public TimeSpan ObtenerTiempoTotalEscuchado(uint idUsuario)
+    public TimeSpan ObtenerTiempoTotalEscuchado(uint IdUsuario)
     {
         using var connection = CreateConnection();
         var sql = @"SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(c.Duracion))) 
                    FROM Cancion c
-                   JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                   WHERE r.idUsuario = @idUsuario AND r.ReproduccionCompleta = 1";
+                   JOIN HistorialReproduccion r ON c.IdCancion = r.IdCancion
+                   WHERE r.IdUsuario = @IdUsuario AND r.ReproduccionCompleta = 1";
         
-        LogQuery("ObtenerTiempoTotalEscuchado", sql, new { idUsuario });
+        LogQuery("ObtenerTiempoTotalEscuchado", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.ExecuteScalar<TimeSpan?>(sql, new { idUsuario }) ?? TimeSpan.Zero;
+        var result = connection.ExecuteScalar<TimeSpan?>(sql, new { IdUsuario }) ?? TimeSpan.Zero;
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerTiempoTotalEscuchado", stopwatch.Elapsed);
@@ -285,8 +285,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         const string sql = @"
             SELECT r.*, u.*, c.*
             FROM HistorialReproduccion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
-            JOIN Cancion c ON r.idCancion = c.idCancion
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
+            JOIN Cancion c ON r.IdCancion = c.IdCancion
             WHERE r.idHistorial = @id";
 
         LogQuery("ObtenerPorIdAsync", sql, new { id });
@@ -299,7 +299,7 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
                 reproduccion.Usuario = usuario;
                 reproduccion.Cancion = cancion;
                 return reproduccion;
-            }, splitOn: "idUsuario,idCancion");
+            }, splitOn: "IdUsuario,IdCancion");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorIdAsync", stopwatch.Elapsed);
@@ -331,8 +331,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
     {
         using var connection = CreateConnection();
         var parameters = CreateParameters();
-        parameters.Add("unidUsuario", entidad.Usuario.idUsuario);
-        parameters.Add("unidCancion", entidad.Cancion.idCancion);
+        parameters.Add("unidUsuario", entidad.Usuario.IdUsuario);
+        parameters.Add("unidCancion", entidad.Cancion.IdCancion);
         parameters.Add("unFechaReproduccion", entidad.FechaReproduccion);
         parameters.Add("unidHistorial", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
@@ -352,8 +352,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
     {
         using var connection = CreateConnection();
         var sql = @"UPDATE HistorialReproduccion 
-                   SET idUsuario = @idUsuario,
-                       idCancion = @idCancion,
+                   SET IdUsuario = @IdUsuario,
+                       IdCancion = @IdCancion,
                        FechaReproduccion = @FechaReproduccion,
                        ProgresoReproduccion = @ProgresoReproduccion,
                        ReproduccionCompleta = @ReproduccionCompleta,
@@ -366,8 +366,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         await connection.ExecuteAsync(
             new CommandDefinition(sql, new 
             {
-                idUsuario = entidad.Usuario.idUsuario,
-                idCancion = entidad.Cancion.idCancion,
+                IdUsuario = entidad.Usuario.IdUsuario,
+                IdCancion = entidad.Cancion.IdCancion,
                 entidad.FechaReproduccion,
                 entidad.ProgresoReproduccion,
                 entidad.ReproduccionCompleta,
@@ -426,29 +426,29 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         return result;
     }
 
-    public async Task<IEnumerable<Reproduccion>> ObtenerHistorialUsuarioAsync(uint idUsuario, int limite = 50, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Reproduccion>> ObtenerHistorialUsuarioAsync(uint IdUsuario, int limite = 50, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT r.*, u.*, c.*
             FROM HistorialReproduccion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
-            JOIN Cancion c ON r.idCancion = c.idCancion
-            WHERE r.idUsuario = @idUsuario
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
+            JOIN Cancion c ON r.IdCancion = c.IdCancion
+            WHERE r.IdUsuario = @IdUsuario
             ORDER BY r.FechaReproduccion DESC
             LIMIT @limite";
 
-        LogQuery("ObtenerHistorialUsuarioAsync", sql, new { idUsuario, limite });
+        LogQuery("ObtenerHistorialUsuarioAsync", sql, new { IdUsuario, limite });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = await connection.QueryAsync<Reproduccion, Usuario, Cancion, Reproduccion>(
-            new CommandDefinition(sql, new { idUsuario, limite }, cancellationToken: cancellationToken),
+            new CommandDefinition(sql, new { IdUsuario, limite }, cancellationToken: cancellationToken),
             (reproduccion, usuario, cancion) =>
             {
                 reproduccion.Usuario = usuario;
                 reproduccion.Cancion = cancion;
                 return reproduccion;
-            }, splitOn: "idUsuario,idCancion");
+            }, splitOn: "IdUsuario,IdCancion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerHistorialUsuarioAsync", stopwatch.Elapsed);
@@ -461,8 +461,8 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         const string sql = @"
             SELECT r.*, u.*, c.*
             FROM HistorialReproduccion r
-            JOIN Usuario u ON r.idUsuario = u.idUsuario
-            JOIN Cancion c ON r.idCancion = c.idCancion
+            JOIN Usuario u ON r.IdUsuario = u.IdUsuario
+            JOIN Cancion c ON r.IdCancion = c.IdCancion
             WHERE r.FechaReproduccion >= @desde
             ORDER BY r.FechaReproduccion DESC";
 
@@ -476,27 +476,27 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
                 reproduccion.Usuario = usuario;
                 reproduccion.Cancion = cancion;
                 return reproduccion;
-            }, splitOn: "idUsuario,idCancion");
+            }, splitOn: "IdUsuario,IdCancion");
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerRecientesAsync", stopwatch.Elapsed);
         return result;
     }
 
-    public async Task<bool> RegistrarReproduccionAsync(uint idUsuario, uint idCancion, TimeSpan progreso, bool completa, string? dispositivo, CancellationToken cancellationToken = default)
+    public async Task<bool> RegistrarReproduccionAsync(uint IdUsuario, uint IdCancion, TimeSpan progreso, bool completa, string? dispositivo, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = @"INSERT INTO HistorialReproduccion (idUsuario, idCancion, FechaReproduccion, ProgresoReproduccion, ReproduccionCompleta, Dispositivo)
-                   VALUES (@idUsuario, @idCancion, NOW(), @progreso, @completa, @dispositivo)";
+        var sql = @"INSERT INTO HistorialReproduccion (IdUsuario, IdCancion, FechaReproduccion, ProgresoReproduccion, ReproduccionCompleta, Dispositivo)
+                   VALUES (@IdUsuario, @IdCancion, NOW(), @progreso, @completa, @dispositivo)";
         
-        LogQuery("RegistrarReproduccionAsync", sql, new { idUsuario, idCancion, progreso, completa, dispositivo });
+        LogQuery("RegistrarReproduccionAsync", sql, new { IdUsuario, IdCancion, progreso, completa, dispositivo });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = await connection.ExecuteAsync(
             new CommandDefinition(sql, new 
             { 
-                idUsuario, 
-                idCancion, 
+                IdUsuario, 
+                IdCancion, 
                 progreso, 
                 completa, 
                 dispositivo 
@@ -507,57 +507,57 @@ public class RepoReproduccion : RepoGenerico, IRepoReproduccion
         return result > 0;
     }
 
-    public async Task<IEnumerable<Cancion>> ObtenerCancionesMasEscuchadasAsync(uint idUsuario, int limite = 10, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Cancion>> ObtenerCancionesMasEscuchadasAsync(uint IdUsuario, int limite = 10, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         var sql = @"SELECT c.*, COUNT(r.idHistorial) as TotalReproducciones
                    FROM Cancion c
-                   JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                   WHERE r.idUsuario = @idUsuario
-                   GROUP BY c.idCancion
+                   JOIN HistorialReproduccion r ON c.IdCancion = r.IdCancion
+                   WHERE r.IdUsuario = @IdUsuario
+                   GROUP BY c.IdCancion
                    ORDER BY TotalReproducciones DESC
                    LIMIT @limite";
         
-        LogQuery("ObtenerCancionesMasEscuchadasAsync", sql, new { idUsuario, limite });
+        LogQuery("ObtenerCancionesMasEscuchadasAsync", sql, new { IdUsuario, limite });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = await connection.QueryAsync<Cancion>(
-            new CommandDefinition(sql, new { idUsuario, limite }, cancellationToken: cancellationToken));
+            new CommandDefinition(sql, new { IdUsuario, limite }, cancellationToken: cancellationToken));
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerCancionesMasEscuchadasAsync", stopwatch.Elapsed);
         return result;
     }
 
-    public async Task<int> ObtenerTotalReproduccionesAsync(uint idUsuario, CancellationToken cancellationToken = default)
+    public async Task<int> ObtenerTotalReproduccionesAsync(uint IdUsuario, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(*) FROM HistorialReproduccion WHERE idUsuario = @idUsuario";
+        var sql = "SELECT COUNT(*) FROM HistorialReproduccion WHERE IdUsuario = @IdUsuario";
         
-        LogQuery("ObtenerTotalReproduccionesAsync", sql, new { idUsuario });
+        LogQuery("ObtenerTotalReproduccionesAsync", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = await connection.ExecuteScalarAsync<int>(
-            new CommandDefinition(sql, new { idUsuario }, cancellationToken: cancellationToken));
+            new CommandDefinition(sql, new { IdUsuario }, cancellationToken: cancellationToken));
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerTotalReproduccionesAsync", stopwatch.Elapsed);
         return result;
     }
 
-    public async Task<TimeSpan> ObtenerTiempoTotalEscuchadoAsync(uint idUsuario, CancellationToken cancellationToken = default)
+    public async Task<TimeSpan> ObtenerTiempoTotalEscuchadoAsync(uint IdUsuario, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         var sql = @"SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(c.Duracion))) 
                    FROM Cancion c
-                   JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                   WHERE r.idUsuario = @idUsuario AND r.ReproduccionCompleta = 1";
+                   JOIN HistorialReproduccion r ON c.IdCancion = r.IdCancion
+                   WHERE r.IdUsuario = @IdUsuario AND r.ReproduccionCompleta = 1";
         
-        LogQuery("ObtenerTiempoTotalEscuchadoAsync", sql, new { idUsuario });
+        LogQuery("ObtenerTiempoTotalEscuchadoAsync", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = await connection.ExecuteScalarAsync<TimeSpan?>(
-            new CommandDefinition(sql, new { idUsuario }, cancellationToken: cancellationToken)) ?? TimeSpan.Zero;
+            new CommandDefinition(sql, new { IdUsuario }, cancellationToken: cancellationToken)) ?? TimeSpan.Zero;
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerTiempoTotalEscuchadoAsync", stopwatch.Elapsed);

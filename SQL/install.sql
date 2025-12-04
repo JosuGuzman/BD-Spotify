@@ -12,11 +12,26 @@ SOURCE 5to_Spotify.sql;
 SELECT '✅ Esquema de base de datos creado' AS Mensaje;
 
 -- 2. Procedimientos Almacenados
-SOURCE SP_espanol.sql;
+SOURCE SP.sql;
 SELECT '✅ Procedimientos almacenados creados' AS Mensaje;
 
+-- 3. Funciones Almacenadas
+SOURCE SF.sql;
+SELECT '✅ Funciones almacenadas creadas' AS Mensaje;
+
+-- 4. DCL
+SOURCE DCL.sql;
+SELECT '✅ DCL creadas' AS Mensaje;
+
+-- Treiggers
+SOURCE Triggers.sql;
+SELECT '✅ Triggers creadas' AS Mensaje;
+
+SOURCE View.sql;
+SELECT '✅ Vistas creadas' AS Mensaje;
+
 -- 3. Insertar datos usando SPs
-SOURCE Insert_espanol.sql;
+SOURCE Insert.sql;
 SELECT '✅ Datos insertados correctamente' AS Mensaje;
 
 -- Verificación final

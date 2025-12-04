@@ -8,7 +8,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public Nacionalidad? ObtenerPorId(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT * FROM Nacionalidad WHERE idNacionalidad = @id";
+        var sql = "SELECT * FROM Nacionalidad WHERE IdNacionalidad = @id";
         LogQuery("ObtenerPorId", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -49,7 +49,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         connection.Execute("altaNacionalidad", parameters, commandType: CommandType.StoredProcedure);
-        entidad.idNacionalidad = parameters.Get<uint>("unidNacionalidad");
+        entidad.IdNacionalidad = parameters.Get<uint>("unidNacionalidad");
         stopwatch.Stop();
         
         LogExecutionTime("Insertar", stopwatch.Elapsed);
@@ -58,7 +58,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public void Actualizar(Nacionalidad entidad)
     {
         using var connection = CreateConnection();
-        var sql = "UPDATE Nacionalidad SET Pais = @Pais WHERE idNacionalidad = @idNacionalidad";
+        var sql = "UPDATE Nacionalidad SET Pais = @Pais WHERE IdNacionalidad = @IdNacionalidad";
         
         LogQuery("Actualizar", sql, entidad);
         
@@ -72,7 +72,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public void Eliminar(object id)
     {
         using var connection = CreateConnection();
-        var sql = "DELETE FROM Nacionalidad WHERE idNacionalidad = @id";
+        var sql = "DELETE FROM Nacionalidad WHERE IdNacionalidad = @id";
         
         LogQuery("Eliminar", sql, new { id });
         
@@ -85,7 +85,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
 
     public void Eliminar(Nacionalidad entidad)
     {
-        Eliminar(entidad.idNacionalidad);
+        Eliminar(entidad.IdNacionalidad);
     }
 
     public int Contar()
@@ -106,7 +106,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public bool Existe(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Nacionalidad WHERE idNacionalidad = @id";
+        var sql = "SELECT COUNT(1) FROM Nacionalidad WHERE IdNacionalidad = @id";
         
         LogQuery("Existe", sql, new { id });
         
@@ -138,8 +138,8 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         using var connection = CreateConnection();
         var sql = @"SELECT n.*, COUNT(u.idUsuario) as TotalUsuarios
                    FROM Nacionalidad n
-                   LEFT JOIN Usuario u ON n.idNacionalidad = u.idNacionalidad
-                   GROUP BY n.idNacionalidad
+                   LEFT JOIN Usuario u ON n.IdNacionalidad = u.IdNacionalidad
+                   GROUP BY n.IdNacionalidad
                    HAVING COUNT(u.idUsuario) > 0
                    ORDER BY TotalUsuarios DESC";
         
@@ -156,7 +156,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public async Task<Nacionalidad?> ObtenerPorIdAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT * FROM Nacionalidad WHERE idNacionalidad = @id";
+        var sql = "SELECT * FROM Nacionalidad WHERE IdNacionalidad = @id";
         LogQuery("ObtenerPorIdAsync", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -201,7 +201,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         await connection.ExecuteAsync(
             new CommandDefinition("altaNacionalidad", parameters, 
                 commandType: CommandType.StoredProcedure, cancellationToken: cancellationToken));
-        entidad.idNacionalidad = parameters.Get<uint>("unidNacionalidad");
+        entidad.IdNacionalidad = parameters.Get<uint>("unidNacionalidad");
         stopwatch.Stop();
         
         LogExecutionTime("InsertarAsync", stopwatch.Elapsed);
@@ -210,7 +210,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public async Task ActualizarAsync(Nacionalidad entidad, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "UPDATE Nacionalidad SET Pais = @Pais WHERE idNacionalidad = @idNacionalidad";
+        var sql = "UPDATE Nacionalidad SET Pais = @Pais WHERE IdNacionalidad = @IdNacionalidad";
         
         LogQuery("ActualizarAsync", sql, entidad);
         
@@ -225,7 +225,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public async Task EliminarAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "DELETE FROM Nacionalidad WHERE idNacionalidad = @id";
+        var sql = "DELETE FROM Nacionalidad WHERE IdNacionalidad = @id";
         
         LogQuery("EliminarAsync", sql, new { id });
         
@@ -256,7 +256,7 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
     public async Task<bool> ExisteAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Nacionalidad WHERE idNacionalidad = @id";
+        var sql = "SELECT COUNT(1) FROM Nacionalidad WHERE IdNacionalidad = @id";
         
         LogQuery("ExisteAsync", sql, new { id });
         
@@ -290,8 +290,8 @@ public class RepoNacionalidad : RepoGenerico, IRepoNacionalidad
         using var connection = CreateConnection();
         var sql = @"SELECT n.*, COUNT(u.idUsuario) as TotalUsuarios
                    FROM Nacionalidad n
-                   LEFT JOIN Usuario u ON n.idNacionalidad = u.idNacionalidad
-                   GROUP BY n.idNacionalidad
+                   LEFT JOIN Usuario u ON n.IdNacionalidad = u.IdNacionalidad
+                   GROUP BY n.IdNacionalidad
                    HAVING COUNT(u.idUsuario) > 0
                    ORDER BY TotalUsuarios DESC";
         

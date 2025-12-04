@@ -11,10 +11,10 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idCancion = @id";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdCancion = @id";
 
         LogQuery("ObtenerPorId", sql, new { id });
     
@@ -26,7 +26,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
                 cancion.Genero = genero;
                 cancion.Artista = artista;
                 return cancion;
-            }, new { id }, splitOn: "idAlbum,idGenero,idArtista").FirstOrDefault();
+            }, new { id }, splitOn: "IdAlbum,IdGenero,IdArtista").FirstOrDefault();
         stopwatch.Stop();
     
         LogExecutionTime("ObtenerPorId", stopwatch.Elapsed);
@@ -57,10 +57,10 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         using var connection = CreateConnection();
         var parameters = CreateParameters();
         parameters.Add("unTitulo", entidad.Titulo);
-        parameters.Add("unDuration", entidad.Duracion);
-        parameters.Add("unidAlbum", entidad.Album.idAlbum);
-        parameters.Add("unidArtista", entidad.Artista.idArtista);
-        parameters.Add("unidGenero", entidad.Genero.idGenero);
+        parameters.Add("unDuration", entidad.DuracionSegundos);
+        parameters.Add("unidAlbum", entidad.Album.IdAlbum);
+        parameters.Add("unidArtista", entidad.Artista.IdArtista);
+        parameters.Add("unidGenero", entidad.Genero.IdGenero);
         parameters.Add("unArchivoMP3", entidad.ArchivoMP3);
         parameters.Add("unidCancion", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
@@ -68,7 +68,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         connection.Execute("altaCancion", parameters, commandType: CommandType.StoredProcedure);
-        entidad.idCancion = parameters.Get<uint>("unidCancion");
+        entidad.IdCancion = parameters.Get<uint>("unidCancion");
         stopwatch.Stop();
     
         LogExecutionTime("Insertar", stopwatch.Elapsed);
@@ -79,12 +79,12 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         using var connection = CreateConnection();
         var sql = @"UPDATE Cancion 
                        SET Titulo = @Titulo, 
-                           Duracion = @Duracion,
-                           idAlbum = @idAlbum,
-                           idArtista = @idArtista,
-                           idGenero = @idGenero,
+                           DuracionSegundos = @DuracionSegundos,
+                           IdAlbum = @IdAlbum,
+                           IdArtista = @IdArtista,
+                           IdGenero = @IdGenero,
                            ArchivoMP3 = @ArchivoMP3
-                       WHERE idCancion = @idCancion";
+                       WHERE IdCancion = @IdCancion";
     
         LogQuery("Actualizar", sql, entidad);
     
@@ -92,12 +92,12 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         connection.Execute(sql, new 
         {
             entidad.Titulo,
-            entidad.Duracion,
-            idAlbum = entidad.Album.idAlbum,
-            idArtista = entidad.Artista.idArtista,
-            idGenero = entidad.Genero.idGenero,
+            entidad.DuracionSegundos,
+            IdAlbum = entidad.Album.IdAlbum,
+            IdArtista = entidad.Artista.IdArtista,
+            IdGenero = entidad.Genero.IdGenero,
             entidad.ArchivoMP3,
-            entidad.idCancion
+            entidad.IdCancion
         });
         stopwatch.Stop();
     
@@ -119,7 +119,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
 
     public void Eliminar(Cancion entidad)
     {
-        Eliminar(entidad.idCancion);
+        Eliminar(entidad.IdCancion);
     }
 
     public int Contar()
@@ -140,7 +140,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
     public bool Existe(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Cancion WHERE idCancion = @id";
+        var sql = "SELECT COUNT(1) FROM Cancion WHERE IdCancion = @id";
     
         LogQuery("Existe", sql, new { id });
     
@@ -168,7 +168,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return result;
     }
 
-    public IEnumerable<Cancion> ObtenerPaginado(int pagina, int tamañoPagina, string ordenarPor = "idCancion")
+    public IEnumerable<Cancion> ObtenerPaginado(int pagina, int tamañoPagina, string ordenarPor = "IdCancion")
     {
         using var connection = CreateConnection();
         var offset = (pagina - 1) * tamañoPagina;
@@ -190,9 +190,9 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero";
 
         LogQuery("ObtenerConRelaciones", sql);
     
@@ -202,16 +202,16 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         var result = connection.Query<Cancion, Album, Genero, Artista, Cancion>(sql,
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, splitOn: "idAlbum,idGenero,idArtista");
+            }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerConRelaciones", stopwatch.Elapsed);
@@ -225,8 +225,8 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         using var connection = CreateConnection();
         var sql = @"SELECT c.*, COUNT(r.idHistorial) as TotalReproducciones
                        FROM Cancion c
-                       LEFT JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                       GROUP BY c.idCancion
+                       LEFT JOIN HistorialReproduccion r ON c.IdCancion = r.IdCancion
+                       GROUP BY c.IdCancion
                        ORDER BY TotalReproducciones DESC
                        LIMIT @limite";
     
@@ -240,18 +240,18 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return result;
     }
 
-    public IEnumerable<Cancion> ObtenerPorAlbum(uint idAlbum)
+    public IEnumerable<Cancion> ObtenerPorAlbum(uint IdAlbum)
     {
         using var connection = CreateConnection();
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idAlbum = @idAlbum";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdAlbum = @IdAlbum";
 
-        LogQuery("ObtenerPorAlbum", sql, new { idAlbum });
+        LogQuery("ObtenerPorAlbum", sql, new { IdAlbum });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var canciones = new Dictionary<uint, Cancion>();
@@ -259,16 +259,16 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         var result = connection.Query<Cancion, Album, Genero, Artista, Cancion>(sql,
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, new { idAlbum }, splitOn: "idAlbum,idGenero,idArtista");
+            }, new { IdAlbum }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorAlbum", stopwatch.Elapsed);
@@ -276,18 +276,18 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return canciones.Values;
     }
 
-    public IEnumerable<Cancion> ObtenerPorArtista(uint idArtista)
+    public IEnumerable<Cancion> ObtenerPorArtista(uint IdArtista)
     {
         using var connection = CreateConnection();
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idArtista = @idArtista";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdArtista = @IdArtista";
 
-        LogQuery("ObtenerPorArtista", sql, new { idArtista });
+        LogQuery("ObtenerPorArtista", sql, new { IdArtista });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var canciones = new Dictionary<uint, Cancion>();
@@ -295,16 +295,16 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         var result = connection.Query<Cancion, Album, Genero, Artista, Cancion>(sql,
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, new { idArtista }, splitOn: "idAlbum,idGenero,idArtista");
+            }, new { IdArtista }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorArtista", stopwatch.Elapsed);
@@ -312,18 +312,18 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return canciones.Values;
     }
 
-    public IEnumerable<Cancion> ObtenerPorGenero(byte idGenero)
+    public IEnumerable<Cancion> ObtenerPorGenero(byte IdGenero)
     {
         using var connection = CreateConnection();
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idGenero = @idGenero";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdGenero = @IdGenero";
 
-        LogQuery("ObtenerPorGenero", sql, new { idGenero });
+        LogQuery("ObtenerPorGenero", sql, new { IdGenero });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var canciones = new Dictionary<uint, Cancion>();
@@ -331,16 +331,16 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         var result = connection.Query<Cancion, Album, Genero, Artista, Cancion>(sql,
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, new { idGenero }, splitOn: "idAlbum,idGenero,idArtista");
+            }, new { IdGenero }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorGenero", stopwatch.Elapsed);
@@ -364,22 +364,22 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return result;
     }
 
-    public Cancion? ObtenerConAlbumYArtista(uint idCancion)
+    public Cancion? ObtenerConAlbumYArtista(uint IdCancion)
     {
-        return ObtenerPorId(idCancion);
+        return ObtenerPorId(IdCancion);
     }
 
-    public int IncrementarReproducciones(uint idCancion)
+    public int IncrementarReproducciones(uint IdCancion)
     {
         // Esta operación normalmente se haría en el servicio de reproducción
         // Pero para el repositorio, podríamos tener un campo de contador
         using var connection = CreateConnection();
-        var sql = "UPDATE Cancion SET Reproducciones = COALESCE(Reproducciones, 0) + 1 WHERE idCancion = @idCancion";
+        var sql = "UPDATE Cancion SET Reproducciones = COALESCE(Reproducciones, 0) + 1 WHERE IdCancion = @IdCancion";
     
-        LogQuery("IncrementarReproducciones", sql, new { idCancion });
+        LogQuery("IncrementarReproducciones", sql, new { IdCancion });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Execute(sql, new { idCancion });
+        var result = connection.Execute(sql, new { IdCancion });
         stopwatch.Stop();
     
         LogExecutionTime("IncrementarReproducciones", stopwatch.Elapsed);
@@ -392,10 +392,10 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idCancion = @id";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdCancion = @id";
 
         LogQuery("ObtenerPorIdAsync", sql, new { id });
     
@@ -408,7 +408,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
                 cancion.Genero = genero;
                 cancion.Artista = artista;
                 return cancion;
-            }, splitOn: "idAlbum,idGenero,idArtista");
+            }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorIdAsync", stopwatch.Elapsed);
@@ -441,10 +441,10 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         using var connection = CreateConnection();
         var parameters = CreateParameters();
         parameters.Add("unTitulo", entidad.Titulo);
-        parameters.Add("unDuration", entidad.Duracion);
-        parameters.Add("unidAlbum", entidad.Album.idAlbum);
-        parameters.Add("unidArtista", entidad.Artista.idArtista);
-        parameters.Add("unidGenero", entidad.Genero.idGenero);
+        parameters.Add("unDuration", entidad.DuracionSegundos);
+        parameters.Add("unidAlbum", entidad.Album.IdAlbum);
+        parameters.Add("unidArtista", entidad.Artista.IdArtista);
+        parameters.Add("unidGenero", entidad.Genero.IdGenero);
         parameters.Add("unArchivoMP3", entidad.ArchivoMP3);
         parameters.Add("unidCancion", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
@@ -454,7 +454,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         await connection.ExecuteAsync(
             new CommandDefinition("altaCancion", parameters, 
                 commandType: CommandType.StoredProcedure, cancellationToken: cancellationToken));
-        entidad.idCancion = parameters.Get<uint>("unidCancion");
+        entidad.IdCancion = parameters.Get<uint>("unidCancion");
         stopwatch.Stop();
     
         LogExecutionTime("InsertarAsync", stopwatch.Elapsed);
@@ -465,12 +465,12 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         using var connection = CreateConnection();
         var sql = @"UPDATE Cancion 
                        SET Titulo = @Titulo, 
-                           Duracion = @Duracion,
-                           idAlbum = @idAlbum,
-                           idArtista = @idArtista,
-                           idGenero = @idGenero,
+                           DuracionSegundos = @DuracionSegundos,
+                           IdAlbum = @IdAlbum,
+                           IdArtista = @IdArtista,
+                           IdGenero = @IdGenero,
                            ArchivoMP3 = @ArchivoMP3
-                       WHERE idCancion = @idCancion";
+                       WHERE IdCancion = @IdCancion";
     
         LogQuery("ActualizarAsync", sql, entidad);
     
@@ -479,12 +479,12 @@ public class RepoCancion : RepoGenerico, IRepoCancion
             new CommandDefinition(sql, new 
             {
                 entidad.Titulo,
-                entidad.Duracion,
-                idAlbum = entidad.Album.idAlbum,
-                idArtista = entidad.Artista.idArtista,
-                idGenero = entidad.Genero.idGenero,
+                entidad.DuracionSegundos,
+                IdAlbum = entidad.Album.IdAlbum,
+                IdArtista = entidad.Artista.IdArtista,
+                IdGenero = entidad.Genero.IdGenero,
                 entidad.ArchivoMP3,
-                entidad.idCancion
+                entidad.IdCancion
             }, cancellationToken: cancellationToken));
         stopwatch.Stop();
     
@@ -524,7 +524,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
     public async Task<bool> ExisteAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Cancion WHERE idCancion = @id";
+        var sql = "SELECT COUNT(1) FROM Cancion WHERE IdCancion = @id";
     
         LogQuery("ExisteAsync", sql, new { id });
     
@@ -554,7 +554,7 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return result;
     }
 
-    public async Task<IEnumerable<Cancion>> ObtenerPaginadoAsync(int pagina, int tamañoPagina, string ordenarPor = "idCancion", CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Cancion>> ObtenerPaginadoAsync(int pagina, int tamañoPagina, string ordenarPor = "IdCancion", CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         var offset = (pagina - 1) * tamañoPagina;
@@ -578,9 +578,9 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero";
 
         LogQuery("ObtenerConRelacionesAsync", sql);
     
@@ -591,16 +591,16 @@ public class RepoCancion : RepoGenerico, IRepoCancion
             new CommandDefinition(sql, cancellationToken: CancellationToken.None),
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, splitOn: "idAlbum,idGenero,idArtista");
+            }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerConRelacionesAsync", stopwatch.Elapsed);
@@ -613,8 +613,8 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         using var connection = CreateConnection();
         var sql = @"SELECT c.*, COUNT(r.idHistorial) as TotalReproducciones
                        FROM Cancion c
-                       LEFT JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                       GROUP BY c.idCancion
+                       LEFT JOIN HistorialReproduccion r ON c.IdCancion = r.IdCancion
+                       GROUP BY c.IdCancion
                        ORDER BY TotalReproducciones DESC
                        LIMIT @limite";
     
@@ -629,36 +629,36 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return result;
     }
 
-    public async Task<IEnumerable<Cancion>> ObtenerPorAlbumAsync(uint idAlbum, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Cancion>> ObtenerPorAlbumAsync(uint IdAlbum, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idAlbum = @idAlbum";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdAlbum = @IdAlbum";
 
-        LogQuery("ObtenerPorAlbumAsync", sql, new { idAlbum });
+        LogQuery("ObtenerPorAlbumAsync", sql, new { IdAlbum });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var canciones = new Dictionary<uint, Cancion>();
     
         var result = await connection.QueryAsync<Cancion, Album, Genero, Artista, Cancion>(
-            new CommandDefinition(sql, new { idAlbum }, cancellationToken: cancellationToken),
+            new CommandDefinition(sql, new { IdAlbum }, cancellationToken: cancellationToken),
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, splitOn: "idAlbum,idGenero,idArtista");
+            }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorAlbumAsync", stopwatch.Elapsed);
@@ -666,36 +666,36 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return canciones.Values;
     }
 
-    public async Task<IEnumerable<Cancion>> ObtenerPorArtistaAsync(uint idArtista, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Cancion>> ObtenerPorArtistaAsync(uint IdArtista, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idArtista = @idArtista";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdArtista = @IdArtista";
 
-        LogQuery("ObtenerPorArtistaAsync", sql, new { idArtista });
+        LogQuery("ObtenerPorArtistaAsync", sql, new { IdArtista });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var canciones = new Dictionary<uint, Cancion>();
     
         var result = await connection.QueryAsync<Cancion, Album, Genero, Artista, Cancion>(
-            new CommandDefinition(sql, new { idArtista }, cancellationToken: cancellationToken),
+            new CommandDefinition(sql, new { IdArtista }, cancellationToken: cancellationToken),
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, splitOn: "idAlbum,idGenero,idArtista");
+            }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorArtistaAsync", stopwatch.Elapsed);
@@ -703,36 +703,36 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return canciones.Values;
     }
 
-    public async Task<IEnumerable<Cancion>> ObtenerPorGeneroAsync(byte idGenero, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Cancion>> ObtenerPorGeneroAsync(byte IdGenero, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
                 SELECT c.*, a.*, g.*, art.*, alb.*
                 FROM Cancion c
-                JOIN Album alb ON c.idAlbum = alb.idAlbum
-                JOIN Artista art ON c.idArtista = art.idArtista
-                JOIN Genero g ON c.idGenero = g.idGenero
-                WHERE c.idGenero = @idGenero";
+                JOIN Album alb ON c.IdAlbum = alb.IdAlbum
+                JOIN Artista art ON c.IdArtista = art.IdArtista
+                JOIN Genero g ON c.IdGenero = g.IdGenero
+                WHERE c.IdGenero = @IdGenero";
 
-        LogQuery("ObtenerPorGeneroAsync", sql, new { idGenero });
+        LogQuery("ObtenerPorGeneroAsync", sql, new { IdGenero });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var canciones = new Dictionary<uint, Cancion>();
     
         var result = await connection.QueryAsync<Cancion, Album, Genero, Artista, Cancion>(
-            new CommandDefinition(sql, new { idGenero }, cancellationToken: cancellationToken),
+            new CommandDefinition(sql, new { IdGenero }, cancellationToken: cancellationToken),
             (cancion, album, genero, artista) =>
             {
-                if (!canciones.TryGetValue(cancion.idCancion, out var cancionEntry))
+                if (!canciones.TryGetValue(cancion.IdCancion, out var cancionEntry))
                 {
                     cancionEntry = cancion;
                     cancionEntry.Album = album;
                     cancionEntry.Genero = genero;
                     cancionEntry.Artista = artista;
-                    canciones.Add(cancionEntry.idCancion, cancionEntry);
+                    canciones.Add(cancionEntry.IdCancion, cancionEntry);
                 }
                 return cancionEntry;
-            }, splitOn: "idAlbum,idGenero,idArtista");
+            }, splitOn: "IdAlbum,IdGenero,IdArtista");
     
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorGeneroAsync", stopwatch.Elapsed);
@@ -756,21 +756,21 @@ public class RepoCancion : RepoGenerico, IRepoCancion
         return result;
     }
 
-    public async Task<Cancion?> ObtenerConAlbumYArtistaAsync(uint idCancion, CancellationToken cancellationToken = default)
+    public async Task<Cancion?> ObtenerConAlbumYArtistaAsync(uint IdCancion, CancellationToken cancellationToken = default)
     {
-        return await ObtenerPorIdAsync(idCancion, cancellationToken);
+        return await ObtenerPorIdAsync(IdCancion, cancellationToken);
     }
 
-    public async Task<int> IncrementarReproduccionesAsync(uint idCancion, CancellationToken cancellationToken = default)
+    public async Task<int> IncrementarReproduccionesAsync(uint IdCancion, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "UPDATE Cancion SET Reproducciones = COALESCE(Reproducciones, 0) + 1 WHERE idCancion = @idCancion";
+        var sql = "UPDATE Cancion SET Reproducciones = COALESCE(Reproducciones, 0) + 1 WHERE IdCancion = @IdCancion";
     
-        LogQuery("IncrementarReproduccionesAsync", sql, new { idCancion });
+        LogQuery("IncrementarReproduccionesAsync", sql, new { IdCancion });
     
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = await connection.ExecuteAsync(
-            new CommandDefinition(sql, new { idCancion }, cancellationToken: cancellationToken));
+            new CommandDefinition(sql, new { IdCancion }, cancellationToken: cancellationToken));
         stopwatch.Stop();
     
         LogExecutionTime("IncrementarReproduccionesAsync", stopwatch.Elapsed);

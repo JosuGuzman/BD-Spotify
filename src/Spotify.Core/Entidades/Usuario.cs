@@ -2,11 +2,11 @@ namespace Spotify.Core.Entidades;
 
 public class Usuario
 {
-    public int IdUsuario { get; set; }
+    public uint IdUsuario { get; set; }
     public string NombreUsuario { get; set; }
     public string Email { get; set; }
     public string Contrasenia { get; set; }
-    public int IdNacionalidad { get; set; }
+    public uint IdNacionalidad { get; set; }
     public byte IdRol { get; set; }
     public DateTime FechaRegistro { get; set; }
     public string? FotoPerfil { get; set; }

@@ -4,7 +4,7 @@ namespace Spotify.Core.Entidades;
 
 public class Nacionalidad
 {
-    public int IdNacionalidad { get; set; }
+    public uint IdNacionalidad { get; set; }
     public string Pais { get; set; }
 
     // Propiedades de navegación

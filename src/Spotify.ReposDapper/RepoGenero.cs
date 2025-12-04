@@ -7,7 +7,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     public Genero? ObtenerPorId(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT * FROM Genero WHERE idGenero = @id";
+        var sql = "SELECT * FROM Genero WHERE IdGenero = @id";
         LogQuery("ObtenerPorId", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -45,7 +45,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         connection.Execute("altaGenero", parameters, commandType: CommandType.StoredProcedure);
-        entidad.idGenero = parameters.Get<byte>("unidGenero");
+        entidad.IdGenero = parameters.Get<byte>("unidGenero");
         stopwatch.Stop();
         
         LogExecutionTime("Insertar", stopwatch.Elapsed);
@@ -56,7 +56,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         var sql = @"UPDATE Genero 
                    SET Genero = @Nombre,
                        Descripcion = @Descripcion
-                   WHERE idGenero = @idGenero";
+                   WHERE IdGenero = @IdGenero";
         
         LogQuery("Actualizar", sql, entidad);
         
@@ -65,7 +65,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         {
             Nombre = entidad.Nombre,
             entidad.Descripcion,
-            entidad.idGenero
+            entidad.IdGenero
         });
         stopwatch.Stop();
         
@@ -85,7 +85,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     }
     public void Eliminar(Genero entidad)
     {
-        Eliminar(entidad.idGenero);
+        Eliminar(entidad.IdGenero);
     }
     public int Contar()
     {
@@ -104,7 +104,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     public bool Existe(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Genero WHERE idGenero = @id";
+        var sql = "SELECT COUNT(1) FROM Genero WHERE IdGenero = @id";
         
         LogQuery("Existe", sql, new { id });
         
@@ -130,7 +130,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         LogExecutionTime("BuscarTexto", stopwatch.Elapsed);
         return result;
     }
-    public IEnumerable<Genero> ObtenerPaginado(int pagina, int tamañoPagina, string ordenarPor = "idGenero")
+    public IEnumerable<Genero> ObtenerPaginado(int pagina, int tamañoPagina, string ordenarPor = "IdGenero")
     {
         using var connection = CreateConnection();
         var offset = (pagina - 1) * tamañoPagina;
@@ -151,7 +151,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         const string sql = @"
             SELECT g.*, c.*
             FROM Genero g
-            LEFT JOIN Cancion c ON g.idGenero = c.idGenero";
+            LEFT JOIN Cancion c ON g.IdGenero = c.IdGenero";
         LogQuery("ObtenerConRelaciones", sql);
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -160,11 +160,11 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         var result = connection.Query<Genero, Cancion, Genero>(sql,
             (genero, cancion) =>
             {
-                if (!generos.TryGetValue(genero.idGenero, out var generoEntry))
+                if (!generos.TryGetValue(genero.IdGenero, out var generoEntry))
                 {
                     generoEntry = genero;
                     generoEntry.Canciones = new List<Cancion>();
-                    generos.Add(generoEntry.idGenero, generoEntry);
+                    generos.Add(generoEntry.IdGenero, generoEntry);
                 }
                 
                 if (cancion != null)
@@ -186,8 +186,8 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         using var connection = CreateConnection();
         var sql = @"SELECT g.*, COUNT(c.idCancion) as TotalCanciones
                    FROM Genero g
-                   LEFT JOIN Cancion c ON g.idGenero = c.idGenero
-                   GROUP BY g.idGenero
+                   LEFT JOIN Cancion c ON g.IdGenero = c.IdGenero
+                   GROUP BY g.IdGenero
                    ORDER BY TotalCanciones DESC";
         LogQuery("ObtenerGenerosPopulares", sql);
         
@@ -216,7 +216,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     public async Task<Genero?> ObtenerPorIdAsync(object id, CancellationToken cancellationToken = default)
     {
     using var connection = CreateConnection();
-    var sql = "SELECT * FROM Genero WHERE idGenero = @id";
+    var sql = "SELECT * FROM Genero WHERE IdGenero = @id";
         LogQuery("ObtenerPorIdAsync", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -258,7 +258,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         await connection.ExecuteAsync(
             new CommandDefinition("altaGenero", parameters, 
                 commandType: CommandType.StoredProcedure, cancellationToken: cancellationToken));
-        entidad.idGenero = parameters.Get<byte>("unidGenero");
+        entidad.IdGenero = parameters.Get<byte>("unidGenero");
         stopwatch.Stop();
         
         LogExecutionTime("InsertarAsync", stopwatch.Elapsed);
@@ -269,7 +269,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         var sql = @"UPDATE Genero 
                    SET Genero = @Nombre,
                        Descripcion = @Descripcion
-                   WHERE idGenero = @idGenero";
+                   WHERE IdGenero = @IdGenero";
         
         LogQuery("ActualizarAsync", sql, entidad);
         
@@ -279,7 +279,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
             {
                 Nombre = entidad.Nombre,
                 entidad.Descripcion,
-                entidad.idGenero
+                entidad.IdGenero
             }, cancellationToken: cancellationToken));
         stopwatch.Stop();
         
@@ -316,7 +316,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
     public async Task<bool> ExisteAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Genero WHERE idGenero = @id";
+        var sql = "SELECT COUNT(1) FROM Genero WHERE IdGenero = @id";
         
         LogQuery("ExisteAsync", sql, new { id });
         
@@ -344,7 +344,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         LogExecutionTime("BuscarTextoAsync", stopwatch.Elapsed);
         return result;
     }
-    public async Task<IEnumerable<Genero>> ObtenerPaginadoAsync(int pagina, int tamañoPagina, string ordenarPor = "idGenero", CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Genero>> ObtenerPaginadoAsync(int pagina, int tamañoPagina, string ordenarPor = "IdGenero", CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         var offset = (pagina - 1) * tamañoPagina;
@@ -368,7 +368,7 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         const string sql = @"
             SELECT g.*, c.*
             FROM Genero g
-            LEFT JOIN Cancion c ON g.idGenero = c.idGenero";
+            LEFT JOIN Cancion c ON g.IdGenero = c.IdGenero";
         LogQuery("ObtenerConRelacionesAsync", sql);
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -378,11 +378,11 @@ public class RepoGenero : RepoGenerico, IRepoGenero
             new CommandDefinition(sql, cancellationToken: CancellationToken.None),
             (genero, cancion) =>
             {
-                if (!generos.TryGetValue(genero.idGenero, out var generoEntry))
+                if (!generos.TryGetValue(genero.IdGenero, out var generoEntry))
                 {
                     generoEntry = genero;
                     generoEntry.Canciones = new List<Cancion>();
-                    generos.Add(generoEntry.idGenero, generoEntry);
+                    generos.Add(generoEntry.IdGenero, generoEntry);
                 }
                 
                 if (cancion != null)
@@ -404,8 +404,8 @@ public class RepoGenero : RepoGenerico, IRepoGenero
         using var connection = CreateConnection();
         var sql = @"SELECT g.*, COUNT(c.idCancion) as TotalCanciones
                    FROM Genero g
-                   LEFT JOIN Cancion c ON g.idGenero = c.idGenero
-                   GROUP BY g.idGenero
+                   LEFT JOIN Cancion c ON g.IdGenero = c.IdGenero
+                   GROUP BY g.IdGenero
                    ORDER BY TotalCanciones DESC";
 
         LogQuery("ObtenerGenerosPopularesAsync", sql);

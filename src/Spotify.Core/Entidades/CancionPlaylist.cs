@@ -4,9 +4,9 @@ namespace Spotify.Core.Entidades;
 
 public class CancionPlaylist
 {
-    public int IdCancion { get; set; }
-    public int IdPlaylist { get; set; }
-    public int Orden { get; set; }
+    public uint IdCancion { get; set; }
+    public uint IdPlaylist { get; set; }
+    public uint Orden { get; set; }
     public DateTime FechaAgregado { get; set; }
 
     // Propiedades de navegación

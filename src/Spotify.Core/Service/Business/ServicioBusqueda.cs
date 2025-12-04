@@ -53,7 +53,7 @@ public class ServicioBusqueda : IServicioBusqueda
                 // Ejecutar búsquedas en paralelo para mejor rendimiento
                 var cancionesTask = _repoCancion.BuscarTextoAsync(termino, c => c.Titulo);
                 var albumesTask = _repoAlbum.BuscarTextoAsync(termino, a => a.Titulo);
-                var artistasTask = _repoArtista.BuscarTextoAsync(termino, a => a.NombreArtistico, a => a.Nombre, a => a.Apellido);
+                var artistasTask = _repoArtista.BuscarTextoAsync(termino, a => a.NombreArtistico, a => a.NombreReal, a => a.ApellidoReal);
                 var playlistsTask = _repoPlaylist.BuscarTextoAsync(termino, p => p.Nombre);
                 var generosTask = _repoGenero.BuscarTextoAsync(termino, g => g.Nombre);
 
@@ -94,8 +94,8 @@ public class ServicioBusqueda : IServicioBusqueda
             // Esta es una implementación simplificada
             var canciones = await _repoCancion.BuscarAsync(c => 
                 (string.IsNullOrEmpty(filtro.Termino) || c.Titulo.Contains(filtro.Termino)) &&
-                (!filtro.IdGenero.HasValue || c.Genero.idGenero == filtro.IdGenero.Value) &&
-                (!filtro.IdArtista.HasValue || c.Artista.idArtista == filtro.IdArtista.Value),
+                (!filtro.IdGenero.HasValue || c.Genero.IdGenero == filtro.IdGenero.Value) &&
+                (!filtro.IdArtista.HasValue || c.Artista.IdArtista == filtro.IdArtista.Value),
                 cancellationToken);
 
             var resultado = new ResultadoBusqueda
@@ -103,7 +103,7 @@ public class ServicioBusqueda : IServicioBusqueda
                 Canciones = canciones.Take(filtro.TamañoPagina),
                 Albumes = new List<Album>(),
                 Artistas = new List<Artista>(),
-                Playlists = new List<PlayList>(),
+                Playlists = new List<Playlist>(),
                 Generos = new List<Genero>()
             };
 
@@ -132,7 +132,7 @@ public class ServicioBusqueda : IServicioBusqueda
             parameters.Add("termino", $"%{filtro.Termino}%");
         
         if (filtro.IdGenero.HasValue)
-            parameters.Add("idGenero", filtro.IdGenero.Value);
+            parameters.Add("IdGenero", filtro.IdGenero.Value);
         
         // Agregar más parámetros según necesidad
         

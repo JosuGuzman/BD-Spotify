@@ -2,7 +2,7 @@ namespace Spotify.Core.Entidades;
 
 public class Artista
 {
-    public int IdArtista { get; set; }
+    public uint IdArtista { get; set; }
     public string NombreArtistico { get; set; }
     public string? NombreReal { get; set; }
     public string? ApellidoReal { get; set; }

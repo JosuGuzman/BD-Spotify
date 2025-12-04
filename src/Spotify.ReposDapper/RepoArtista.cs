@@ -8,7 +8,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
     public Artista? ObtenerPorId(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT * FROM Artista WHERE idArtista = @id";
+        var sql = "SELECT * FROM Artista WHERE IdArtista = @id";
         LogQuery("ObtenerPorId", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -45,15 +45,15 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var parameters = CreateParameters();
         parameters.Add("unNombreArtistico", entidad.NombreArtistico);
-        parameters.Add("unNombre", entidad.Nombre);
-        parameters.Add("unApellido", entidad.Apellido);
+        parameters.Add("unNombre", entidad.NombreReal);
+        parameters.Add("unApellido", entidad.ApellidoReal);
         parameters.Add("unidArtista", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
         LogQuery("Insertar", "altaArtista", parameters);
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         connection.Execute("altaArtista", parameters, commandType: CommandType.StoredProcedure);
-        entidad.idArtista = parameters.Get<uint>("unidArtista");
+        entidad.IdArtista = parameters.Get<uint>("unidArtista");
         stopwatch.Stop();
         
         LogExecutionTime("Insertar", stopwatch.Elapsed);
@@ -64,9 +64,9 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"UPDATE Artista 
                        SET NombreArtistico = @NombreArtistico, 
-                           Nombre = @Nombre, 
-                           Apellido = @Apellido 
-                       WHERE idArtista = @idArtista";
+                           NombreReal = @NombreReal, 
+                           ApellidoReal = @ApellidoReal 
+                       WHERE IdArtista = @IdArtista";
         
         LogQuery("Actualizar", sql, entidad);
         
@@ -92,7 +92,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
 
     public void Eliminar(Artista entidad)
     {
-        Eliminar(entidad.idArtista);
+        Eliminar(entidad.IdArtista);
     }
 
     public int Contar()
@@ -113,7 +113,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
     public bool Existe(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Artista WHERE idArtista = @id";
+        var sql = "SELECT COUNT(1) FROM Artista WHERE IdArtista = @id";
         
         LogQuery("Existe", sql, new { id });
         
@@ -131,8 +131,8 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"SELECT * FROM Artista 
                        WHERE NombreArtistico LIKE @termino 
-                          OR Nombre LIKE @termino 
-                          OR Apellido LIKE @termino";
+                          OR NombreReal LIKE @termino 
+                          OR ApellidoReal LIKE @termino";
         
         LogQuery("BuscarTexto", sql, new { termino = $"%{termino}%" });
         
@@ -144,7 +144,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         return result;
     }
 
-    public IEnumerable<Artista> ObtenerPaginado(int pagina, int tamañoPagina, string ordenarPor = "idArtista")
+    public IEnumerable<Artista> ObtenerPaginado(int pagina, int tamañoPagina, string ordenarPor = "IdArtista")
     {
         using var connection = CreateConnection();
         var offset = (pagina - 1) * tamañoPagina;
@@ -166,7 +166,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"SELECT a.*, al.* 
                        FROM Artista a 
-                       LEFT JOIN Album al ON a.idArtista = al.idArtista";
+                       LEFT JOIN Album al ON a.IdArtista = al.IdArtista";
         
         LogQuery("ObtenerConRelaciones", sql);
         
@@ -176,11 +176,11 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         var result = connection.Query<Artista, Album, Artista>(sql, 
             (artista, album) => 
             {
-                if (!artistas.TryGetValue(artista.idArtista, out var artistaEntry))
+                if (!artistas.TryGetValue(artista.IdArtista, out var artistaEntry))
                 {
                     artistaEntry = artista;
                     artistaEntry.Albumes = new List<Album>();
-                    artistas.Add(artistaEntry.idArtista, artistaEntry);
+                    artistas.Add(artistaEntry.IdArtista, artistaEntry);
                 }
                 
                 if (album != null)
@@ -203,9 +203,9 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"SELECT a.*, COUNT(r.idHistorial) as TotalReproducciones
                        FROM Artista a
-                       JOIN Cancion c ON a.idArtista = c.idArtista
+                       JOIN Cancion c ON a.IdArtista = c.IdArtista
                        JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                       GROUP BY a.idArtista
+                       GROUP BY a.IdArtista
                        ORDER BY TotalReproducciones DESC
                        LIMIT @limite";
         
@@ -242,7 +242,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
     public async Task<Artista?> ObtenerPorIdAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT * FROM Artista WHERE idArtista = @id";
+        var sql = "SELECT * FROM Artista WHERE IdArtista = @id";
         LogQuery("ObtenerPorIdAsync", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -279,8 +279,8 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var parameters = CreateParameters();
         parameters.Add("unNombreArtistico", entidad.NombreArtistico);
-        parameters.Add("unNombre", entidad.Nombre);
-        parameters.Add("unApellido", entidad.Apellido);
+        parameters.Add("unNombre", entidad.NombreReal);
+        parameters.Add("unApellido", entidad.ApellidoReal);
         parameters.Add("unidArtista", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
         LogQuery("InsertarAsync", "altaArtista", parameters);
@@ -289,7 +289,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         await connection.ExecuteAsync(
             new CommandDefinition("altaArtista", parameters, 
                 commandType: CommandType.StoredProcedure, cancellationToken: cancellationToken));
-        entidad.idArtista = parameters.Get<uint>("unidArtista");
+        entidad.IdArtista = parameters.Get<uint>("unidArtista");
         stopwatch.Stop();
         
         LogExecutionTime("InsertarAsync", stopwatch.Elapsed);
@@ -300,9 +300,9 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"UPDATE Artista 
                        SET NombreArtistico = @NombreArtistico, 
-                           Nombre = @Nombre, 
-                           Apellido = @Apellido 
-                       WHERE idArtista = @idArtista";
+                           NombreReal = @NombreReal, 
+                           ApellidoReal = @ApellidoReal 
+                       WHERE IdArtista = @IdArtista";
         
         LogQuery("ActualizarAsync", sql, entidad);
         
@@ -347,7 +347,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
     public async Task<bool> ExisteAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Artista WHERE idArtista = @id";
+        var sql = "SELECT COUNT(1) FROM Artista WHERE IdArtista = @id";
         
         LogQuery("ExisteAsync", sql, new { id });
         
@@ -365,8 +365,8 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"SELECT * FROM Artista 
                        WHERE NombreArtistico LIKE @termino 
-                          OR Nombre LIKE @termino 
-                          OR Apellido LIKE @termino";
+                          OR NombreReal LIKE @termino 
+                          OR ApellidoReal LIKE @termino";
         
         LogQuery("BuscarTextoAsync", sql, new { termino = $"%{termino}%" });
         
@@ -380,7 +380,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         return result;
     }
 
-    public async Task<IEnumerable<Artista>> ObtenerPaginadoAsync(int pagina, int tamañoPagina, string ordenarPor = "idArtista", CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Artista>> ObtenerPaginadoAsync(int pagina, int tamañoPagina, string ordenarPor = "IdArtista", CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         var offset = (pagina - 1) * tamañoPagina;
@@ -403,7 +403,7 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"SELECT a.*, al.* 
                        FROM Artista a 
-                       LEFT JOIN Album al ON a.idArtista = al.idArtista";
+                       LEFT JOIN Album al ON a.IdArtista = al.IdArtista";
         
         LogQuery("ObtenerConRelacionesAsync", sql);
         
@@ -414,11 +414,11 @@ public class RepoArtista : RepoGenerico, IRepoArtista
             new CommandDefinition(sql, cancellationToken: CancellationToken.None),
             (artista, album) => 
             {
-                if (!artistas.TryGetValue(artista.idArtista, out var artistaEntry))
+                if (!artistas.TryGetValue(artista.IdArtista, out var artistaEntry))
                 {
                     artistaEntry = artista;
                     artistaEntry.Albumes = new List<Album>();
-                    artistas.Add(artistaEntry.idArtista, artistaEntry);
+                    artistas.Add(artistaEntry.IdArtista, artistaEntry);
                 }
                 
                 if (album != null)
@@ -440,9 +440,9 @@ public class RepoArtista : RepoGenerico, IRepoArtista
         using var connection = CreateConnection();
         var sql = @"SELECT a.*, COUNT(r.idHistorial) as TotalReproducciones
                        FROM Artista a
-                       JOIN Cancion c ON a.idArtista = c.idArtista
+                       JOIN Cancion c ON a.IdArtista = c.IdArtista
                        JOIN HistorialReproduccion r ON c.idCancion = r.idCancion
-                       GROUP BY a.idArtista
+                       GROUP BY a.IdArtista
                        ORDER BY TotalReproducciones DESC
                        LIMIT @limite";
         

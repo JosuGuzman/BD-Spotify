@@ -11,8 +11,8 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         const string sql = @"
             SELECT u.*, n.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
-            WHERE u.idUsuario = @id";
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
+            WHERE u.IdUsuario = @id";
         LogQuery("ObtenerPorId", sql, new { id });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
@@ -21,7 +21,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             {
                 usuario.Nacionalidad = nacionalidad;
                 return usuario;
-            }, new { id }, splitOn: "idNacionalidad").FirstOrDefault();
+            }, new { id }, splitOn: "IdNacionalidad").FirstOrDefault();
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerPorId", stopwatch.Elapsed);
@@ -54,14 +54,14 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         parameters.Add("unNombreUsuario", entidad.NombreUsuario);
         parameters.Add("unEmail", entidad.Email);
         parameters.Add("unaContrasenia", entidad.Contrasenia);
-        parameters.Add("unidNacionalidad", entidad.Nacionalidad.idNacionalidad);
+        parameters.Add("unidNacionalidad", entidad.Nacionalidad.IdNacionalidad);
         parameters.Add("unidUsuario", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
         LogQuery("Insertar", "altaUsuario", parameters);
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         connection.Execute("altaUsuario", parameters, commandType: CommandType.StoredProcedure);
-        entidad.idUsuario = parameters.Get<uint>("unidUsuario");
+        entidad.IdUsuario = parameters.Get<uint>("unidUsuario");
         stopwatch.Stop();
         
         LogExecutionTime("Insertar", stopwatch.Elapsed);
@@ -74,8 +74,8 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                    SET NombreUsuario = @NombreUsuario,
                        Email = @Email,
                        Contrasenia = @Contrasenia,
-                       idNacionalidad = @idNacionalidad
-                   WHERE idUsuario = @idUsuario";
+                       IdNacionalidad = @IdNacionalidad
+                   WHERE IdUsuario = @IdUsuario";
         
         LogQuery("Actualizar", sql, entidad);
         
@@ -85,8 +85,8 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             entidad.NombreUsuario,
             entidad.Email,
             entidad.Contrasenia,
-            idNacionalidad = entidad.Nacionalidad.idNacionalidad,
-            entidad.idUsuario
+            IdNacionalidad = entidad.Nacionalidad.IdNacionalidad,
+            entidad.IdUsuario
         });
         stopwatch.Stop();
         
@@ -96,7 +96,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     public void Eliminar(object id)
     {
         using var connection = CreateConnection();
-        var sql = "DELETE FROM Usuario WHERE idUsuario = @id";
+        var sql = "DELETE FROM Usuario WHERE IdUsuario = @id";
         
         LogQuery("Eliminar", sql, new { id });
         
@@ -109,7 +109,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
 
     public void Eliminar(Usuario entidad)
     {
-        Eliminar(entidad.idUsuario);
+        Eliminar(entidad.IdUsuario);
     }
     
     public int Contar()
@@ -130,7 +130,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     public bool Existe(object id)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Usuario WHERE idUsuario = @id";
+        var sql = "SELECT COUNT(1) FROM Usuario WHERE IdUsuario = @id";
         
         LogQuery("Existe", sql, new { id });
         
@@ -148,7 +148,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         const string sql = @"
             SELECT u.*, n.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
             WHERE u.Email = @email";
 
         LogQuery("ObtenerPorEmail", sql, new { email });
@@ -159,7 +159,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             {
                 usuario.Nacionalidad = nacionalidad;
                 return usuario;
-            }, new { email }, splitOn: "idNacionalidad").FirstOrDefault();
+            }, new { email }, splitOn: "IdNacionalidad").FirstOrDefault();
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerPorEmail", stopwatch.Elapsed);
@@ -172,7 +172,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         const string sql = @"
             SELECT u.*, n.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
             WHERE u.NombreUsuario = @nombreUsuario";
 
         LogQuery("ObtenerPorNombreUsuario", sql, new { nombreUsuario });
@@ -183,37 +183,37 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             {
                 usuario.Nacionalidad = nacionalidad;
                 return usuario;
-            }, new { nombreUsuario }, splitOn: "idNacionalidad").FirstOrDefault();
+            }, new { nombreUsuario }, splitOn: "IdNacionalidad").FirstOrDefault();
         stopwatch.Stop();
         
         LogExecutionTime("ObtenerPorNombreUsuario", stopwatch.Elapsed);
         return result;
     }
 
-    public Usuario? ObtenerConPlaylists(uint idUsuario)
+    public Usuario? ObtenerConPlaylists(uint IdUsuario)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT u.*, n.*, p.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
-            LEFT JOIN Playlist p ON u.idUsuario = p.idUsuario
-            WHERE u.idUsuario = @idUsuario";
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
+            LEFT JOIN Playlist p ON u.IdUsuario = p.IdUsuario
+            WHERE u.IdUsuario = @IdUsuario";
 
-        LogQuery("ObtenerConPlaylists", sql, new { idUsuario });
+        LogQuery("ObtenerConPlaylists", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         
         var usuarios = new Dictionary<uint, Usuario>();
-        var result = connection.Query<Usuario, Nacionalidad, PlayList, Usuario>(sql,
+        var result = connection.Query<Usuario, Nacionalidad, Playlist, Usuario>(sql,
             (usuario, nacionalidad, playlist) =>
             {
-                if (!usuarios.TryGetValue(usuario.idUsuario, out var usuarioEntry))
+                if (!usuarios.TryGetValue(usuario.IdUsuario, out var usuarioEntry))
                 {
                     usuarioEntry = usuario;
                     usuarioEntry.Nacionalidad = nacionalidad;
-                    usuarioEntry.Playlists = new List<PlayList>();
-                    usuarios.Add(usuarioEntry.idUsuario, usuarioEntry);
+                    usuarioEntry.Playlists = new List<Playlist>();
+                    usuarios.Add(usuarioEntry.IdUsuario, usuarioEntry);
                 }
                 
                 if (playlist != null)
@@ -222,7 +222,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                 }
                 
                 return usuarioEntry;
-            }, new { idUsuario }, splitOn: "idNacionalidad,idPlaylist");
+            }, new { IdUsuario }, splitOn: "IdNacionalidad,idPlaylist");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerConPlaylists", stopwatch.Elapsed);
@@ -230,31 +230,31 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         return usuarios.Values.FirstOrDefault();
     }
 
-    public Usuario? ObtenerConSuscripciones(uint idUsuario)
+    public Usuario? ObtenerConSuscripciones(uint IdUsuario)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT u.*, n.*, r.*, ts.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
-            LEFT JOIN Suscripcion r ON u.idUsuario = r.idUsuario
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
+            LEFT JOIN Suscripcion r ON u.IdUsuario = r.IdUsuario
             LEFT JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
-            WHERE u.idUsuario = @idUsuario";
+            WHERE u.IdUsuario = @IdUsuario";
 
-        LogQuery("ObtenerConSuscripciones", sql, new { idUsuario });
+        LogQuery("ObtenerConSuscripciones", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         
         var usuarios = new Dictionary<uint, Usuario>();
-        var result = connection.Query<Usuario, Nacionalidad, Registro, TipoSuscripcion, Usuario>(sql,
+        var result = connection.Query<Usuario, Nacionalidad, Suscripcion, TipoSuscripcion, Usuario>(sql,
             (usuario, nacionalidad, registro, tipoSuscripcion) =>
             {
-                if (!usuarios.TryGetValue(usuario.idUsuario, out var usuarioEntry))
+                if (!usuarios.TryGetValue(usuario.IdUsuario, out var usuarioEntry))
                 {
                     usuarioEntry = usuario;
                     usuarioEntry.Nacionalidad = nacionalidad;
-                    usuarioEntry.Suscripciones = new List<Registro>();
-                    usuarios.Add(usuarioEntry.idUsuario, usuarioEntry);
+                    usuarioEntry.Suscripciones = new List<Suscripcion>();
+                    usuarios.Add(usuarioEntry.IdUsuario, usuarioEntry);
                 }
                 
                 if (registro != null)
@@ -264,7 +264,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                 }
                 
                 return usuarioEntry;
-            }, new { idUsuario }, splitOn: "idNacionalidad,idSuscripcion,idTipoSuscripcion");
+            }, new { IdUsuario }, splitOn: "IdNacionalidad,idSuscripcion,idTipoSuscripcion");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerConSuscripciones", stopwatch.Elapsed);
@@ -287,15 +287,15 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         return result;
     }
 
-    public bool CambiarContraseña(uint idUsuario, string nuevaContraseña)
+    public bool CambiarContraseña(uint IdUsuario, string nuevaContraseña)
     {
         using var connection = CreateConnection();
-        var sql = "UPDATE Usuario SET Contrasenia = SHA2(@nuevaContraseña, 256) WHERE idUsuario = @idUsuario";
+        var sql = "UPDATE Usuario SET Contrasenia = SHA2(@nuevaContraseña, 256) WHERE IdUsuario = @IdUsuario";
         
-        LogQuery("CambiarContraseña", sql, new { idUsuario, nuevaContraseña });
+        LogQuery("CambiarContraseña", sql, new { IdUsuario, nuevaContraseña });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-        var result = connection.Execute(sql, new { idUsuario, nuevaContraseña });
+        var result = connection.Execute(sql, new { IdUsuario, nuevaContraseña });
         stopwatch.Stop();
         
         LogExecutionTime("CambiarContraseña", stopwatch.Elapsed);
@@ -308,8 +308,8 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         const string sql = @"
             SELECT u.*, n.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
-            WHERE u.idUsuario = @id";
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
+            WHERE u.IdUsuario = @id";
 
         LogQuery("ObtenerPorIdAsync", sql, new { id });
         
@@ -320,7 +320,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             {
                 usuario.Nacionalidad = nacionalidad;
                 return usuario;
-            }, splitOn: "idNacionalidad");
+            }, splitOn: "IdNacionalidad");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorIdAsync", stopwatch.Elapsed);
@@ -355,7 +355,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         parameters.Add("unNombreUsuario", entidad.NombreUsuario);
         parameters.Add("unEmail", entidad.Email);
         parameters.Add("unaContrasenia", entidad.Contrasenia);
-        parameters.Add("unidNacionalidad", entidad.Nacionalidad.idNacionalidad);
+        parameters.Add("unidNacionalidad", entidad.Nacionalidad.IdNacionalidad);
         parameters.Add("unidUsuario", dbType: DbType.UInt32, direction: ParameterDirection.Output);
 
         LogQuery("InsertarAsync", "altaUsuario", parameters);
@@ -364,7 +364,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         await connection.ExecuteAsync(
             new CommandDefinition("altaUsuario", parameters, 
                 commandType: CommandType.StoredProcedure, cancellationToken: cancellationToken));
-        entidad.idUsuario = parameters.Get<uint>("unidUsuario");
+        entidad.IdUsuario = parameters.Get<uint>("unidUsuario");
         stopwatch.Stop();
         
         LogExecutionTime("InsertarAsync", stopwatch.Elapsed);
@@ -377,8 +377,8 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                    SET NombreUsuario = @NombreUsuario,
                        Email = @Email,
                        Contrasenia = @Contrasenia,
-                       idNacionalidad = @idNacionalidad
-                   WHERE idUsuario = @idUsuario";
+                       IdNacionalidad = @IdNacionalidad
+                   WHERE IdUsuario = @IdUsuario";
         
         LogQuery("ActualizarAsync", sql, entidad);
         
@@ -389,8 +389,8 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                 entidad.NombreUsuario,
                 entidad.Email,
                 entidad.Contrasenia,
-                idNacionalidad = entidad.Nacionalidad.idNacionalidad,
-                entidad.idUsuario
+                IdNacionalidad = entidad.Nacionalidad.IdNacionalidad,
+                entidad.IdUsuario
             }, cancellationToken: cancellationToken));
         stopwatch.Stop();
         
@@ -400,7 +400,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     public async Task EliminarAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "DELETE FROM Usuario WHERE idUsuario = @id";
+        var sql = "DELETE FROM Usuario WHERE IdUsuario = @id";
         
         LogQuery("EliminarAsync", sql, new { id });
         
@@ -431,7 +431,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
     public async Task<bool> ExisteAsync(object id, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "SELECT COUNT(1) FROM Usuario WHERE idUsuario = @id";
+        var sql = "SELECT COUNT(1) FROM Usuario WHERE IdUsuario = @id";
         
         LogQuery("ExisteAsync", sql, new { id });
         
@@ -450,7 +450,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         const string sql = @"
             SELECT u.*, n.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
             WHERE u.Email = @email";
 
         LogQuery("ObtenerPorEmailAsync", sql, new { email });
@@ -462,7 +462,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             {
                 usuario.Nacionalidad = nacionalidad;
                 return usuario;
-            }, splitOn: "idNacionalidad");
+            }, splitOn: "IdNacionalidad");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorEmailAsync", stopwatch.Elapsed);
@@ -476,7 +476,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         const string sql = @"
             SELECT u.*, n.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
             WHERE u.NombreUsuario = @nombreUsuario";
 
         LogQuery("ObtenerPorNombreUsuarioAsync", sql, new { nombreUsuario });
@@ -488,7 +488,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
             {
                 usuario.Nacionalidad = nacionalidad;
                 return usuario;
-            }, splitOn: "idNacionalidad");
+            }, splitOn: "IdNacionalidad");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerPorNombreUsuarioAsync", stopwatch.Elapsed);
@@ -496,31 +496,31 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         return result.FirstOrDefault();
     }
 
-    public async Task<Usuario?> ObtenerConPlaylistsAsync(uint idUsuario, CancellationToken cancellationToken = default)
+    public async Task<Usuario?> ObtenerConPlaylistsAsync(uint IdUsuario, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT u.*, n.*, p.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
-            LEFT JOIN Playlist p ON u.idUsuario = p.idUsuario
-            WHERE u.idUsuario = @idUsuario";
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
+            LEFT JOIN Playlist p ON u.IdUsuario = p.IdUsuario
+            WHERE u.IdUsuario = @IdUsuario";
 
-        LogQuery("ObtenerConPlaylistsAsync", sql, new { idUsuario });
+        LogQuery("ObtenerConPlaylistsAsync", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         
         var usuarios = new Dictionary<uint, Usuario>();
-        var result = await connection.QueryAsync<Usuario, Nacionalidad, PlayList, Usuario>(
-            new CommandDefinition(sql, new { idUsuario }, cancellationToken: cancellationToken),
+        var result = await connection.QueryAsync<Usuario, Nacionalidad, Playlist, Usuario>(
+            new CommandDefinition(sql, new { IdUsuario }, cancellationToken: cancellationToken),
             (usuario, nacionalidad, playlist) =>
             {
-                if (!usuarios.TryGetValue(usuario.idUsuario, out var usuarioEntry))
+                if (!usuarios.TryGetValue(usuario.IdUsuario, out var usuarioEntry))
                 {
                     usuarioEntry = usuario;
                     usuarioEntry.Nacionalidad = nacionalidad;
-                    usuarioEntry.Playlists = new List<PlayList>();
-                    usuarios.Add(usuarioEntry.idUsuario, usuarioEntry);
+                    usuarioEntry.Playlists = new List<Playlist>();
+                    usuarios.Add(usuarioEntry.IdUsuario, usuarioEntry);
                 }
                 
                 if (playlist != null)
@@ -529,7 +529,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                 }
                 
                 return usuarioEntry;
-            }, splitOn: "idNacionalidad,idPlaylist");
+            }, splitOn: "IdNacionalidad,idPlaylist");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerConPlaylistsAsync", stopwatch.Elapsed);
@@ -537,32 +537,32 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         return usuarios.Values.FirstOrDefault();
     }
 
-    public async Task<Usuario?> ObtenerConSuscripcionesAsync(uint idUsuario, CancellationToken cancellationToken = default)
+    public async Task<Usuario?> ObtenerConSuscripcionesAsync(uint IdUsuario, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
         const string sql = @"
             SELECT u.*, n.*, r.*, ts.*
             FROM Usuario u
-            JOIN Nacionalidad n ON u.idNacionalidad = n.idNacionalidad
-            LEFT JOIN Suscripcion r ON u.idUsuario = r.idUsuario
+            JOIN Nacionalidad n ON u.IdNacionalidad = n.IdNacionalidad
+            LEFT JOIN Suscripcion r ON u.IdUsuario = r.IdUsuario
             LEFT JOIN TipoSuscripcion ts ON r.idTipoSuscripcion = ts.idTipoSuscripcion
-            WHERE u.idUsuario = @idUsuario";
+            WHERE u.IdUsuario = @IdUsuario";
             
-        LogQuery("ObtenerConSuscripcionesAsync", sql, new { idUsuario });
+        LogQuery("ObtenerConSuscripcionesAsync", sql, new { IdUsuario });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         
         var usuarios = new Dictionary<uint, Usuario>();
-        var result = await connection.QueryAsync<Usuario, Nacionalidad, Registro, TipoSuscripcion, Usuario>(
-            new CommandDefinition(sql, new { idUsuario }, cancellationToken: cancellationToken),
+        var result = await connection.QueryAsync<Usuario, Nacionalidad, Suscripcion, TipoSuscripcion, Usuario>(
+            new CommandDefinition(sql, new { IdUsuario }, cancellationToken: cancellationToken),
             (usuario, nacionalidad, registro, tipoSuscripcion) =>
             {
-                if (!usuarios.TryGetValue(usuario.idUsuario, out var usuarioEntry))
+                if (!usuarios.TryGetValue(usuario.IdUsuario, out var usuarioEntry))
                 {
                     usuarioEntry = usuario;
                     usuarioEntry.Nacionalidad = nacionalidad;
-                    usuarioEntry.Suscripciones = new List<Registro>();
-                    usuarios.Add(usuarioEntry.idUsuario, usuarioEntry);
+                    usuarioEntry.Suscripciones = new List<Suscripcion>();
+                    usuarios.Add(usuarioEntry.IdUsuario, usuarioEntry);
                 }
                 
                 if (registro != null)
@@ -572,7 +572,7 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
                 }
                 
                 return usuarioEntry;
-            }, splitOn: "idNacionalidad,idSuscripcion,idTipoSuscripcion");
+            }, splitOn: "IdNacionalidad,idSuscripcion,idTipoSuscripcion");
         
         stopwatch.Stop();
         LogExecutionTime("ObtenerConSuscripcionesAsync", stopwatch.Elapsed);
@@ -596,16 +596,16 @@ public class RepoUsuario : RepoGenerico, IRepoUsuario
         return result;
     }
 
-    public async Task<bool> CambiarContraseñaAsync(uint idUsuario, string nuevaContraseña, CancellationToken cancellationToken = default)
+    public async Task<bool> CambiarContraseñaAsync(uint IdUsuario, string nuevaContraseña, CancellationToken cancellationToken = default)
     {
         using var connection = CreateConnection();
-        var sql = "UPDATE Usuario SET Contrasenia = SHA2(@nuevaContraseña, 256) WHERE idUsuario = @idUsuario";
+        var sql = "UPDATE Usuario SET Contrasenia = SHA2(@nuevaContraseña, 256) WHERE IdUsuario = @IdUsuario";
         
-        LogQuery("CambiarContraseñaAsync", sql, new { idUsuario, nuevaContraseña });
+        LogQuery("CambiarContraseñaAsync", sql, new { IdUsuario, nuevaContraseña });
         
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
         var result = await connection.ExecuteAsync(
-            new CommandDefinition(sql, new { idUsuario, nuevaContraseña }, cancellationToken: cancellationToken));
+            new CommandDefinition(sql, new { IdUsuario, nuevaContraseña }, cancellationToken: cancellationToken));
         stopwatch.Stop();
         
         LogExecutionTime("CambiarContraseñaAsync", stopwatch.Elapsed);
