@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Spotify</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    
+    <!-- Estilos admin -->
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar administrativo -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-dark sidebar-admin">
+                <div class="position-sticky pt-3">
+                    <!-- Logo -->
+                    <div class="text-center mb-4">
+                        <i class="fab fa-spotify text-success" style="font-size: 2rem;"></i>
+                        <h6 class="text-white mt-2">Panel de Control</h6>
+                    </div>
+                    
+                    <!-- Menú -->
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "active" : "")" 
+                               asp-controller="Admin" asp-action="Dashboard">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "Users" ? "active" : "")" 
+                               asp-controller="Admin" asp-action="Users">
+                                <i class="fas fa-users me-2"></i>Usuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Artist" ? "active" : "")" 
+                               asp-controller="Artist" asp-action="Index">
+                                <i class="fas fa-user-tie me-2"></i>Artistas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Album" ? "active" : "")" 
+                               asp-controller="Album" asp-action="Index">
+                                <i class="fas fa-compact-disc me-2"></i>Álbumes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Song" ? "active" : "")" 
+                               asp-controller="Song" asp-action="Index">
+                                <i class="fas fa-music me-2"></i>Canciones
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Genre" ? "active" : "")" 
+                               asp-controller="Genre" asp-action="Index">
+                                <i class="fas fa-tags me-2"></i>Géneros
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Nationality" ? "active" : "")" 
+                               asp-controller="Nationality" asp-action="Index">
+                                <i class="fas fa-flag me-2"></i>Nacionalidades
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Subscription" ? "active" : "")" 
+                               asp-controller="Subscription" asp-action="Index">
+                                <i class="fas fa-credit-card me-2"></i>Suscripciones
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "Statistics" ? "active" : "")" 
+                               asp-controller="Admin" asp-action="Statistics">
+                                <i class="fas fa-chart-bar me-2"></i>Estadísticas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white @(ViewContext.RouteData.Values["controller"]?.ToString() == "Admin" && ViewContext.RouteData.Values["action"]?.ToString() == "SystemLogs" ? "active" : "")" 
+                               asp-controller="Admin" asp-action="SystemLogs">
+                                <i class="fas fa-clipboard-list me-2"></i>Logs del Sistema
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Volver a Spotify -->
+                    <div class="mt-5 pt-5 border-top border-secondary">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-success w-100">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a Spotify
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- Contenido principal -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/js/admin.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

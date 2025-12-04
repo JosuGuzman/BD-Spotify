@@ -1,0 +1,456 @@
+@model ProfileModel
+
+@{
+    ViewData["Title"] = "Mi Perfil";
+    Layout = "_Layout";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Sidebar de perfil -->
+        <div class="col-lg-3 mb-4">
+            <div class="card bg-dark border-0 shadow">
+                <div class="card-body text-center">
+                    <!-- Avatar -->
+                    <div class="avatar-container mb-4">
+                        <img src="@(Model.FotoPerfilUrl ?? "/images/avatar-default.png")" 
+                             alt="Foto de perfil" 
+                             class="rounded-circle border border-success" 
+                             id="profile-avatar"
+                             width="150" height="150">
+                        <button class="btn-avatar-edit" data-bs-toggle="modal" data-bs-target="#avatarModal">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Información básica -->
+                    <h4 class="text-white">@Model.NombreUsuario</h4>
+                    <p class="text-secondary">@Model.Email</p>
+                    
+                    <!-- Estadísticas -->
+                    <div class="stats mt-4">
+                        <div class="stat-item mb-3">
+                            <div class="stat-value text-success">0</div>
+                            <div class="stat-label text-secondary">Playlists</div>
+                        </div>
+                        <div class="stat-item mb-3">
+                            <div class="stat-value text-success">0</div>
+                            <div class="stat-label text-secondary">Seguidores</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value text-success">0</div>
+                            <div class="stat-label text-secondary">Siguiendo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div class="col-lg-9">
+            <!-- Información del perfil -->
+            <div class="card bg-dark border-0 shadow mb-4">
+                <div class="card-header bg-transparent border-secondary">
+                    <h5 class="text-white mb-0"><i class="fas fa-user-edit me-2"></i>Información del perfil</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data" id="profileForm">
+                        <input type="hidden" asp-for="IdUsuario" />
+                        
+                        <!-- Nombre de usuario -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="NombreUsuario" class="form-label text-white">
+                                    <i class="fas fa-user me-2"></i>Nombre de usuario
+                                </label>
+                                <input asp-for="NombreUsuario" class="form-control bg-black border-secondary text-white">
+                                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Email (solo lectura) -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label text-white">
+                                    <i class="fas fa-envelope me-2"></i>Email
+                                </label>
+                                <input type="email" class="form-control bg-black border-secondary text-white" 
+                                       value="@Model.Email" readonly>
+                                <small class="text-secondary">El email no se puede cambiar</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Nacionalidad -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="IdNacionalidad" class="form-label text-white">
+                                    <i class="fas fa-globe-americas me-2"></i>Nacionalidad
+                                </label>
+                                <select asp-for="IdNacionalidad" 
+                                        asp-items="@(new SelectList(Model.Nacionalidades, "IdNacionalidad", "Pais"))"
+                                        class="form-select bg-black border-secondary text-white">
+                                    <option value="">Selecciona tu país</option>
+                                </select>
+                                <span asp-validation-for="IdNacionalidad" class="text-danger"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Foto de perfil (input oculto) -->
+                        <input type="file" asp-for="FotoPerfil" class="d-none" id="fotoPerfilInput" 
+                               accept="image/*">
+                        
+                        <!-- Botones -->
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-2"></i>Guardar cambios
+                            </button>
+                            <a href="#" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Playlists del usuario -->
+            <div class="card bg-dark border-0 shadow">
+                <div class="card-header bg-transparent border-secondary">
+                    <h5 class="text-white mb-0"><i class="fas fa-list me-2"></i>Mis playlists</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row" id="user-playlists-container">
+                        <!-- Se cargarán dinámicamente -->
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-music text-secondary" style="font-size: 3rem;"></i>
+                            <p class="text-secondary mt-3">Aún no tienes playlists</p>
+                            <a href="@Url.Action("Create", "Playlist")" class="btn btn-success">
+                                <i class="fas fa-plus me-2"></i>Crear primera playlist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para cambiar avatar -->
+<div class="modal fade" id="avatarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title text-white">Cambiar foto de perfil</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="avatar-preview mb-4">
+                        <img src="@(Model.FotoPerfilUrl ?? "/images/avatar-default.png")" 
+                             alt="Preview" 
+                             class="rounded-circle" 
+                             id="avatar-preview"
+                             width="200" height="200">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="file" id="avatar-upload" accept="image/*" class="d-none">
+                        <button type="button" class="btn btn-outline-light w-100" id="choose-avatar-btn">
+                            <i class="fas fa-upload me-2"></i>Subir nueva foto
+                        </button>
+                    </div>
+                    
+                    <p class="text-secondary small">
+                        Formatos permitidos: JPG, PNG<br>
+                        Tamaño máximo: 5MB
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="save-avatar-btn">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+    .avatar-container {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .btn-avatar-edit {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        background: #1DB954;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-avatar-edit:hover {
+        background: #1ed760;
+        transform: scale(1.1);
+    }
+    
+    .stats {
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    
+    .stat-label {
+        font-size: 0.875rem;
+        margin-top: 2px;
+    }
+    
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .form-control, .form-select {
+        background: #121212;
+        border: 1px solid #333;
+        color: white;
+        border-radius: 8px;
+        height: 45px;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        background: #121212;
+        border-color: #1DB954;
+        color: white;
+        box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+    }
+    
+    .btn-success {
+        border-radius: 25px;
+        padding: 10px 25px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-success:hover {
+        transform: scale(1.02);
+        background-color: #1ed760;
+    }
+    
+    /* Avatar preview */
+    .avatar-preview {
+        border: 2px dashed #333;
+        border-radius: 50%;
+        padding: 10px;
+        display: inline-block;
+    }
+    
+    #avatar-preview {
+        object-fit: cover;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .stats {
+            flex-direction: column;
+        }
+        
+        .stat-item {
+            margin-bottom: 15px;
+        }
+    }
+</style>
+}
+
+@section Scripts {
+<script>
+    $(document).ready(function() {
+        // Cargar playlists del usuario
+        loadUserPlaylists();
+        
+        // Configurar cambio de avatar
+        setupAvatarChange();
+        
+        // Configurar validación del formulario
+        setupFormValidation();
+    });
+    
+    function loadUserPlaylists() {
+        $.get('@Url.Action("GetUserPlaylists", "Playlist")', function(response) {
+            if (response.success && response.songs && response.songs.length > 0) {
+                var container = $('#user-playlists-container');
+                container.empty();
+                
+                response.songs.forEach(function(playlist) {
+                    var html = `
+                        <div class="col-md-4 mb-3">
+                            <div class="playlist-card bg-black rounded p-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <img src="${playlist.cover || '/images/default-playlist.png'}" 
+                                         alt="${playlist.name}" 
+                                         class="rounded" 
+                                         width="60" height="60">
+                                    <div class="ms-3">
+                                        <h6 class="text-white mb-0">${playlist.name}</h6>
+                                        <small class="text-secondary">${playlist.songCount} canciones</small>
+                                    </div>
+                                </div>
+                                <a href="/Playlist/Details/${playlist.id}" 
+                                   class="btn btn-sm btn-outline-success w-100">
+                                    Ver playlist
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    container.append(html);
+                });
+            }
+        });
+    }
+    
+    function setupAvatarChange() {
+        var avatarFile = null;
+        
+        // Botón para elegir archivo
+        $('#choose-avatar-btn').click(function() {
+            $('#avatar-upload').click();
+        });
+        
+        // Preview de avatar
+        $('#avatar-upload').change(function(e) {
+            var file = e.target.files[0];
+            if (file) {
+                // Validar tamaño y tipo
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('El archivo es demasiado grande. Máximo 5MB.');
+                    return;
+                }
+                
+                if (!file.type.match('image.*')) {
+                    alert('Solo se permiten imágenes.');
+                    return;
+                }
+                
+                avatarFile = file;
+                
+                // Mostrar preview
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#avatar-preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Guardar avatar
+        $('#save-avatar-btn').click(function() {
+            if (!avatarFile) {
+                alert('Por favor, selecciona una imagen primero.');
+                return;
+            }
+            
+            var formData = new FormData();
+            formData.append('FotoPerfil', avatarFile);
+            formData.append('IdUsuario', '@Model.IdUsuario');
+            
+            $.ajax({
+                url: '@Url.Action("UpdateProfile", "Account")',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        // Actualizar avatar en la página
+                        $('#profile-avatar').attr('src', $('#avatar-preview').attr('src'));
+                        $('#avatarModal').modal('hide');
+                        showSuccess('Foto de perfil actualizada correctamente.');
+                    } else {
+                        showError('Error al actualizar la foto de perfil.');
+                    }
+                },
+                error: function() {
+                    showError('Error al actualizar la foto de perfil.');
+                }
+            });
+        });
+    }
+    
+    function setupFormValidation() {
+        $('#profileForm').submit(function(e) {
+            var form = $(this);
+            
+            // Validar manualmente
+            if (!form[0].checkValidity()) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            form.addClass('was-validated');
+            
+            // Si es válido, mostrar carga
+            if (form[0].checkValidity()) {
+                var btn = form.find('button[type="submit"]');
+                btn.prop('disabled', true);
+                btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Guardando...');
+            }
+        });
+    }
+    
+    function showSuccess(message) {
+        // Mostrar notificación de éxito
+        var toast = `
+            <div class="toast align-items-center text-white bg-success border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-check-circle me-2"></i>${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+        
+        $('.toast-container').remove();
+        $('body').append('<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>');
+        $('.toast-container').append(toast);
+        
+        var toastEl = $('.toast').toast({ delay: 3000 });
+        toastEl.toast('show');
+    }
+    
+    function showError(message) {
+        // Mostrar notificación de error
+        var toast = `
+            <div class="toast align-items-center text-white bg-danger border-0" role="alert">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas fa-exclamation-circle me-2"></i>${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+        
+        $('.toast-container').remove();
+        $('body').append('<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>');
+        $('.toast-container').append(toast);
+        
+        var toastEl = $('.toast').toast({ delay: 3000 });
+        toastEl.toast('show');
+    }
+</script>
+}

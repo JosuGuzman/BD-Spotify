@@ -1,116 +1,85 @@
-using Microsoft.AspNetCore.Mvc;
-using Spotify.Core.Persistencia;
-using Spotify.Mvc.Models;
-using System.Diagnostics;
-
 namespace Spotify.Mvc.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly IRepoCancion _repoCancion;
-    private readonly IRepoArtista _repoArtista;
     private readonly IRepoAlbum _repoAlbum;
-    private readonly IRepoUsuario _repoUsuario;
+    private readonly IRepoArtista _repoArtista;
+    private readonly IRepoCancion _repoCancion;
     private readonly IRepoGenero _repoGenero;
+    private readonly ILogger<HomeController> _logger;
 
     public HomeController(
-        ILogger<HomeController> logger,
-        IRepoCancion repoCancion,
-        IRepoArtista repoArtista,
         IRepoAlbum repoAlbum,
-        IRepoUsuario repoUsuario,
-        IRepoGenero repoGenero)
+        IRepoArtista repoArtista,
+        IRepoCancion repoCancion,
+        IRepoGenero repoGenero,
+        ILogger<HomeController> logger)
     {
-        _logger = logger;
-        _repoCancion = repoCancion;
-        _repoArtista = repoArtista;
         _repoAlbum = repoAlbum;
-        _repoUsuario = repoUsuario;
+        _repoArtista = repoArtista;
+        _repoCancion = repoCancion;
         _repoGenero = repoGenero;
+        _logger = logger;
     }
 
-    public IActionResult Index()
+    [AllowAnonymous]
+    public async Task<IActionResult> Index()
     {
         try
         {
-            var dashboardStats = new DashboardViewModel
-            {
-                TotalArtistas = _repoArtista.Obtener().Count,
-                TotalAlbumes = _repoAlbum.Obtener().Count,
-                TotalCanciones = _repoCancion.Obtener().Count,
-                TotalUsuarios = _repoUsuario.Obtener().Count,
-                TotalGeneros = _repoGenero.Obtener().Count,
-            };
+            var hora = DateTime.Now.Hour;
+            ViewBag.Saludo = hora < 12 ? "¡Buenos días!" :
+                            hora < 19 ? "¡Buenas tardes!" : "¡Buenas noches!";
 
-            return View(dashboardStats);
+            // Para usuarios autenticados, mostrar contenido personalizado
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+                ViewBag.UserId = userId;
+            }
+
+            return View();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al cargar el dashboard");
-            var emptyStats = new DashboardViewModel();
-            return View(emptyStats);
+            _logger.LogError(ex, "Error al cargar la página de inicio");
+            return View("Error");
         }
+    }
+
+    [AllowAnonymous]
+    public IActionResult About()
+    {
+        return View();
+    }
+
+    [AllowAnonymous]
+    public IActionResult Contact()
+    {
+        return View();
     }
 
     [HttpPost]
-    public IActionResult Buscar(string query)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-        {
-            TempData["ErrorMessage"] = "Por favor, ingresa un término de búsqueda";
-            return RedirectToAction("Index");
-        }
-
-        try
-        {
-            var resultados = _repoCancion.Matcheo(query);
-            ViewBag.Query = query;
-            ViewBag.ResultCount = resultados?.Count ?? 0;
-            
-            return View("ResultadosBusqueda", resultados ?? new List<string>());
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error al realizar la búsqueda para: {Query}", query);
-            TempData["ErrorMessage"] = "Error al realizar la búsqueda. Por favor, intenta nuevamente.";
-            return RedirectToAction("Index");
-        }
-    }
-
-    public IActionResult Estadisticas()
+    [AllowAnonymous]
+    public async Task<IActionResult> GetHomeContent()
     {
         try
         {
-            var stats = new EstadisticasViewModel
+            var content = new
             {
-                TotalArtistas = _repoArtista.Obtener().Count,
-                TotalAlbumes = _repoAlbum.Obtener().Count,
-                TotalCanciones = _repoCancion.Obtener().Count,
-                TotalUsuarios = _repoUsuario.Obtener().Count,
-                TotalGeneros = _repoGenero.Obtener().Count,
-                ArtistasRecientes = _repoArtista.Obtener().Take(5).ToList(),
-                AlbumesRecientes = _repoAlbum.Obtener().Take(5).ToList()
+                AlbumesRecientes = await _repoAlbum.ObtenerAlbumesRecientesAsync(6),
+                ArtistasPopulares = await _repoArtista.ObtenerArtistasPopularesAsync(8),
+                CancionesPopulares = await _repoCancion.ObtenerCancionesPopularesAsync(10),
+                Generos = await _repoGenero.ObtenerGenerosPopularesAsync()
             };
 
-            return View(stats);
+            return Json(new { success = true, data = content });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al cargar las estadísticas");
-            TempData["ErrorMessage"] = "Error al cargar las estadísticas";
-            return RedirectToAction("Index");
+            _logger.LogError(ex, "Error al obtener contenido de inicio");
+            return Json(new { success = false, message = "Error al cargar contenido" });
         }
-    }
-
-    public IActionResult AcercaDe()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

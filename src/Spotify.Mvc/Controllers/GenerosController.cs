@@ -1,99 +1,131 @@
 using Microsoft.AspNetCore.Mvc;
-using Spotify.Core;
-using Spotify.Core.Persistencia;
+using Microsoft.AspNetCore.Authorization;
+using Spotify.ReposDapper;
+using Spotify.Core.Entidades;
 using Spotify.Mvc.Models;
 
-namespace Spotify.Controllers;
+namespace Spotify.Mvc.Controllers;
 
-public class GenerosController : Controller
+[Authorize(Roles = "3")]
+public class GenreController : Controller
 {
-    private readonly IRepoGeneroAsync _repoGenero;
+    private readonly IRepoGenero _repoGenero;
+    private readonly ILogger<GenreController> _logger;
 
-    public GenerosController(IRepoGeneroAsync repoGenero)
+    public GenreController(
+        IRepoGenero repoGenero,
+        ILogger<GenreController> logger)
     {
         _repoGenero = repoGenero;
+        _logger = logger;
     }
 
-    // GET: Generos
     public async Task<IActionResult> Index()
     {
         try
         {
-            var generos = await _repoGenero.Obtener();
-            var viewModel = generos.Select(g => new GeneroViewModel
-            {
-                IdGenero = g.idGenero,
-                Genero = g.genero
-            }).ToList();
-
-            return View(viewModel);
+            var generos = await _repoGenero.ObtenerTodosAsync();
+            return View(generos);
         }
         catch (Exception ex)
         {
-            TempData["ErrorMessage"] = $"Error al cargar géneros: {ex.Message}";
-            return View(new List<GeneroViewModel>());
+            _logger.LogError(ex, "Error al obtener géneros");
+            return View("Error");
         }
     }
 
-    // GET: Generos/Details/5
-    public async Task<IActionResult> Details(byte id)
-    {
-        try
-        {
-            var genero = await _repoGenero.DetalleDeAsync(id);
-            if (genero == null)
-            {
-                TempData["ErrorMessage"] = "Género no encontrado";
-                return RedirectToAction(nameof(Index));
-            }
-
-            var viewModel = new GeneroViewModel
-            {
-                IdGenero = genero.idGenero,
-                Genero = genero.genero
-            };
-
-            return View(viewModel);
-        }
-        catch (Exception ex)
-        {
-            TempData["ErrorMessage"] = $"Error al cargar detalles: {ex.Message}";
-            return RedirectToAction(nameof(Index));
-        }
-    }
-
-    // GET: Generos/Create
+    [HttpGet]
     public IActionResult Create()
     {
-        return View(new GeneroCreateViewModel());
+        return View();
     }
 
-    // POST: Generos/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(GeneroCreateViewModel viewModel)
+    public async Task<IActionResult> Create(GeneroModel model)
     {
         if (!ModelState.IsValid)
-        {
-            return View(viewModel);
-        }
+            return View(model);
 
         try
         {
-            var genero = new Genero { genero = viewModel.Genero };
-            var resultado = await _repoGenero.AltaAsync(genero);
+            var genero = new Genero
+            {
+                Nombre = model.Nombre,
+                Descripcion = model.Descripcion,
+                EstaActivo = true
+            };
+
+            await _repoGenero.InsertarAsync(genero);
             
-            TempData["SuccessMessage"] = $"Género '{resultado.genero}' creado exitosamente";
-            return RedirectToAction(nameof(Index));
+            TempData["SuccessMessage"] = "Género creado exitosamente";
+            return RedirectToAction("Index");
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", $"Error al crear género: {ex.Message}");
-            return View(viewModel);
+            _logger.LogError(ex, "Error al crear género");
+            TempData["ErrorMessage"] = "Error al crear género";
+            return View(model);
         }
     }
 
-    // POST: Generos/Delete/5
+    [HttpGet]
+    public async Task<IActionResult> Edit(byte id)
+    {
+        try
+        {
+            var genero = await _repoGenero.ObtenerPorIdAsync(id);
+            if (genero == null)
+                return NotFound();
+
+            var model = new GeneroModel
+            {
+                IdGenero = genero.IdGenero,
+                Nombre = genero.Nombre,
+                Descripcion = genero.Descripcion
+            };
+
+            return View(model);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error al cargar edición de género {id}");
+            return View("Error");
+        }
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(byte id, GeneroModel model)
+    {
+        if (id != model.IdGenero)
+            return BadRequest();
+
+        if (!ModelState.IsValid)
+            return View(model);
+
+        try
+        {
+            var genero = await _repoGenero.ObtenerPorIdAsync(id);
+            if (genero == null)
+                return NotFound();
+
+            genero.Nombre = model.Nombre;
+            genero.Descripcion = model.Descripcion;
+
+            await _repoGenero.ActualizarAsync(genero);
+            
+            TempData["SuccessMessage"] = "Género actualizado exitosamente";
+            return RedirectToAction("Index");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error al actualizar género {id}");
+            TempData["ErrorMessage"] = "Error al actualizar género";
+            return View(model);
+        }
+    }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(byte id)
@@ -101,12 +133,35 @@ public class GenerosController : Controller
         try
         {
             await _repoGenero.EliminarAsync(id);
-            TempData["SuccessMessage"] = "Género eliminado correctamente";
+            TempData["SuccessMessage"] = "Género eliminado exitosamente";
+            return RedirectToAction("Index");
         }
         catch (Exception ex)
         {
-            TempData["ErrorMessage"] = $"Error al eliminar género: {ex.Message}";
+            _logger.LogError(ex, $"Error al eliminar género {id}");
+            TempData["ErrorMessage"] = "Error al eliminar género";
+            return RedirectToAction("Index");
         }
-        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ToggleStatus(byte id)
+    {
+        try
+        {
+            var genero = await _repoGenero.ObtenerPorIdAsync(id);
+            if (genero == null)
+                return Json(new { success = false, message = "Género no encontrado" });
+
+            genero.EstaActivo = !genero.EstaActivo;
+            await _repoGenero.ActualizarAsync(genero);
+
+            return Json(new { success = true, status = genero.EstaActivo });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error al cambiar estado de género {id}");
+            return Json(new { success = false, message = "Error interno" });
+        }
     }
 }

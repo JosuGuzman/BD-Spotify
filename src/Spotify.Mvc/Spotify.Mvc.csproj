@@ -1,16 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <ItemGroup>
-    <ProjectReference Include="..\Spotify.Core\Spotify.Core.csproj" />
-    <ProjectReference Include="..\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
-    <ProjectReference Include="..\MinimalAPI\MinimalAPI.csproj" />
-    <ProjectReference Include="..\Spotify.DTOs\Spotify.DTOs.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="MySqlConnector" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spotify.Core\Spotify.Core.csproj" />
+    <ProjectReference Include="..\Spotify.ReposDapper\Spotify.ReposDapper.csproj" />
+  </ItemGroup>
 
 </Project>

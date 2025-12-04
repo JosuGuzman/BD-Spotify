@@ -1,41 +1,68 @@
-// Program.cs
-using Spotify.Core.Persistencia;
 using Spotify.ReposDapper;
-using Scalar.AspNetCore;
-using System.Data;
-using MySqlConnector;
+using Spotify.Core.Persistencia;
+using Spotify.Core;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de servicios
-var connectionString = builder.Configuration.GetConnectionString("MySQL");
-builder.Services.AddScoped<IDbConnection>(sp => new MySqlConnection(connectionString));
-
-// REGISTRO COMPLETO DE REPOSITORIOS (SÍNCRONOS Y ASÍNCRONOS)
-builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
-builder.Services.AddScoped<IRepoAlbumAsync, RepoAlbumAsync>();
-
-builder.Services.AddScoped<IRepoArtista, RepoArtista>();
-builder.Services.AddScoped<IRepoArtistaAsync, RepoArtistaAsync>();
-
-builder.Services.AddScoped<IRepoCancion, RepoCancion>();
-builder.Services.AddScoped<IRepoCancionAsync, RepoCancionAsync>();
-
-builder.Services.AddScoped<IRepoGenero, RepoGenero>();
-builder.Services.AddScoped<IRepoGeneroAsync, RepoGeneroAsync>();
-
-builder.Services.AddScoped<IRepoUsuario, RepoUsuario>();
-builder.Services.AddScoped<IRepoUsuarioAsync, RepoUsuarioAsync>();
-
-builder.Services.AddScoped<IRepoNacionalidad, RepoNacionalidad>();
-builder.Services.AddScoped<IRepoNacionalidadAsync, RepoNacionalidadAsync>();
-
-// MVC
+// Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Swagger para API
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// Configurar autenticación
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
+    });
+
+// Configurar sesión
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Database Factory
+builder.Services.AddScoped<IConnectionFactory>(provider =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MySQL") 
+        ?? throw new InvalidOperationException("Connection string not found");
+    return new DbConnectionFactory(connectionString);
+});
+
+// Repositories
+builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
+builder.Services.AddScoped<IRepoArtista, RepoArtista>();
+builder.Services.AddScoped<IRepoCancion, RepoCancion>();
+builder.Services.AddScoped<IRepoGenero, RepoGenero>();
+builder.Services.AddScoped<IRepoPlaylist, RepoPlaylist>();
+builder.Services.AddScoped<IRepoReproduccion, RepoReproduccion>();
+builder.Services.AddScoped<IRepoUsuario, RepoUsuario>();
+builder.Services.AddScoped<IRepoNacionalidad, RepoNacionalidad>();
+builder.Services.AddScoped<IRepoTipoSuscripcion, RepoTipoSuscripcion>();
+builder.Services.AddScoped<IRepoRegistro, RepoSuscripcion>();
+
+// File Service
+builder.Services.AddScoped<IFileService>(provider =>
+{
+    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+    var logger = provider.GetRequiredService<ILogger<FileService>>();
+    return new FileService(uploadPath, logger);
+});
+
+// Configurar límites de subida de archivos
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50 MB
+    options.MultipartHeadersLengthLimit = int.MaxValue;
+});
 
 var app = builder.Build();
 
@@ -48,22 +75,16 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
-// MVC Routes
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-// Swagger para desarrollo
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger(options =>
-    {
-        options.RouteTemplate = "/openapi/{documentName}.json";
-    });
-    app.MapScalarApiReference();
-}
 
 app.Run();

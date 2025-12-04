@@ -1,0 +1,122 @@
+:root {
+    --admin-sidebar: #000;
+    --admin-bg: #121212;
+    --admin-card: #181818;
+    --admin-border: #282828;
+}
+
+body {
+    background-color: var(--admin-bg);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar administrativo */
+.sidebar-admin {
+    background-color: var(--admin-sidebar);
+    min-height: 100vh;
+    padding-top: 20px;
+    position: fixed;
+    width: 250px;
+}
+
+.sidebar-admin .nav-link {
+    color: #b3b3b3 !important;
+    padding: 12px 20px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    transition: all 0.3s;
+}
+
+.sidebar-admin .nav-link:hover {
+    color: #fff !important;
+    background-color: #282828;
+}
+
+.sidebar-admin .nav-link.active {
+    color: #fff !important;
+    background-color: #333;
+    border-left: 4px solid #1DB954;
+}
+
+/* Cards admin */
+.card-admin {
+    background-color: var(--admin-card);
+    border: 1px solid var(--admin-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-admin-header {
+    background-color: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--admin-border);
+    padding: 16px 20px;
+}
+
+.card-admin-body {
+    padding: 20px;
+}
+
+/* Tablas */
+.table-admin {
+    color: #fff;
+    background-color: var(--admin-card);
+    border-color: var(--admin-border);
+}
+
+.table-admin thead th {
+    border-bottom: 2px solid var(--admin-border);
+    color: #b3b3b3;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.table-admin tbody tr {
+    transition: background-color 0.2s;
+}
+
+.table-admin tbody tr:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+
+/* Estadísticas */
+.stat-card {
+    background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 20px;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+/* Formularios admin */
+.form-admin {
+    background-color: rgba(0,0,0,0.2);
+    border: 1px solid var(--admin-border);
+    color: #fff;
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.form-admin:focus {
+    background-color: rgba(0,0,0,0.3);
+    border-color: #1DB954;
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(29, 185, 84
+}

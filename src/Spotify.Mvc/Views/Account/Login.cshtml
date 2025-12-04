@@ -1,0 +1,159 @@
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+    Layout = "_Layout";
+}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card bg-dark border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <!-- Logo Spotify -->
+                    <div class="text-center mb-4">
+                        <i class="fab fa-spotify text-success" style="font-size: 3rem;"></i>
+                        <h1 class="h3 text-white mt-3">Iniciar Sesión en Spotify</h1>
+                    </div>
+                    
+                    <!-- Formulario de Login -->
+                    <form asp-action="Login" method="post" id="loginForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
+                        <!-- Email -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Email" class="form-label text-white">Email</label>
+                            <input asp-for="Email" class="form-control bg-black border-secondary text-white" 
+                                   placeholder="nombre@ejemplo.com" autocomplete="email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        
+                        <!-- Contraseña -->
+                        <div class="form-group mb-4">
+                            <label asp-for="Contrasenia" class="form-label text-white">Contraseña</label>
+                            <input asp-for="Contrasenia" type="password" 
+                                   class="form-control bg-black border-secondary text-white" 
+                                   placeholder="Ingresa tu contraseña" autocomplete="current-password">
+                            <span asp-validation-for="Contrasenia" class="text-danger"></span>
+                        </div>
+                        
+                        <!-- Recordarme -->
+                        <div class="form-check mb-4">
+                            <input asp-for="RememberMe" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label text-white" for="rememberMe">
+                                Recordarme
+                            </label>
+                        </div>
+                        
+                        <!-- Botón de Login -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-success btn-lg" id="loginBtn">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                            </button>
+                        </div>
+                        
+                        <!-- Enlaces -->
+                        <div class="text-center">
+                            <a href="@Url.Action("Register", "Account")" class="text-success d-block mb-2">
+                                ¿No tienes cuenta? Regístrate
+                            </a>
+                            <a href="#" class="text-secondary">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+    .min-vh-100 {
+        min-height: 100vh;
+    }
+    
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .form-control {
+        height: 50px;
+        border-radius: 8px;
+        padding-left: 15px;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: #1DB954;
+        box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+    }
+    
+    .form-control::placeholder {
+        color: #6c757d;
+    }
+    
+    .btn-success {
+        height: 50px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .btn-success:hover {
+        transform: scale(1.02);
+        background-color: #1ed760;
+    }
+    
+    .form-check-input:checked {
+        background-color: #1DB954;
+        border-color: #1DB954;
+    }
+    
+    /* Efectos para móvil */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 2rem !important;
+        }
+        
+        .btn-success {
+            height: 45px;
+        }
+        
+        .form-control {
+            height: 45px;
+        }
+    }
+</style>
+}
+
+@section Scripts {
+<script>
+    $(document).ready(function() {
+        // Validación del formulario
+        $('#loginForm').submit(function(e) {
+            var form = $(this);
+            if (form[0].checkValidity() === false) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            form.addClass('was-validated');
+        });
+        
+        // Animación de carga
+        $('#loginBtn').click(function() {
+            var btn = $(this);
+            btn.prop('disabled', true);
+            btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Iniciando sesión...');
+        });
+        
+        // Efecto de entrada para los campos
+        $('.form-control').each(function(index) {
+            $(this).delay(index * 100).animate({
+                opacity: 1,
+                marginTop: 0
+            }, 300);
+        });
+    });
+</script>
+}

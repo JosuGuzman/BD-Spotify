@@ -1,0 +1,329 @@
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Registrarse";
+    Layout = "_Layout";
+}
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card bg-dark border-0 shadow-lg">
+                <div class="card-body p-5">
+                    <!-- Logo y título -->
+                    <div class="text-center mb-5">
+                        <i class="fab fa-spotify text-success" style="font-size: 3rem;"></i>
+                        <h1 class="h3 text-white mt-3">Regístrate en Spotify</h1>
+                        <p class="text-secondary">Escucha millones de canciones sin anuncios</p>
+                    </div>
+                    
+                    <!-- Formulario de Registro -->
+                    <form asp-action="Register" method="post" id="registerForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+                        
+                        <div class="row">
+                            <!-- Nombre de Usuario -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="NombreUsuario" class="form-label text-white">
+                                    <i class="fas fa-user me-2"></i>Nombre de Usuario
+                                </label>
+                                <input asp-for="NombreUsuario" class="form-control bg-black border-secondary text-white" 
+                                       placeholder="Elige un nombre de usuario" autocomplete="username">
+                                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                                <small class="text-secondary">Este nombre aparecerá en tu perfil</small>
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Email" class="form-label text-white">
+                                    <i class="fas fa-envelope me-2"></i>Email
+                                </label>
+                                <input asp-for="Email" type="email" class="form-control bg-black border-secondary text-white" 
+                                       placeholder="tu@email.com" autocomplete="email">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <small class="text-secondary">Usaremos este email para contactarte</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <!-- Contraseña -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Contrasenia" class="form-label text-white">
+                                    <i class="fas fa-lock me-2"></i>Contraseña
+                                </label>
+                                <input asp-for="Contrasenia" type="password" 
+                                       class="form-control bg-black border-secondary text-white" 
+                                       placeholder="Crea una contraseña" autocomplete="new-password">
+                                <span asp-validation-for="Contrasenia" class="text-danger"></span>
+                                <div class="password-strength mt-2">
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar" id="password-strength-bar"></div>
+                                    </div>
+                                    <small class="text-secondary" id="password-strength-text">
+                                        La contraseña debe tener al menos 8 caracteres
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <!-- Confirmar Contraseña -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="ConfirmarContrasenia" class="form-label text-white">
+                                    <i class="fas fa-lock me-2"></i>Confirmar Contraseña
+                                </label>
+                                <input asp-for="ConfirmarContrasenia" type="password" 
+                                       class="form-control bg-black border-secondary text-white" 
+                                       placeholder="Repite tu contraseña" autocomplete="new-password">
+                                <span asp-validation-for="ConfirmarContrasenia" class="text-danger"></span>
+                                <small class="text-secondary" id="password-match-text"></small>
+                            </div>
+                        </div>
+                        
+                        <!-- Nacionalidad -->
+                        <div class="mb-4">
+                            <label asp-for="IdNacionalidad" class="form-label text-white">
+                                <i class="fas fa-globe-americas me-2"></i>Nacionalidad
+                            </label>
+                            <select asp-for="IdNacionalidad" 
+                                    asp-items="@(new SelectList(Model.Nacionalidades, "IdNacionalidad", "Pais"))"
+                                    class="form-select bg-black border-secondary text-white">
+                                <option value="">Selecciona tu país</option>
+                            </select>
+                            <span asp-validation-for="IdNacionalidad" class="text-danger"></span>
+                        </div>
+                        
+                        <!-- Términos y condiciones -->
+                        <div class="form-check mb-5">
+                            <input class="form-check-input" type="checkbox" id="acceptTerms" required>
+                            <label class="form-check-label text-white" for="acceptTerms">
+                                Acepto los <a href="#" class="text-success">Términos y Condiciones</a> 
+                                y la <a href="#" class="text-success">Política de Privacidad</a>
+                            </label>
+                        </div>
+                        
+                        <!-- Botón de Registro -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-success btn-lg" id="registerBtn">
+                                <i class="fas fa-user-plus me-2"></i>Registrarse
+                            </button>
+                        </div>
+                        
+                        <!-- Enlace a Login -->
+                        <div class="text-center">
+                            <p class="text-white">
+                                ¿Ya tienes una cuenta? 
+                                <a href="@Url.Action("Login", "Account")" class="text-success fw-bold">
+                                    Inicia sesión
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+    .min-vh-100 {
+        min-height: 100vh;
+    }
+    
+    .card {
+        border-radius: 15px;
+    }
+    
+    .form-control, .form-select {
+        height: 50px;
+        border-radius: 8px;
+        padding-left: 15px;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #1DB954;
+        box-shadow: 0 0 0 0.25rem rgba(29, 185, 84, 0.25);
+    }
+    
+    .btn-success {
+        height: 50px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+    }
+    
+    .btn-success:hover {
+        transform: scale(1.02);
+        background-color: #1ed760;
+    }
+    
+    .password-strength .progress-bar {
+        transition: width 0.3s;
+    }
+    
+    /* Colores para fortaleza de contraseña */
+    .strength-weak { background-color: #dc3545; }
+    .strength-medium { background-color: #ffc107; }
+    .strength-strong { background-color: #28a745; }
+    
+    /* Animaciones */
+    .form-control, .form-select {
+        opacity: 0;
+        margin-top: 20px;
+        animation: slideIn 0.5s forwards;
+    }
+    
+    @@keyframes slideIn {
+        to {
+            opacity: 1;
+            margin-top: 0;
+        }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 2rem !important;
+        }
+        
+        .btn-success {
+            height: 45px;
+            font-size: 1rem;
+        }
+        
+        .form-control, .form-select {
+            height: 45px;
+        }
+    }
+</style>
+}
+
+@section Scripts {
+<script>
+    $(document).ready(function() {
+        // Validación de contraseña en tiempo real
+        $('#Contrasenia').on('input', function() {
+            checkPasswordStrength($(this).val());
+        });
+        
+        // Verificar coincidencia de contraseñas
+        $('#ConfirmarContrasenia').on('input', function() {
+            checkPasswordMatch();
+        });
+        
+        // Validación del formulario
+        $('#registerForm').submit(function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Animación de carga
+            var btn = $('#registerBtn');
+            btn.prop('disabled', true);
+            btn.html('<i class="fas fa-spinner fa-spin me-2"></i>Registrando...');
+        });
+        
+        // Animar elementos uno por uno
+        animateFormElements();
+    });
+    
+    function checkPasswordStrength(password) {
+        var strength = 0;
+        var text = '';
+        var barColor = '';
+        
+        // Longitud mínima
+        if (password.length >= 8) strength++;
+        
+        // Contiene números
+        if (/\d/.test(password)) strength++;
+        
+        // Contiene minúsculas y mayúsculas
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+        
+        // Contiene caracteres especiales
+        if (/[^a-zA-Z0-9]/.test(password)) strength++;
+        
+        // Calcular porcentaje
+        var percentage = (strength / 4) * 100;
+        
+        // Determinar texto y color
+        switch(strength) {
+            case 0:
+            case 1:
+                text = 'Contraseña débil';
+                barColor = 'strength-weak';
+                break;
+            case 2:
+                text = 'Contraseña media';
+                barColor = 'strength-medium';
+                break;
+            case 3:
+            case 4:
+                text = 'Contraseña fuerte';
+                barColor = 'strength-strong';
+                break;
+        }
+        
+        // Actualizar UI
+        $('#password-strength-bar')
+            .css('width', percentage + '%')
+            .removeClass('strength-weak strength-medium strength-strong')
+            .addClass(barColor);
+        
+        $('#password-strength-text').text(text);
+    }
+    
+    function checkPasswordMatch() {
+        var password = $('#Contrasenia').val();
+        var confirmPassword = $('#ConfirmarContrasenia').val();
+        
+        if (confirmPassword === '') {
+            $('#password-match-text').text('').removeClass('text-danger text-success');
+        } else if (password === confirmPassword) {
+            $('#password-match-text').text('Las contraseñas coinciden').addClass('text-success').removeClass('text-danger');
+        } else {
+            $('#password-match-text').text('Las contraseñas no coinciden').addClass('text-danger').removeClass('text-success');
+        }
+    }
+    
+    function validateForm() {
+        var valid = true;
+        var form = $('#registerForm')[0];
+        
+        // Verificar términos
+        if (!$('#acceptTerms').is(':checked')) {
+            alert('Debes aceptar los términos y condiciones');
+            valid = false;
+        }
+        
+        // Verificar coincidencia de contraseñas
+        if ($('#Contrasenia').val() !== $('#ConfirmarContrasenia').val()) {
+            alert('Las contraseñas no coinciden');
+            valid = false;
+        }
+        
+        // Verificar fortaleza de contraseña
+        if ($('#Contrasenia').val().length < 8) {
+            alert('La contraseña debe tener al menos 8 caracteres');
+            valid = false;
+        }
+        
+        return valid && form.checkValidity();
+    }
+    
+    function animateFormElements() {
+        $('.form-control, .form-select, .form-check').each(function(index) {
+            $(this).css({
+                'opacity': '0',
+                'transform': 'translateY(20px)'
+            }).delay(index * 100).animate({
+                'opacity': '1',
+                'transform': 'translateY(0)'
+            }, 300);
+        });
+    }
+</script>
+}

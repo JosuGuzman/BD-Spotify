@@ -1,105 +1,472 @@
-﻿@model Spotify.Mvc.Models.DashboardViewModel
-@{
-    ViewData["Title"] = "Inicio";
+﻿@{
+    ViewData["Title"] = "Spotify - Inicio";
+    Layout = "_Layout";
 }
 
-<div class="text-center mb-5 text-white">
-    <h1 class="display-4 mb-3 ">Bienvenido a Spotify MVC</h1>
-    <p class="lead ">Sistema de gestión musical completo</p>
+<!-- Saludo dinámico -->
+<h1 class="text-white greeting">@ViewBag.Saludo</h1>
+
+<!-- Avatar según tipo de usuario -->
+<div class="avatar-section mb-4">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <img src="@(ViewBag.FotoPerfil ?? "/images/avatar-default.png")" 
+             alt="Avatar" class="avatar-img rounded-circle" 
+             width="60" height="60">
+        <span class="user-name text-white ms-3">@User.Identity.Name</span>
+    }
+    else
+    {
+        <img src="/images/avatar-default.png" 
+             alt="Avatar" class="avatar-img rounded-circle" 
+             width="60" height="60">
+        <span class="user-name text-white ms-3">Visitante</span>
+    }
 </div>
 
-<!-- Barra de búsqueda centrada -->
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8 col-lg-6">
-        <div class="card">
-            <div class="card-header bg-dark text-white text-center">
-                <h5 class="mb-0"><i class="fas fa-search"></i> Búsqueda Rápida</h5>
-            </div>
-            <div class="card-body">
-                <form asp-controller="Home" asp-action="Buscar" method="post">
-                    <div class="input-group">
-                        <input type="text" name="query" class="form-control" placeholder="Buscar canciones..." required>
-                        <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-search"></i> Buscar
+<!-- Grid de Canciones Recientes (2 columnas en móvil) -->
+<section class="recent-songs mb-5">
+    <h2 class="section-title text-white mb-3">Canciones recientes</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+        <!-- Se cargará dinámicamente con AJAX -->
+        <div id="recent-songs-container">
+            <!-- Contenido cargado desde JavaScript -->
+        </div>
+    </div>
+</section>
+
+<!-- Carrusel de Álbumes (infinito) -->
+<section class="album-carousel mb-5">
+    <h2 class="section-title text-white mb-3">Álbumes populares</h2>
+    <div class="carousel-container">
+        <div class="carousel-inner" id="album-carousel">
+            <!-- Se cargará dinámicamente -->
+        </div>
+        <button class="carousel-prev" id="carousel-prev">‹</button>
+        <button class="carousel-next" id="carousel-next">›</button>
+    </div>
+</section>
+
+<!-- Grid de Artistas (2 filas × 4 columnas) -->
+<section class="artists-grid">
+    <h2 class="section-title text-white mb-3">Artistas populares</h2>
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3">
+        <!-- Se cargará dinámicamente -->
+        <div id="artists-grid-container">
+            <!-- Contenido cargado desde JavaScript -->
+        </div>
+    </div>
+</section>
+
+@section Styles {
+<style>
+    .greeting {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-top: 1rem;
+    }
+    
+    .avatar-section {
+        display: flex;
+        align-items: center;
+    }
+    
+    .avatar-img {
+        border: 2px solid #1DB954;
+    }
+    
+    .user-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    
+    /* Carrusel */
+    .carousel-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+    }
+    
+    .carousel-inner {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+    
+    .carousel-prev, .carousel-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.7);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 10;
+    }
+    
+    .carousel-prev { left: 10px; }
+    .carousel-next { right: 10px; }
+    
+    /* Tarjetas de canciones y artistas */
+    .song-card, .artist-card {
+        background: #181818;
+        border-radius: 8px;
+        padding: 16px;
+        transition: background 0.3s;
+        cursor: pointer;
+        height: 100%;
+    }
+    
+    .song-card:hover, .artist-card:hover {
+        background: #282828;
+    }
+    
+    .song-card img, .artist-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 12px;
+    }
+    
+    .song-title, .artist-name {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .song-artist, .artist-genre {
+        color: #b3b3b3;
+        font-size: 0.875rem;
+    }
+    
+    /* Bottom Navigation (para móvil) */
+    @media (max-width: 768px) {
+        .greeting { font-size: 2rem; }
+        .section-title { font-size: 1.25rem; }
+        
+        /* Navegación inferior fija */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(24, 24, 24, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #282828;
+            padding: 10px 0;
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            text-align: center;
+            color: #b3b3b3;
+        }
+        
+        .nav-item.active {
+            color: #1DB954;
+        }
+        
+        .nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 0.75rem;
+        }
+    }
+</style>
+}
+
+@section Scripts {
+<script>
+    $(document).ready(function() {
+        // Obtener datos de la página de inicio
+        loadHomeContent();
+        
+        // Configurar carrusel
+        setupCarousel();
+        
+        // Configurar navegación inferior para móvil
+        setupMobileNav();
+    });
+    
+    function loadHomeContent() {
+        $.get('@Url.Action("GetHomeContent", "Home")', function(response) {
+            if (response.success) {
+                // Cargar canciones recientes
+                loadRecentSongs(response.data.cancionesPopulares);
+                
+                // Cargar carrusel de álbumes
+                loadAlbumCarousel(response.data.albumesRecientes);
+                
+                // Cargar grid de artistas
+                loadArtistsGrid(response.data.artistasPopulares);
+            }
+        });
+    }
+    
+    function loadRecentSongs(songs) {
+        var container = $('#recent-songs-container');
+        container.empty();
+        
+        songs.forEach(function(song) {
+            var html = `
+                <div class="col">
+                    <div class="song-card" data-song-id="${song.id}">
+                        <img src="${song.portada || '/images/default-album.png'}" 
+                             alt="${song.titulo}">
+                        <div class="song-title">${song.titulo}</div>
+                        <div class="song-artist">${song.artista}</div>
+                        <button class="btn-play btn btn-success btn-sm mt-2" 
+                                data-song-id="${song.id}">
+                            <i class="fas fa-play"></i>
                         </button>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Contenedor Estadísticas + Sidebar -->
-<div class="row mt-5 justify-content-center align-items-start">
-    <!-- Estadísticas a la izquierda -->
-    <div class="col-lg-5 col-md-12">
-        <div class="row g-3 d-flex justify-content-start">
-            <div class="col-md-6 col-6">
-                <div class="card bg-primary text-white text-center">
-                    <div class="card-body">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Artistas" ? "active" : "")" asp-controller="Artistas" asp-action="Index">
-                            <i class="fas fa-users fa-2x mb-2"></i>
-                            <h4>@Model.TotalArtistas</h4>
-                            <small>Artistas</small>
-                        </a>
+                </div>
+            `;
+            container.append(html);
+        });
+        
+        // Configurar eventos de reproducción
+        $('.btn-play').click(function(e) {
+            e.stopPropagation();
+            var songId = $(this).data('song-id');
+            playSong(songId);
+        });
+        
+        // Click en tarjeta para ver detalles
+        $('.song-card').click(function() {
+            var songId = $(this).data('song-id');
+            window.location.href = '@Url.Action("Details", "Song")/' + songId;
+        });
+    }
+    
+    function loadAlbumCarousel(albums) {
+        var carousel = $('#album-carousel');
+        carousel.empty();
+        
+        albums.forEach(function(album, index) {
+            var activeClass = index === 0 ? 'active' : '';
+            var html = `
+                <div class="carousel-item ${activeClass}">
+                    <img src="${album.portada || '/images/default-album.png'}" 
+                         alt="${album.titulo}">
+                    <div class="carousel-caption">
+                        <h5>${album.titulo}</h5>
+                        <p>${album.artista}</p>
+                    </div>
+                </div>
+            `;
+            carousel.append(html);
+        });
+    }
+    
+    function loadArtistsGrid(artists) {
+        var container = $('#artists-grid-container');
+        container.empty();
+        
+        artists.forEach(function(artist) {
+            var html = `
+                <div class="col">
+                    <div class="artist-card" data-artist-id="${artist.id}">
+                        <img src="${artist.fotoArtista || '/images/default-artist.png'}" 
+                             alt="${artist.nombreArtistico}"
+                             class="rounded-circle">
+                        <div class="artist-name">${artist.nombreArtistico}</div>
+                        <div class="artist-genre">${artist.genero || 'Artista'}</div>
+                    </div>
+                </div>
+            `;
+            container.append(html);
+        });
+        
+        // Click en tarjeta para ver detalles del artista
+        $('.artist-card').click(function() {
+            var artistId = $(this).data('artist-id');
+            window.location.href = '@Url.Action("Details", "Artist")/' + artistId;
+        });
+    }
+    
+    function setupCarousel() {
+        var currentIndex = 0;
+        var items = $('.carousel-item');
+        var totalItems = items.length;
+        
+        $('#carousel-next').click(function() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        });
+        
+        $('#carousel-prev').click(function() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+        });
+        
+        function updateCarousel() {
+            var offset = -currentIndex * 100;
+            $('.carousel-inner').css('transform', `translateX(${offset}%)`);
+        }
+        
+        // Auto-play cada 5 segundos
+        setInterval(function() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        }, 5000);
+    }
+    
+    function setupMobileNav() {
+        if ($(window).width() <= 768) {
+            // Crear navegación inferior
+            var navHtml = `
+                <nav class="bottom-nav">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col nav-item active" data-page="home">
+                                <i class="fas fa-home nav-icon"></i>
+                                <div class="nav-label">Inicio</div>
+                            </div>
+                            <div class="col nav-item" data-page="search">
+                                <i class="fas fa-search nav-icon"></i>
+                                <div class="nav-label">Buscar</div>
+                            </div>
+                            <div class="col nav-item" data-page="playlist">
+                                <i class="fas fa-list nav-icon"></div>
+                                <div class="nav-label">Playlists</div>
+                            </div>
+                            <div class="col nav-item" data-page="profile">
+                                <i class="fas fa-user nav-icon"></div>
+                                <div class="nav-label">Perfil</div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            `;
+            $('body').append(navHtml);
+            
+            // Ajustar padding para que el contenido no quede detrás del nav
+            $('main').css('padding-bottom', '70px');
+            
+            // Configurar eventos de navegación
+            $('.nav-item').click(function() {
+                $('.nav-item').removeClass('active');
+                $(this).addClass('active');
+                
+                var page = $(this).data('page');
+                navigateToPage(page);
+            });
+        }
+    }
+    
+    function navigateToPage(page) {
+        switch(page) {
+            case 'home':
+                window.location.href = '@Url.Action("Index", "Home")';
+                break;
+            case 'search':
+                window.location.href = '@Url.Action("Index", "Search")';
+                break;
+            case 'playlist':
+                if ('@User.Identity.IsAuthenticated' === 'True') {
+                    window.location.href = '@Url.Action("Index", "Playlist")';
+                } else {
+                    showVisitorModal();
+                }
+                break;
+            case 'profile':
+                if ('@User.Identity.IsAuthenticated' === 'True') {
+                    window.location.href = '@Url.Action("Profile", "Account")';
+                } else {
+                    showVisitorModal();
+                }
+                break;
+        }
+    }
+    
+    function playSong(songId) {
+        // Verificar si es visitante
+        if ('@User.Identity.IsAuthenticated' !== 'True') {
+            // Visitantes pueden reproducir sin restricciones
+            $.post('@Url.Action("Play", "Song")', { id: songId }, function(response) {
+                if (response.success) {
+                    updatePlayer(response.song);
+                }
+            });
+        } else {
+            // Usuario registrado
+            $.post('@Url.Action("Play", "Song")', { id: songId }, function(response) {
+                if (response.success) {
+                    updatePlayer(response.song);
+                }
+            });
+        }
+    }
+    
+    function updatePlayer(song) {
+        // Actualizar el player en el footer
+        $('#current-song-title').text(song.title);
+        $('#current-song-artist').text(song.artist);
+        $('#current-song-album').text(song.album);
+        $('#current-song-cover').attr('src', song.cover || '/images/default-album.png');
+        $('#current-song-id').val(song.id);
+        
+        // Iniciar reproducción
+        var audio = $('#main-audio')[0];
+        audio.src = song.mp3Url;
+        audio.play();
+        
+        // Actualizar botón de play
+        $('#player-play-btn').html('<i class="fas fa-pause"></i>');
+    }
+    
+    function showVisitorModal() {
+        // Modal para visitantes (como se especifica en el informe)
+        var modalHtml = `
+            <div class="modal fade" id="visitorModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header border-secondary">
+                            <h5 class="modal-title text-white">Acción restringida</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-white">Para continuar con esta experiencia, por favor inicie sesión o regístrese.</p>
+                        </div>
+                        <div class="modal-footer border-secondary">
+                            <a href="@Url.Action("Login", "Account")" class="btn btn-success">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                            </a>
+                            <a href="@Url.Action("Register", "Account")" class="btn btn-outline-light">
+                                <i class="fas fa-user-plus"></i> Registrarse
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-6">
-                <div class="card bg-success text-white text-center">
-                    <div class="card-body">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Albumes" ? "active" : "")" asp-controller="Albumes" asp-action="Index">
-                            <i class="fas fa-compact-disc fa-2x mb-2"></i>
-                            <h4>@Model.TotalAlbumes</h4>
-                            <small>Álbumes</small>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-6">
-                <div class="card bg-warning text-white text-center">
-                    <div class="card-body">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Canciones" ? "active" : "")" asp-controller="Canciones" asp-action="Index">
-                            <i class="fas fa-music fa-2x mb-2"></i>
-                            <h4>@Model.TotalCanciones</h4>
-                            <small>Canciones</small>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-6">
-                <div class="card bg-dark text-white text-center">
-                    <div class="card-body">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Generos" ? "active" : "")" asp-controller="Generos" asp-action="Index">
-                            <i class="fas fa-guitar fa-2x mb-2"></i>
-                            <h4>@Model.TotalGeneros</h4>
-                            <small>Géneros</small>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar de Enlaces Rápidos a la derecha -->
-    <div class="col-lg-4 col-md-12 mt-4 mt-lg-0">
-        <div class="sidebar-quicklinks card">
-            <div class="card-header bg-dark text-white text-center">
-                <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Enlaces Rápidos</h5>
-            </div>
-            <div class="card-body sidebar-content">
-                <div class="d-grid gap-2">
-                    <a asp-controller="Home" asp-action="Estadisticas" class="btn btn-outline-primary">
-                        <i class="fas fa-chart-pie"></i> Ver Estadísticas
-                    </a>
-                    <a asp-controller="Usuarios" asp-action="Index" class="btn btn-outline-success">
-                        <i class="fas fa-user"></i> Gestionar Usuarios
-                    </a>
-                    <a asp-controller="Generos" asp-action="Index" class="btn btn-outline-warning">
-                        <i class="fas fa-guitar"></i> Gestionar Géneros
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        `;
+        
+        if ($('#visitorModal').length === 0) {
+            $('body').append(modalHtml);
+        }
+        
+        var modal = new bootstrap.Modal(document.getElementById('visitorModal'));
+        modal.show();
+        
+        // Redirigir automáticamente después de 5 segundos
+        setTimeout(function() {
+            window.location.href = '@Url.Action("Login", "Account")';
+        }, 5000);
+    }
+</script>
+}

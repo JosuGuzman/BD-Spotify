@@ -1,26 +1,55 @@
-
-using Spotify.Core;
-
 namespace Spotify.Mvc.Models;
 
-public class CancionViewModel
+public class SongModel
 {
-    public uint IdCancion { get; set; }
+    public int IdCancion { get; set; }
+
+    [Required(ErrorMessage = "El título es requerido")]
+    [StringLength(200, ErrorMessage = "El título no puede exceder 200 caracteres")]
     public string Titulo { get; set; } = string.Empty;
-    public TimeSpan Duracion { get; set; }
-    public string AlbumTitulo { get; set; } = string.Empty;
-    public string ArtistaNombre { get; set; } = string.Empty;
-    public string Genero { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "La duración es requerida")]
+    [Range(1, int.MaxValue, ErrorMessage = "La duración debe ser mayor a 0")]
+    [Display(Name = "Duración (segundos)")]
+    public int DuracionSegundos { get; set; }
+
+    [Required(ErrorMessage = "El álbum es requerido")]
+    [Range(1, int.MaxValue, ErrorMessage = "Seleccione un álbum válido")]
+    [Display(Name = "Álbum")]
+    public int IdAlbum { get; set; }
+
+    [Required(ErrorMessage = "El artista es requerido")]
+    [Range(1, int.MaxValue, ErrorMessage = "Seleccione un artista válido")]
+    [Display(Name = "Artista")]
+    public int IdArtista { get; set; }
+
+    [Required(ErrorMessage = "El género es requerido")]
+    [Range(1, byte.MaxValue, ErrorMessage = "Seleccione un género válido")]
+    [Display(Name = "Género")]
+    public byte IdGenero { get; set; }
+
+    [Required(ErrorMessage = "El archivo MP3 es requerido")]
+    [Display(Name = "Archivo MP3")]
+    public IFormFile? ArchivoMP3 { get; set; }
 }
 
-public class CancionCreateViewModel
+public class SongCreateModel
 {
-    public string Titulo { get; set; } = string.Empty;
-    public int DuracionSegundos { get; set; }
-    public uint AlbumId { get; set; }
-    public uint ArtistaId { get; set; }
-    public byte GeneroId { get; set; }
-    public List<Album>? Albumes { get; set; }
-    public List<Artista>? Artistas { get; set; }
-    public List<Genero>? Generos { get; set; }
+    public IEnumerable<Album> Albumes { get; set; } = new List<Album>();
+    public IEnumerable<Artista> Artistas { get; set; } = new List<Artista>();
+    public IEnumerable<Genero> Generos { get; set; } = new List<Genero>();
+}
+
+public class SongListModel : PaginatedModel<Cancion>
+{
+    public IEnumerable<Genero> Generos { get; set; } = new List<Genero>();
+    public IEnumerable<Artista> Artistas { get; set; } = new List<Artista>();
+}
+
+public class SongDetailModel
+{
+    public Cancion Cancion { get; set; } = null!;
+    public Album Album { get; set; } = null!;
+    public Artista Artista { get; set; } = null!;
+    public Genero Genero { get; set; } = null!;
 }

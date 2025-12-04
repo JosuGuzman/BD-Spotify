@@ -1,9 +1,16 @@
 namespace Spotify.Mvc.Models;
 
-public class GeneroViewModel
+public class GeneroModel
 {
     public byte IdGenero { get; set; }
-    public string Genero { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "El nombre es requerido")]
+    [StringLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres")]
+    public string Nombre { get; set; } = string.Empty;
+
+    [StringLength(255, ErrorMessage = "La descripción no puede exceder 255 caracteres")]
+    [DataType(DataType.MultilineText)]
+    public string? Descripcion { get; set; }
 }
 
 public class GeneroCreateViewModel
