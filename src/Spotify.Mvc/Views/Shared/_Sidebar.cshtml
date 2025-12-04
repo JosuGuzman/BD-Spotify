@@ -1,0 +1,67 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="height: 100vh;">
+    <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <i class="fab fa-spotify fa-2x me-2 text-success"></i>
+        <span class="fs-4">Spotify MVC</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a asp-controller="Home" asp-action="Index" class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active bg-success" : "")">
+                <i class="fas fa-home me-2"></i>
+                Inicio
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Albumes" asp-action="Index" class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Albumes" ? "active bg-success" : "")">
+                <i class="fas fa-compact-disc me-2"></i>
+                Álbumes
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Artistas" asp-action="Index" class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Artistas" ? "active bg-success" : "")">
+                <i class="fas fa-microphone me-2"></i>
+                Artistas
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Canciones" asp-action="Index" class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Canciones" ? "active bg-success" : "")">
+                <i class="fas fa-music me-2"></i>
+                Canciones
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Generos" asp-action="Index" class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Generos" ? "active bg-success" : "")">
+                <i class="fas fa-tags me-2"></i>
+                Géneros
+            </a>
+        </li>
+        <li>
+            <a asp-controller="Playlists" asp-action="Index" class="nav-link text-white @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Playlists" ? "active bg-success" : "")">
+                <i class="fas fa-list me-2"></i>
+                Playlists
+            </a>
+        </li>
+    </ul>
+    <hr>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong>@User.Identity.Name</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Perfil</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="d-grid gap-2">
+            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light">Iniciar Sesión</a>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-success">Registrarse</a>
+        </div>
+    }
+</div>

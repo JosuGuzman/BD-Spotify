@@ -2,6 +2,9 @@ using Spotify.Core;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Connections;
 using System.Net;
+using Spotify.ReposDapper;
+using Spotify.Core.Persistencia;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,16 +38,19 @@ builder.Services.AddScoped<IConnectionFactory>(provider =>
 });
 
 // Repositories
-builder.Services.AddScoped<IRepoAlbum, RepoAlbum>();
-builder.Services.AddScoped<IRepoArtista, RepoArtista>();
-builder.Services.AddScoped<IRepoCancion, RepoCancion>();
-builder.Services.AddScoped<IRepoGenero, RepoGenero>();
-builder.Services.AddScoped<IRepoPlaylist, RepoPlaylist>();
-builder.Services.AddScoped<IRepoReproduccion, RepoReproduccion>();
-builder.Services.AddScoped<IRepoUsuario, RepoUsuario>();
-builder.Services.AddScoped<IRepoNacionalidad, RepoNacionalidad>();
-builder.Services.AddScoped<IRepoTipoSuscripcion, RepoTipoSuscripcion>();
-builder.Services.AddScoped<IRepoRegistro, RepoSuscripcion>();
+var connectionString = builder.Configuration.GetConnectionString("MySQL") 
+    ?? throw new InvalidOperationException("Connection string not found");
+
+builder.Services.AddScoped<IRepoAlbum>(p => new RepoAlbum(connectionString, p.GetRequiredService<ILogger<RepoAlbum>>()));
+builder.Services.AddScoped<IRepoArtista>(p => new RepoArtista(connectionString, p.GetRequiredService<ILogger<RepoArtista>>()));
+builder.Services.AddScoped<IRepoCancion>(p => new RepoCancion(connectionString, p.GetRequiredService<ILogger<RepoCancion>>()));
+builder.Services.AddScoped<IRepoGenero>(p => new RepoGenero(connectionString, p.GetRequiredService<ILogger<RepoGenero>>()));
+builder.Services.AddScoped<IRepoPlaylist>(p => new RepoPlaylist(connectionString, p.GetRequiredService<ILogger<RepoPlaylist>>()));
+builder.Services.AddScoped<IRepoReproduccion>(p => new RepoReproduccion(connectionString, p.GetRequiredService<ILogger<RepoReproduccion>>()));
+builder.Services.AddScoped<IRepoUsuario>(p => new RepoUsuario(connectionString, p.GetRequiredService<ILogger<RepoUsuario>>()));
+builder.Services.AddScoped<IRepoNacionalidad>(p => new RepoNacionalidad(connectionString, p.GetRequiredService<ILogger<RepoNacionalidad>>()));
+builder.Services.AddScoped<IRepoTipoSuscripcion>(p => new RepoTipoSuscripcion(connectionString, p.GetRequiredService<ILogger<RepoTipoSuscripcion>>()));
+builder.Services.AddScoped<IRepoRegistro>(p => new RepoSuscripcion(connectionString, p.GetRequiredService<ILogger<RepoSuscripcion>>()));
 
 // File Service
 builder.Services.AddScoped<IFileService>(provider =>
